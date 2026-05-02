@@ -14,6 +14,7 @@ import type { SectionId } from "@/portfolio.config";
 interface PortfolioPageProps {
   theme: string;
   onToggleTheme: () => void;
+  bannerVisible: boolean;
 }
 
 const SECTION_COMPONENTS: Record<SectionId, React.ComponentType> = {
@@ -27,10 +28,10 @@ const SECTION_COMPONENTS: Record<SectionId, React.ComponentType> = {
   contact:        Contact,
 };
 
-export function PortfolioPage({ theme, onToggleTheme }: PortfolioPageProps) {
+export function PortfolioPage({ theme, onToggleTheme, bannerVisible }: PortfolioPageProps) {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar theme={theme} onToggleTheme={onToggleTheme} />
+      <Navbar theme={theme} onToggleTheme={onToggleTheme} bannerVisible={bannerVisible} />
       <Hero />
       {config.sections
         .filter((s) => s.show)

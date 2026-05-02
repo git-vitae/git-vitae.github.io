@@ -6,6 +6,7 @@ import { config } from "@/portfolio.config";
 interface NavbarProps {
   theme: string;
   onToggleTheme: () => void;
+  bannerVisible: boolean;
 }
 
 const SECTION_LABELS: Record<string, string> = {
@@ -29,7 +30,7 @@ const navLinks = config.sections
 
 const sectionIds = navLinks.map((l) => l.href.slice(1));
 
-export function Navbar({ theme, onToggleTheme }: NavbarProps) {
+export function Navbar({ theme, onToggleTheme, bannerVisible }: NavbarProps) {
   const [scrolled, setScrolled]           = useState(false);
   const [mobileOpen, setMobileOpen]       = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
@@ -78,7 +79,8 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
   return (
     <nav
       data-testid="navbar"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      style={{ top: bannerVisible ? "40px" : "0px" }}
+      className={`fixed left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
           ? "bg-background/85 backdrop-blur-lg border-b border-border/60 shadow-sm"
           : "bg-transparent"
