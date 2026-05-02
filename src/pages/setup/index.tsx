@@ -514,6 +514,43 @@ function StepEdit({ onNext }: { onNext: () => void }) {
             </div>
           </div>
 
+          {/* Colour theme picker */}
+          <div className="flex gap-3">
+            <div className="w-6 h-6 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground mb-1">
+                Pick a colour theme <span className="text-muted-foreground font-normal text-xs">(optional)</span>
+              </p>
+              <p className="text-xs text-muted-foreground mb-3">
+                Find the <span className="font-mono bg-secondary px-1 rounded text-foreground">colorPreset</span> field and replace it with one of these names. Click a swatch to copy it.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { value: "indigo",  label: "Indigo",  hsl: "250 84% 60%" },
+                  { value: "emerald", label: "Emerald", hsl: "160 72% 40%" },
+                  { value: "rose",    label: "Rose",    hsl: "340 75% 55%" },
+                  { value: "amber",   label: "Amber",   hsl: "38 95% 50%"  },
+                  { value: "ocean",   label: "Ocean",   hsl: "196 80% 42%" },
+                  { value: "slate",   label: "Slate",   hsl: "215 30% 38%" },
+                ].map((p) => (
+                  <button
+                    key={p.value}
+                    title={`Copy: colorPreset: "${p.value}"`}
+                    onClick={() => navigator.clipboard?.writeText(p.value).catch(() => {})}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-border hover:border-primary/40 bg-background hover:bg-secondary transition-all text-xs font-medium text-foreground group"
+                  >
+                    <span
+                      className="w-3 h-3 rounded-full ring-1 ring-border group-hover:scale-125 transition-transform"
+                      style={{ background: `hsl(${p.hsl})` }}
+                    />
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+              <p className="text-[11px] text-muted-foreground mt-2">Click any swatch to copy the preset name to your clipboard.</p>
+            </div>
+          </div>
+
           <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
             <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-1">⚠️ Important</p>
             <p className="text-xs text-amber-700/80 dark:text-amber-400/80">

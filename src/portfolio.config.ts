@@ -38,6 +38,11 @@ const rawConfig = rawConfigYaml as unknown as {
   publications:   { title: string; authors: string; venue: string; year: string; url: string; type: string; tags: string[] }[];
   testimonials:         { name: string; title: string; company: string; relationship: string; quote: string; photoUrl: string }[];
   contactFormEndpoint?: string;
+  blog?: {
+    enabled?:     boolean;
+    title?:       string;
+    description?: string;
+  };
 };
 
 export type SectionId =
@@ -115,6 +120,11 @@ export const config = {
   publications:   (rawConfig.publications   ?? []) as Publication[],
   testimonials:   (rawConfig.testimonials   ?? []) as Testimonial[],
   contactFormEndpoint: rawConfig.contactFormEndpoint ?? "",
+  blog: {
+    enabled:     rawConfig.blog?.enabled     ?? false,
+    title:       rawConfig.blog?.title       ?? "Blog",
+    description: rawConfig.blog?.description ?? "",
+  },
   customColors:   rawConfig.customColors,
   resumeTheme: {
     twoColumn: (rawConfig.resumeTheme?.twoColumn ?? rawConfig.colorPreset) as ColorPreset,

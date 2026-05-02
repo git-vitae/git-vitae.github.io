@@ -5,6 +5,8 @@ import { PortfolioPage } from "@/pages/portfolio";
 import { ResumePage } from "@/pages/resume";
 import { LandingPage } from "@/pages/landing";
 import { SetupPage } from "@/pages/setup";
+import { BlogListPage } from "@/pages/blog";
+import { BlogPostPage } from "@/pages/blog/post";
 import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScrollProvider } from "@/components/SmoothScroll";
 import { OpenToWorkBanner } from "@/components/OpenToWorkBanner";
@@ -81,6 +83,14 @@ function App() {
   return (
     <Router hook={useHashLocation}>
       <Switch>
+
+        {/* Blog routes — always accessible */}
+        <Route path="/blog/:slug">
+          {(params) => <BlogPostPage slug={(params as { slug: string }).slug ?? ''} />}
+        </Route>
+        <Route path="/blog">
+          <BlogListPage />
+        </Route>
 
         {/* Resume page — always accessible */}
         <Route path="/resume">

@@ -270,3 +270,21 @@ testimonials:
       exceptional. They communicated proactively, flagged risks early, and were
       genuinely invested in our success.
     photoUrl: ""
+
+# ── Blog ─────────────────────────────────────────────────────────────────────
+# Drop any .md file into the blog/ folder — it becomes a post automatically.
+# Each post starts with a small block called "frontmatter" (between --- lines):
+#
+#   ---
+#   title: "My Post Title"
+#   date: "2025-01-15"
+#   tags: [life, tech]
+#   excerpt: "One sentence that appears on the listing page."
+#   ---
+#
+# Then write your post in plain Markdown below the closing ---.
+# See the sample posts in blog/ to get started.
+blog:
+  enabled: true
+  title: "Blog"
+  description: "Thoughts, stories and ideas — everything in one place."
