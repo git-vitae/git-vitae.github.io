@@ -29,7 +29,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       const anchor = target.closest("a[href^='#']") as HTMLAnchorElement | null;
       if (!anchor) return;
       const id = anchor.getAttribute("href");
-      if (!id) return;
+      if (!id || id.includes("/")) return;
       const el = document.querySelector(id);
       if (!el) return;
       e.preventDefault();
