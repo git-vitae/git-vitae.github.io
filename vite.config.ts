@@ -27,26 +27,51 @@ const portfolioConfig = JSON.parse(
   readFileSync(new URL("./portfolio.config.json", import.meta.url), "utf8")
 ) as {
   name?: string; title?: string; about?: string; email?: string;
-  location?: string; avatarUrl?: string; social?: Record<string, string>;
+  location?: string; avatarUrl?: string; openToWork?: boolean;
+  social?: Record<string, string>;
 };
 
-function schemaOrgPlugin() {
+function metaAndSchemaPlugin() {
   return {
-    name: "schema-org-person",
+    name: "gitvita-meta-schema",
     transformIndexHtml(html: string) {
-      const social = portfolioConfig.social ?? {};
-      const sameAs = Object.values(social).filter(Boolean);
+      const name     = portfolioConfig.name    ?? "Portfolio";
+      const jobTitle = portfolioConfig.title   ?? "";
+      const summary  = portfolioConfig.about   ?? "";
+      const email    = portfolioConfig.email   ?? "";
+      const social   = portfolioConfig.social  ?? {};
+      const avatar   = portfolioConfig.avatarUrl ?? "";
+
+      const pageTitle = `${name} — ${jobTitle}`;
+      const sameAs    = Object.values(social).filter(Boolean);
+      const ogImage   = avatar || "/opengraph.jpg";
+
       const schema = {
         "@context": "https://schema.org",
         "@type": "Person",
-        name: portfolioConfig.name ?? "",
-        jobTitle: portfolioConfig.title ?? "",
-        description: portfolioConfig.about ?? "",
-        email: portfolioConfig.email ?? "",
+        name,
+        jobTitle,
+        description: summary,
+        email,
         ...(sameAs.length ? { sameAs } : {}),
       };
-      const tag = `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
-      return html.replace("</head>", `  ${tag}\n  </head>`);
+
+      const inject = [
+        `<title>${pageTitle}</title>`,
+        `<meta name="description" content="${summary.slice(0, 160).replace(/"/g, "&quot;")}">`,
+        `<meta property="og:type"        content="profile">`,
+        `<meta property="og:title"       content="${pageTitle}">`,
+        `<meta property="og:description" content="${summary.slice(0, 200).replace(/"/g, "&quot;")}">`,
+        `<meta property="og:image"       content="${ogImage}">`,
+        `<meta name="twitter:card"        content="summary_large_image">`,
+        `<meta name="twitter:title"       content="${pageTitle}">`,
+        `<meta name="twitter:description" content="${summary.slice(0, 200).replace(/"/g, "&quot;")}">`,
+        `<script type="application/ld+json">${JSON.stringify(schema)}</script>`,
+      ].map(t => `  ${t}`).join("\n");
+
+      return html
+        .replace(/<title>.*?<\/title>/, "")
+        .replace("</head>", `${inject}\n  </head>`);
     },
   };
 }
@@ -56,7 +81,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    schemaOrgPlugin(),
+    metaAndSchemaPlugin(),
     ...(process.env.NODE_ENV !== "production" && rawPort
       ? [
           (await import("@replit/vite-plugin-runtime-error-modal")).default(),

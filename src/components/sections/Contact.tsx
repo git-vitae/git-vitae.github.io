@@ -159,7 +159,16 @@ export function Contact() {
             className="pt-8 border-t border-border/60 w-full text-center"
           >
             <p className="text-xs text-muted-foreground font-mono tracking-wide">
-              Built with React + Vite &mdash; fork and make it yours.
+              Built with{" "}
+              <a
+                href="https://github.com/gitvita"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline underline-offset-2"
+              >
+                GitVita
+              </a>{" "}
+              &mdash; fork and make it yours.
             </p>
           </motion.div>
         </div>
