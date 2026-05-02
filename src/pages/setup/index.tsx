@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, ArrowLeft, ExternalLink, Check,
-  Copy, CheckCircle, ChevronRight, Sparkles, ChevronDown,
+  Copy, CheckCircle, ChevronRight, Sparkles, ChevronDown, RefreshCw,
 } from "lucide-react";
+import bundledChangelog from "../../../CHANGELOG.md?raw";
 
 const GITHUB_TEMPLATE_URL = "https://github.com/git-vita/git-vita.github.io/generate";
 const GITHUB_SIGNUP_URL   = "https://github.com/signup";
@@ -742,24 +743,24 @@ function StepPages({ onNext }: { onNext: () => void }) {
 
 // ─── What's new panel (used in StepDone) ──────────────────────────────────────
 
-const CHANGELOG_URL =
+const CHANGELOG_REMOTE_URL =
   "https://raw.githubusercontent.com/git-vita/git-vita.github.io/main/CHANGELOG.md";
-const CACHE_KEY = "gitvita-changelog-v1";
+const CACHE_KEY = "gitvita-changelog-v2";
 
 function WhatsNew() {
-  const [open, setOpen]       = useState(false);
-  const [text, setText]       = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [open, setOpen]           = useState(false);
+  const [text, setText]           = useState<string>(bundledChangelog);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     const cached = sessionStorage.getItem(CACHE_KEY);
     if (cached) { setText(cached); return; }
-    setLoading(true);
-    fetch(CHANGELOG_URL)
+    setRefreshing(true);
+    fetch(CHANGELOG_REMOTE_URL)
       .then((r) => (r.ok ? r.text() : Promise.reject()))
       .then((t) => { sessionStorage.setItem(CACHE_KEY, t); setText(t); })
-      .catch(() => setText(null))
-      .finally(() => setLoading(false));
+      .catch(() => {})
+      .finally(() => setRefreshing(false));
   }, []);
 
   // Parse just the latest version block (first ## [...] section)
@@ -793,7 +794,8 @@ function WhatsNew() {
       >
         <span className="flex items-center gap-2 text-sm font-medium text-foreground">
           <Sparkles size={14} className="text-primary" />
-          {loading ? "Loading…" : versionLine ? `What's new — ${versionLine}` : "What's new in GitVita"}
+          {versionLine ? `What's new — ${versionLine}` : "What's new in GitVita"}
+          {refreshing && <RefreshCw size={11} className="text-muted-foreground animate-spin" />}
         </span>
         <ChevronDown
           size={14}
@@ -878,6 +880,11 @@ function StepDone() {
       emoji: "📊",
       title: "See who's visiting (free)",
       desc: "GitHub already tracks your visitors — go to your repository → Insights → Traffic. For more detail, add a free GoatCounter code to your settings file.",
+    },
+    {
+      emoji: "⬆️",
+      title: "Get future updates",
+      desc: 'Open your fork on GitHub and click "Sync fork" — that\'s it. Because you only edit portfolio.config.yaml, updates never cause conflicts.',
     },
   ];
 
@@ -967,6 +974,70 @@ function StepDone() {
             <p className="text-[11px] text-muted-foreground leading-relaxed">{step.desc}</p>
           </div>
         ))}
+      </div>
+
+      {/* Staying up to date */}
+      <div className="w-full max-w-xl mx-auto mb-10 rounded-2xl border border-border overflow-hidden text-left">
+        <div className="px-4 py-3 bg-secondary border-b border-border">
+          <p className="text-sm font-medium text-foreground">Staying up to date</p>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            GitVita releases new features regularly. Here's how to pull them into your portfolio.
+          </p>
+        </div>
+        <div className="divide-y divide-border">
+          {/* Path 1 — GitHub Sync fork */}
+          <div className="p-4 flex items-start gap-3">
+            <span className="mt-0.5 w-6 h-6 rounded-full bg-[#2ea44f]/10 border border-[#2ea44f]/20 text-[#2ea44f] font-bold text-[10px] flex items-center justify-center shrink-0">1</span>
+            <div>
+              <p className="text-xs font-semibold text-foreground mb-0.5">
+                Recommended — GitHub "Sync fork" button
+              </p>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                Go to your repository on GitHub. If the template has new commits you'll see a <strong className="text-foreground">"Sync fork"</strong> banner near the top.
+                Click it, then click <strong className="text-foreground">"Update branch"</strong>. GitHub re-deploys automatically.
+                Because you only ever edit <code className="text-primary text-[10px] bg-secondary px-1 rounded font-mono">portfolio.config.yaml</code>, there are no conflicts.
+              </p>
+            </div>
+          </div>
+          {/* Path 2 — CLI */}
+          <div className="p-4 flex items-start gap-3">
+            <span className="mt-0.5 w-6 h-6 rounded-full bg-primary/10 border border-primary/20 text-primary font-bold text-[10px] flex items-center justify-center shrink-0">2</span>
+            <div>
+              <p className="text-xs font-semibold text-foreground mb-0.5">
+                Terminal — one command
+              </p>
+              <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">
+                If you prefer working locally, clone your repo, then run:
+              </p>
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-secondary border border-border font-mono text-[11px] text-foreground">
+                pnpm upgrade-template
+                <InlineCopy text="pnpm upgrade-template" />
+              </div>
+              <p className="text-[10px] text-muted-foreground mt-1.5 leading-relaxed">
+                The script adds the GitVita upstream remote, fetches the latest code, and merges it — skipping your config file.
+              </p>
+            </div>
+          </div>
+          {/* Watch releases */}
+          <div className="p-4 flex items-start gap-3">
+            <span className="mt-0.5 w-6 h-6 rounded-full bg-secondary border border-border text-muted-foreground font-bold text-[10px] flex items-center justify-center shrink-0">★</span>
+            <div>
+              <p className="text-xs font-semibold text-foreground mb-0.5">Get notified automatically</p>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                On the{" "}
+                <a
+                  href="https://github.com/git-vita/git-vita.github.io"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline underline-offset-2"
+                >
+                  GitVita repository
+                </a>
+                , click <strong className="text-foreground">Watch → Custom → Releases</strong>. GitHub emails you whenever a new version ships.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3">

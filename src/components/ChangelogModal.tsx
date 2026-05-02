@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sparkles, ExternalLink, Loader2 } from "lucide-react";
+import { X, Sparkles, ExternalLink, RefreshCw } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import bundledChangelog from "../../CHANGELOG.md?raw";
 
 const CHANGELOG_URL =
   "https://raw.githubusercontent.com/git-vita/git-vita.github.io/main/CHANGELOG.md";
-const CACHE_KEY = "gitvita-changelog-v1";
+const CACHE_KEY = "gitvita-changelog-v2";
 
 interface Props {
   open: boolean;
@@ -13,32 +14,31 @@ interface Props {
 }
 
 function useChangelog(open: boolean) {
-  const [md, setMd]         = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError]   = useState(false);
+  const [md, setMd]             = useState<string>(bundledChangelog);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (!open) return;
+
     const cached = sessionStorage.getItem(CACHE_KEY);
     if (cached) { setMd(cached); return; }
 
-    setLoading(true);
-    setError(false);
+    setRefreshing(true);
     fetch(CHANGELOG_URL)
       .then((r) => (r.ok ? r.text() : Promise.reject()))
       .then((text) => {
         sessionStorage.setItem(CACHE_KEY, text);
         setMd(text);
       })
-      .catch(() => setError(true))
-      .finally(() => setLoading(false));
+      .catch(() => {})
+      .finally(() => setRefreshing(false));
   }, [open]);
 
-  return { md, loading, error };
+  return { md, refreshing };
 }
 
 export function ChangelogModal({ open, onClose }: Props) {
-  const { md, loading, error } = useChangelog(open);
+  const { md, refreshing } = useChangelog(open);
 
   useEffect(() => {
     if (!open) return;
@@ -76,6 +76,9 @@ export function ChangelogModal({ open, onClose }: Props) {
               <div className="flex items-center gap-2.5">
                 <Sparkles size={16} className="text-primary" />
                 <span className="text-sm font-semibold text-foreground">What's new in GitVita</span>
+                {refreshing && (
+                  <RefreshCw size={11} className="text-muted-foreground animate-spin" />
+                )}
               </div>
               <div className="flex items-center gap-3">
                 <a
@@ -99,42 +102,19 @@ export function ChangelogModal({ open, onClose }: Props) {
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto px-6 py-5">
-              {loading && (
-                <div className="flex items-center justify-center h-40 gap-2 text-muted-foreground text-sm">
-                  <Loader2 size={16} className="animate-spin" />
-                  Loading changelog…
-                </div>
-              )}
-
-              {error && (
-                <div className="flex flex-col items-center justify-center h-40 gap-3 text-muted-foreground text-sm">
-                  <p>Couldn't load the changelog — check your connection.</p>
-                  <a
-                    href="https://github.com/git-vita/git-vita.github.io/blob/main/CHANGELOG.md"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline underline-offset-2 flex items-center gap-1"
-                  >
-                    View on GitHub <ExternalLink size={12} />
-                  </a>
-                </div>
-              )}
-
-              {md && (
-                <div className="prose prose-sm dark:prose-invert max-w-none
-                  prose-headings:font-serif prose-headings:font-medium
-                  prose-h1:text-xl prose-h1:mb-4
-                  prose-h2:text-base prose-h2:mt-6 prose-h2:mb-3 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border
-                  prose-h3:text-sm prose-h3:font-semibold prose-h3:mt-4 prose-h3:mb-2
-                  prose-p:text-sm prose-p:leading-relaxed prose-p:text-muted-foreground
-                  prose-li:text-sm prose-li:text-muted-foreground prose-li:leading-relaxed
-                  prose-strong:text-foreground prose-strong:font-semibold
-                  prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:rounded prose-code:text-xs prose-code:font-mono
-                  prose-pre:bg-secondary prose-pre:border prose-pre:border-border prose-pre:rounded-xl prose-pre:text-xs
-                  prose-hr:border-border prose-a:text-primary">
-                  <ReactMarkdown>{md}</ReactMarkdown>
-                </div>
-              )}
+              <div className="prose prose-sm dark:prose-invert max-w-none
+                prose-headings:font-serif prose-headings:font-medium
+                prose-h1:text-xl prose-h1:mb-4
+                prose-h2:text-base prose-h2:mt-6 prose-h2:mb-3 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border
+                prose-h3:text-sm prose-h3:font-semibold prose-h3:mt-4 prose-h3:mb-2
+                prose-p:text-sm prose-p:leading-relaxed prose-p:text-muted-foreground
+                prose-li:text-sm prose-li:text-muted-foreground prose-li:leading-relaxed
+                prose-strong:text-foreground prose-strong:font-semibold
+                prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:rounded prose-code:text-xs prose-code:font-mono
+                prose-pre:bg-secondary prose-pre:border prose-pre:border-border prose-pre:rounded-xl prose-pre:text-xs
+                prose-hr:border-border prose-a:text-primary">
+                <ReactMarkdown>{md}</ReactMarkdown>
+              </div>
             </div>
           </motion.div>
         </>
