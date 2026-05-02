@@ -1,94 +1,161 @@
-# Portfolio — Your Personal Portfolio in Minutes
+# GitVita
 
-A beautiful, customizable developer portfolio. No coding required after you fork it.
+A free, open-source portfolio template for developers and job seekers. Edit one YAML file, push to GitHub, get a live portfolio — no account needed, no hosting fees, no framework knowledge required.
+
+**Live demo:** [gitvita.github.io](https://gitvita.github.io)
 
 ---
 
-## 3-step setup
-
-### Step 1 — Fork this repo
-
-Click **Fork** in the top-right corner of this page. GitHub creates your own copy instantly.
-
-### Step 2 — Edit your details
-
-Open the file **`portfolio.config.json`** in your forked repo (click it in the file list, then click the pencil ✏️ icon to edit).
-
-Fill in your own details — name, title, skills, experience, projects, etc. Save the file by clicking **Commit changes**.
-
-> No coding knowledge needed — it's just a text file in a simple format.
-
-**Color presets** — Change `"colorPreset"` to one of these values to pick your accent color:
-
-| Value | Look |
-|---|---|
-| `"indigo"` | Electric violet (default) |
-| `"emerald"` | Forest green |
-| `"rose"` | Rose / crimson |
-| `"amber"` | Warm gold |
-| `"ocean"` | Deep teal |
-| `"slate"` | Minimal grey |
-
-**Profile photo** — upload a photo anywhere (GitHub, Imgur, etc.) and paste the URL into `"avatarUrl"`. Leave it empty to show your initials instead.
-
-**Resume PDF** — Upload your resume PDF to the `public/` folder in the repo, name it `resume.pdf`, and set `"resumeUrl": "/resume.pdf"`.
-
-### Step 3 — Enable GitHub Pages
-
-1. Go to your forked repo → **Settings** → **Pages**
-2. Under *Source*, select **GitHub Actions**
-3. Click **Save**
-
-That's it. GitHub will automatically build and publish your portfolio. A link to your live site appears on the Settings → Pages screen, usually at:
+## How it works
 
 ```
-https://YOUR-USERNAME.github.io/portfolio/
+github.com/gitvita/gitvita
+         ↓  Use this template
+github.com/YOU/my-portfolio
+         ↓  Edit portfolio.config.yaml
+         ↓  git push
+YOU.github.io/my-portfolio   ← live in ~2 minutes
 ```
 
-Every time you edit `portfolio.config.json` and save, your site rebuilds automatically within about 60 seconds.
+---
+
+## Quick start (3 steps)
+
+### 1. Create your repo from this template
+
+Click the green **"Use this template"** button at the top of this page → **"Create a new repository"**.
+
+> **Naming tip:** Name it `yourusername.github.io` and your portfolio lives at the root (`yourusername.github.io`). Name it anything else (e.g. `portfolio`) and it lives at `yourusername.github.io/portfolio`.
+
+### 2. Enable GitHub Pages
+
+In your new repo: **Settings → Pages → Source → GitHub Actions**. Save.
+
+### 3. Edit `portfolio.config.yaml` and push
+
+This is the **only file you need to touch.** Every field has a comment. Edit it on GitHub directly (click the pencil icon), commit, and your site builds automatically.
+
+```yaml
+name: "Your Name"
+title: "Software Engineer"
+email: "you@example.com"
+openToWork: true        # shows the "Open to Opportunities" banner
+
+about: |
+  Write 2-3 sentences about yourself here.
+  The pipe symbol lets you write across multiple lines.
+
+social:
+  github: "https://github.com/yourusername"
+  linkedin: "https://linkedin.com/in/yourusername"
+```
+
+Your live URL appears in **Settings → Pages** once the first deploy finishes (~2 min).
 
 ---
 
-## Optional: Custom domain
+## What you get
 
-1. Go to **Settings → Pages → Custom domain** and enter your domain (e.g. `alexrivera.dev`)
-2. Add a `CNAME` DNS record at your domain registrar pointing to `YOUR-USERNAME.github.io`
-3. In `vite.config.ts`, change `BASE_PATH` in the workflow or set base to `"/"` if you are using a root domain
-
----
-
-## What's included
-
-- Single JSON config file — no code to touch
-- 6 built-in color themes + custom HSL option
-- Dark / light mode (respects your OS preference)
-- Smooth scrolling + parallax hero
-- Animated section reveals
-- Active nav indicator — highlights the current section as you scroll
-- Custom cursor
-- Resume download + Web Share
-- Print / PDF mode — Ctrl+P produces a clean document
-- Fully responsive (mobile, tablet, desktop)
-- Zero backend — static files only
+- Single YAML config — no code to touch
+- All sections: About, Skills, Experience, Projects, Education, Certifications, Testimonials, Contact
+- Dark / light / system theme + 6 color presets (`indigo`, `emerald`, `rose`, `amber`, `sky`, `violet`)
+- Resume download in PDF (print), plain text, and JSON Resume formats
+- Schema.org structured data markup (good for SEO and AI tools)
+- Share modal: QR code, social links, email signature snippet, embeddable card
+- "Open to work" banner (flip `openToWork: true`)
+- Smooth scroll, animated section reveals, custom cursor
+- Fully responsive — mobile, tablet, desktop
+- Zero backend — static files, free forever on GitHub Pages
 
 ---
 
-## For developers
+## Config reference
 
-If you want to run this locally or make deeper customizations:
+| Field | Required | Description |
+|-------|----------|-------------|
+| `name` | Yes | Your full name |
+| `title` | Yes | Job title or headline |
+| `email` | Yes | Contact email |
+| `tagline` | No | One-line summary shown on the hero |
+| `location` | No | City, Country |
+| `avatarUrl` | No | URL to your photo — empty shows initials |
+| `openToWork` | No | `true` shows the "Open to Opportunities" banner |
+| `theme.defaultTheme` | No | `light`, `dark`, or `system` |
+| `theme.colorPreset` | No | `indigo` `emerald` `rose` `amber` `sky` `violet` |
+| `social.*` | No | Any key renders as a link icon (github, linkedin, twitter, …) |
+| `about` | Yes | 2–5 sentence bio (use `\|` for multi-line) |
+| `skills` | No | List of categories, each with a list of skill names |
+| `experience` | No | Work history entries |
+| `projects` | No | Portfolio projects (`featured: true` pins to top) |
+| `education` | No | Degrees or courses |
+| `certifications` | No | Certs with optional credential URL |
+| `testimonials` | No | Quotes from colleagues or managers |
+
+See `portfolio.config.yaml` for a fully-commented example of every field and every option.
+
+---
+
+## Adding a profile photo
+
+Set `avatarUrl` to any public image URL:
+
+```yaml
+avatarUrl: "https://github.com/yourusername.png"
+```
+
+GitHub profile pictures work perfectly — just swap in your username.
+
+---
+
+## Custom domain
+
+1. Add a `CNAME` file to the repo root containing your domain (e.g. `jane.dev`)
+2. Add a CNAME DNS record pointing to `yourusername.github.io`
+3. In **Settings → Pages**, enter your custom domain
+
+---
+
+## Validate before you push (optional)
+
+If you have Node.js installed locally:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/portfolio.git
-cd portfolio
+git clone https://github.com/you/your-portfolio
+cd your-portfolio
 pnpm install
-cd artifacts/portfolio
-pnpm dev
+pnpm check-config   # catches typos and missing fields
+pnpm dev            # preview at http://localhost:3000
 ```
-
-The React source is in `artifacts/portfolio/src/`. All styling uses Tailwind CSS v4. Animations use Framer Motion.
 
 ---
 
-## License
+## Getting updates
 
-MIT — free to use, modify, and distribute.
+When GitVita releases new features, merge them without losing your config:
+
+```bash
+git remote add gitvita https://github.com/gitvita/gitvita
+git fetch gitvita
+git merge gitvita/main --allow-unrelated-histories
+# conflicts will only be in files you've changed
+```
+
+---
+
+## FAQ
+
+**Do I need to know React or JavaScript?** No. You only edit `portfolio.config.yaml`.
+
+**Is this free?** Yes. GitHub Pages is free for public repos. GitVita is MIT licensed.
+
+**Can I make my repo private?** GitHub Pages requires a paid plan for private repos.
+
+---
+
+## Built with
+
+React · Vite · TypeScript · Tailwind CSS · Framer Motion
+
+---
+
+*Built with [GitVita](https://github.com/gitvita/gitvita) — MIT License*

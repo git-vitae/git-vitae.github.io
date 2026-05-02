@@ -9,13 +9,6 @@ import jsYaml from "js-yaml";
 const rawPort = process.env.PORT;
 const rawBasePath = process.env.BASE_PATH;
 
-const isDev = process.env.NODE_ENV !== "production" && !!rawPort;
-
-if (isDev) {
-  if (!rawPort) throw new Error("PORT environment variable is required but was not provided.");
-  if (!rawBasePath) throw new Error("BASE_PATH environment variable is required but was not provided.");
-}
-
 const port = rawPort ? Number(rawPort) : 3000;
 if (rawPort && (Number.isNaN(port) || port <= 0)) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
@@ -76,6 +69,8 @@ function metaAndSchemaPlugin() {
   };
 }
 
+const isReplit = !!process.env.REPL_ID;
+
 export default defineConfig({
   base: basePath,
   plugins: [
@@ -83,23 +78,18 @@ export default defineConfig({
     tailwindcss(),
     yaml(),
     metaAndSchemaPlugin(),
-    ...(process.env.NODE_ENV !== "production" && rawPort
+    ...(isReplit
       ? [
           (await import("@replit/vite-plugin-runtime-error-modal")).default(),
-          ...(process.env.REPL_ID !== undefined
-            ? [
-                await import("@replit/vite-plugin-cartographer").then((m) =>
-                  m.cartographer({ root: path.resolve(import.meta.dirname, "..") }),
-                ),
-              ]
-            : []),
+          (await import("@replit/vite-plugin-cartographer")).cartographer({
+            root: path.resolve(import.meta.dirname, ".."),
+          }),
         ]
       : []),
   ],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
-      "@assets": path.resolve(import.meta.dirname, "..", "..", "attached_assets"),
     },
     dedupe: ["react", "react-dom"],
   },
