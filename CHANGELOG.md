@@ -4,6 +4,17 @@ All notable changes are listed here. Each version brings new features you can op
 
 ---
 
+## [1.5.0] — 2026-05-02
+
+### Performance
+- **~54% smaller initial JS** — Code split into separate vendor chunks (React, Framer Motion, Lenis, Lucide, Wouter). Non-essential pages (Resume, Setup, Blog, Landing) now load on demand instead of upfront.
+- **Google Fonts eliminated** — Fonts (Inter, Cormorant Garamond, JetBrains Mono) are now self-hosted as part of the build. No more render-blocking cross-origin network requests, which was the primary cause of slow First Contentful Paint.
+
+### Accessibility
+- **Respects reduced-motion OS setting** — All Framer Motion animations are automatically disabled for users who have "Reduce motion" turned on in their OS settings. Lenis smooth scrolling is also skipped for these users, restoring native scroll speed.
+
+---
+
 ## [1.4.0] — 2026-05-02
 
 ### New

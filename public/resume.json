@@ -3,9 +3,10 @@
   "basics": {
     "name": "Alex Rivera",
     "label": "Full-Stack Engineer",
-    "image": "",
+    "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Alex&mouth[]=wideSmile&radius=12",
     "email": "alex@example.com",
-    "summary": "I'm a full-stack engineer with 5+ years of experience building products that people love. I specialize in React, Node.js, and distributed systems. When I'm not coding, I'm hiking trails or experimenting with new coffee brewing methods.",
+    "phone": "",
+    "summary": "I'm a full-stack engineer with 5+ years of experience building products\nthat people love. I specialize in React, Node.js, and distributed systems.\nWhen I'm not coding, I'm hiking trails or experimenting with new coffee\nbrewing methods.\n",
     "location": {
       "city": "San Francisco",
       "region": "CA"
@@ -29,7 +30,7 @@
       "position": "Senior Full-Stack Engineer",
       "startDate": "2022",
       "endDate": "",
-      "summary": "Led migration of monolithic Rails app to microservices. Reduced p99 latency by 60%. Mentored a team of 4 engineers.",
+      "summary": "Led migration of monolithic Rails app to microservices.\nReduced p99 latency by 60%. Mentored a team of 4 engineers.\n",
       "highlights": [
         "Microservices migration",
         "60% latency reduction",
@@ -41,7 +42,7 @@
       "position": "Software Engineer",
       "startDate": "2020",
       "endDate": "2022",
-      "summary": "Built real-time collaboration features for a SaaS platform serving 50k users. Owned the entire frontend from scratch.",
+      "summary": "Built real-time collaboration features for a SaaS platform serving\n50k users. Owned the entire frontend from scratch.\n",
       "highlights": [
         "Real-time collaboration",
         "50k users",
@@ -53,7 +54,7 @@
       "position": "Web Developer",
       "startDate": "2018",
       "endDate": "2020",
-      "summary": "Delivered 20+ web projects for small businesses and agencies across e-commerce, marketing, and internal tools.",
+      "summary": "Delivered 20+ web projects for small businesses and agencies across\ne-commerce, marketing, and internal tools.\n",
       "highlights": [
         "20+ projects",
         "E-commerce",

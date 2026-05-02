@@ -7,7 +7,11 @@ San Francisco, CA · alex@example.com · [Github](https://github.com/yourusernam
 
 ## Summary
 
-I'm a full-stack engineer with 5+ years of experience building products that people love. I specialize in React, Node.js, and distributed systems. When I'm not coding, I'm hiking trails or experimenting with new coffee brewing methods.
+I'm a full-stack engineer with 5+ years of experience building products
+that people love. I specialize in React, Node.js, and distributed systems.
+When I'm not coding, I'm hiking trails or experimenting with new coffee
+brewing methods.
+
 
 ## Skills
 
@@ -21,7 +25,9 @@ I'm a full-stack engineer with 5+ years of experience building products that peo
 ### Senior Full-Stack Engineer — Acme Corp
 _2022 – Present_
 
-Led migration of monolithic Rails app to microservices. Reduced p99 latency by 60%. Mentored a team of 4 engineers.
+Led migration of monolithic Rails app to microservices.
+Reduced p99 latency by 60%. Mentored a team of 4 engineers.
+
 
 - Microservices migration
 - 60% latency reduction
@@ -30,7 +36,9 @@ Led migration of monolithic Rails app to microservices. Reduced p99 latency by 6
 ### Software Engineer — Startup XYZ
 _2020 – 2022_
 
-Built real-time collaboration features for a SaaS platform serving 50k users. Owned the entire frontend from scratch.
+Built real-time collaboration features for a SaaS platform serving
+50k users. Owned the entire frontend from scratch.
+
 
 - Real-time collaboration
 - 50k users
@@ -39,7 +47,9 @@ Built real-time collaboration features for a SaaS platform serving 50k users. Ow
 ### Web Developer — Freelance
 _2018 – 2020_
 
-Delivered 20+ web projects for small businesses and agencies across e-commerce, marketing, and internal tools.
+Delivered 20+ web projects for small businesses and agencies across
+e-commerce, marketing, and internal tools.
+
 
 - 20+ projects
 - E-commerce

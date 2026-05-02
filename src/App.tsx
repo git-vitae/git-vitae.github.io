@@ -1,18 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Router, Route, Switch } from "wouter";
 import { useHashLocation } from "wouter/use-hash-location";
+import { MotionConfig } from "framer-motion";
 import { PortfolioPage } from "@/pages/portfolio";
-import { ResumePage } from "@/pages/resume";
-import { LandingPage } from "@/pages/landing";
-import { SetupPage } from "@/pages/setup";
-import { BlogListPage } from "@/pages/blog";
-import { BlogPostPage } from "@/pages/blog/post";
 import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScrollProvider } from "@/components/SmoothScroll";
 import { OpenToWorkBanner } from "@/components/OpenToWorkBanner";
 import { DemoBanner } from "@/components/DemoBanner";
 import { applyThemePalette, hexToPresetPalette } from "@/lib/themes";
 import { config } from "@/portfolio.config";
+
+const ResumePage   = lazy(() => import("@/pages/resume").then(m => ({ default: m.ResumePage })));
+const LandingPage  = lazy(() => import("@/pages/landing").then(m => ({ default: m.LandingPage })));
+const SetupPage    = lazy(() => import("@/pages/setup").then(m => ({ default: m.SetupPage })));
+const BlogListPage = lazy(() => import("@/pages/blog").then(m => ({ default: m.BlogListPage })));
+const BlogPostPage = lazy(() => import("@/pages/blog/post").then(m => ({ default: m.BlogPostPage })));
 
 const IS_DEMO = import.meta.env.VITE_DEMO_MODE === "true";
 
@@ -83,52 +85,56 @@ function App() {
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
   return (
-    <Router hook={useHashLocation}>
-      <Switch>
+    <MotionConfig reducedMotion="user">
+      <Router hook={useHashLocation}>
+        <Suspense fallback={null}>
+          <Switch>
 
-        {/* Blog routes — always accessible */}
-        <Route path="/blog/:slug">
-          {(params) => <BlogPostPage slug={(params as { slug: string }).slug ?? ''} />}
-        </Route>
-        <Route path="/blog">
-          <BlogListPage />
-        </Route>
+            {/* Blog routes — always accessible */}
+            <Route path="/blog/:slug">
+              {(params) => <BlogPostPage slug={(params as { slug: string }).slug ?? ''} />}
+            </Route>
+            <Route path="/blog">
+              <BlogListPage />
+            </Route>
 
-        {/* Resume page — always accessible */}
-        <Route path="/resume">
-          <CustomCursor />
-          <ResumePage theme={theme} onToggleTheme={toggleTheme} />
-        </Route>
+            {/* Resume page — always accessible */}
+            <Route path="/resume">
+              <CustomCursor />
+              <ResumePage theme={theme} onToggleTheme={toggleTheme} />
+            </Route>
 
-        {/* Setup wizard */}
-        <Route path="/setup">
-          <SetupPage />
-        </Route>
+            {/* Setup wizard */}
+            <Route path="/setup">
+              <SetupPage />
+            </Route>
 
-        {/* Demo portfolio — always accessible at #/demo */}
-        <Route path="/demo">
-          <PortfolioWithChrome
-            theme={theme}
-            toggleTheme={toggleTheme}
-            showDemoBanner={IS_DEMO}
-          />
-        </Route>
+            {/* Demo portfolio — always accessible at #/demo */}
+            <Route path="/demo">
+              <PortfolioWithChrome
+                theme={theme}
+                toggleTheme={toggleTheme}
+                showDemoBanner={IS_DEMO}
+              />
+            </Route>
 
-        {/* Root — landing page or portfolio depending on siteMode */}
-        <Route>
-          {config.siteMode === "landing" ? (
-            <LandingPage theme={theme} onToggleTheme={toggleTheme} />
-          ) : (
-            <PortfolioWithChrome
-              theme={theme}
-              toggleTheme={toggleTheme}
-              showDemoBanner={IS_DEMO}
-            />
-          )}
-        </Route>
+            {/* Root — landing page or portfolio depending on siteMode */}
+            <Route>
+              {config.siteMode === "landing" ? (
+                <LandingPage theme={theme} onToggleTheme={toggleTheme} />
+              ) : (
+                <PortfolioWithChrome
+                  theme={theme}
+                  toggleTheme={toggleTheme}
+                  showDemoBanner={IS_DEMO}
+                />
+              )}
+            </Route>
 
-      </Switch>
-    </Router>
+          </Switch>
+        </Suspense>
+      </Router>
+    </MotionConfig>
   );
 }
 

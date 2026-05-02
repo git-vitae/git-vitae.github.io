@@ -5,6 +5,8 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const lenis = new Lenis({
       lerp:            0.08,   // 1.x API: controls smoothing (lower = smoother)
       orientation:     "vertical",
