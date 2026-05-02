@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Moon, Sun, Download, Menu, X, Share2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Moon, Sun, Download, Menu, X, Share2, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { config } from "@/portfolio.config";
 import { ShareModal } from "@/components/ShareModal";
@@ -24,15 +24,14 @@ const SECTION_LABELS: Record<string, string> = {
   contact:        "Contact",
 };
 
-// Mirror the user's section order; only include visible sections
-const navLinks = config.sections
+const allNavLinks = config.sections
   .filter((s) => s.show)
-  .map((s) => ({
-    label: SECTION_LABELS[s.id] ?? s.id,
-    href:  `#${s.id}`,
-  }));
+  .map((s) => ({ label: SECTION_LABELS[s.id] ?? s.id, href: `#${s.id}`, id: s.id }));
 
-const sectionIds = navLinks.map((l) => l.href.slice(1));
+const MAX_PRIMARY = 5;
+const primaryLinks = allNavLinks.slice(0, MAX_PRIMARY);
+const moreLinks    = allNavLinks.slice(MAX_PRIMARY);
+const sectionIds   = allNavLinks.map((l) => l.id);
 
 const blogEnabled = config.blog?.enabled ?? false;
 
@@ -41,64 +40,63 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
   const [mobileOpen, setMobileOpen]       = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const [shareOpen, setShareOpen]         = useState(false);
+  const [moreOpen, setMoreOpen]           = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
 
-  // Scroll shadow + near-bottom contact activation
+  // Single scroll-position tracker — no IntersectionObserver lag
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      // Contact is a footer — the page can't scroll past it, so the
-      // IntersectionObserver's top-30%-of-viewport zone never fires for it.
-      // Force it active whenever the user is within 80px of the page bottom.
-      const nearBottom =
-        window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 80;
-      if (nearBottom && sectionIds.includes("contact")) {
+    const sync = () => {
+      const scrollY  = window.scrollY;
+      const windowH  = window.innerHeight;
+      const docH     = document.documentElement.scrollHeight;
+
+      setScrolled(scrollY > 20);
+
+      // Near page bottom → force contact active
+      if (scrollY + windowH >= docH - 80 && sectionIds.includes("contact")) {
         setActiveSection("contact");
+        return;
       }
+
+      // Pick the last section whose top edge is above 30% of viewport
+      const trigger = scrollY + windowH * 0.3;
+      let current = "";
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= trigger) current = id;
+      }
+      setActiveSection(current);
     };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", sync, { passive: true });
+    sync();
+    return () => window.removeEventListener("scroll", sync);
   }, []);
 
-  // Active section via IntersectionObserver (all sections except contact)
+  // Close "More" dropdown on outside click
   useEffect(() => {
-    const visible = new Set<string>();
-
-    const updateActive = () => {
-      // Don't override if near-bottom scroll handler already set contact
-      const nearBottom =
-        window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 80;
-      if (nearBottom && sectionIds.includes("contact")) return;
-
-      const ordered = sectionIds.filter((id) => visible.has(id));
-      if (ordered.length > 0) setActiveSection(ordered[0]);
+    const handler = (e: MouseEvent) => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
+      }
     };
-
-    const observers = sectionIds.map((id) => {
-      const el = document.getElementById(id);
-      if (!el) return null;
-
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) visible.add(id);
-          else visible.delete(id);
-          updateActive();
-        },
-        { rootMargin: "-10% 0px -70% 0px", threshold: 0 },
-      );
-      obs.observe(el);
-      return obs;
-    });
-
-    return () => observers.forEach((o) => o?.disconnect());
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
     setMobileOpen(false);
+    setMoreOpen(false);
   };
+
+  const linkClass = (isActive: boolean) =>
+    `relative px-3 py-2 text-xs font-medium tracking-widest uppercase rounded-md transition-colors whitespace-nowrap ${
+      isActive
+        ? "text-foreground"
+        : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+    }`;
 
   return (
     <nav
@@ -110,12 +108,13 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
+
         {/* Wordmark */}
         <a
           href="#hero"
           onClick={(e) => handleNavClick(e, "#hero")}
-          className="font-serif text-xl font-light tracking-wide text-foreground hover:text-primary transition-colors"
+          className="font-serif text-xl font-light tracking-wide text-foreground hover:text-primary transition-colors flex-shrink-0"
           data-testid="nav-logo"
         >
           {(() => {
@@ -128,19 +127,15 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
         </a>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => {
-            const isActive = activeSection === link.href.slice(1);
+        <div className="hidden md:flex items-center gap-0.5 flex-1 justify-center">
+          {primaryLinks.map((link) => {
+            const isActive = activeSection === link.id;
             return (
               <a
                 key={link.href}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`relative px-3.5 py-2 text-xs font-medium tracking-widest uppercase rounded-md transition-colors ${
-                  isActive
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
-                }`}
+                className={linkClass(isActive)}
                 data-testid={`nav-link-${link.label.toLowerCase()}`}
               >
                 {isActive && (
@@ -148,69 +143,116 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
                     layoutId="nav-active-pill"
                     className="absolute inset-0 rounded-md bg-secondary"
                     style={{ zIndex: -1 }}
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 35 }}
                   />
                 )}
                 {isActive && (
                   <motion.span
                     layoutId="nav-active-dot"
                     className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 35 }}
                   />
                 )}
                 {link.label}
               </a>
             );
           })}
-          {blogEnabled && (
+
+          {/* More dropdown */}
+          {moreLinks.length > 0 && (
+            <div ref={moreRef} className="relative">
+              <button
+                onClick={() => setMoreOpen((o) => !o)}
+                className={`flex items-center gap-1 px-3 py-2 text-xs font-medium tracking-widest uppercase rounded-md transition-colors ${
+                  moreOpen || moreLinks.some((l) => activeSection === l.id)
+                    ? "text-foreground bg-secondary"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                More
+                <motion.span animate={{ rotate: moreOpen ? 180 : 0 }} transition={{ duration: 0.18 }}>
+                  <ChevronDown size={12} />
+                </motion.span>
+              </button>
+
+              <AnimatePresence>
+                {moreOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-44 bg-background border border-border rounded-xl shadow-lg shadow-black/10 overflow-hidden py-1 z-50"
+                  >
+                    {moreLinks.map((link) => {
+                      const isActive = activeSection === link.id;
+                      return (
+                        <a
+                          key={link.href}
+                          href={link.href}
+                          onClick={(e) => handleNavClick(e, link.href)}
+                          className={`flex items-center gap-2.5 px-4 py-2.5 text-xs font-medium tracking-widest uppercase transition-colors ${
+                            isActive
+                              ? "text-foreground bg-secondary"
+                              : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                          }`}
+                        >
+                          {isActive && <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />}
+                          {!isActive && <span className="w-1.5 h-1.5 flex-shrink-0" />}
+                          {link.label}
+                        </a>
+                      );
+                    })}
+                    {blogEnabled && (
+                      <a
+                        href="#/blog"
+                        className="flex items-center gap-2.5 px-4 py-2.5 text-xs font-medium tracking-widest uppercase text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
+                      >
+                        <span className="w-1.5 h-1.5 flex-shrink-0" />
+                        Blog
+                      </a>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
+          {/* Blog link (when it fits directly) */}
+          {blogEnabled && moreLinks.length === 0 && (
             <a
               href="#/blog"
-              className="relative px-3.5 py-2 text-xs font-medium tracking-widest uppercase rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-secondary"
+              className="relative px-3 py-2 text-xs font-medium tracking-widest uppercase rounded-md transition-colors text-muted-foreground hover:text-foreground hover:bg-secondary whitespace-nowrap"
             >
               Blog
             </a>
           )}
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* Share button */}
+        {/* Right actions */}
+        <div className="flex items-center gap-2 flex-shrink-0">
           <button
             onClick={() => setShareOpen(true)}
-            className="relative p-2 rounded-full border border-border hover:border-primary/40 bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all"
+            className="p-2 rounded-full border border-border hover:border-primary/40 bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all"
             aria-label="Share portfolio"
             data-testid="button-share-nav"
           >
             <Share2 size={16} />
           </button>
 
-          {/* Theme toggle */}
           <button
             onClick={onToggleTheme}
-            className="relative p-2 rounded-full border border-border hover:border-primary/40 bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all overflow-hidden"
+            className="p-2 rounded-full border border-border hover:border-primary/40 bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all overflow-hidden"
             aria-label="Toggle theme"
             data-testid="button-toggle-theme"
           >
             <AnimatePresence mode="wait" initial={false}>
               {theme === "dark" ? (
-                <motion.span
-                  key="sun"
-                  initial={{ rotate: -90, opacity: 0, y: 8 }}
-                  animate={{ rotate: 0, opacity: 1, y: 0 }}
-                  exit={{ rotate: 90, opacity: 0, y: -8 }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  className="block"
-                >
+                <motion.span key="sun" initial={{ rotate: -90, opacity: 0, y: 8 }} animate={{ rotate: 0, opacity: 1, y: 0 }} exit={{ rotate: 90, opacity: 0, y: -8 }} transition={{ duration: 0.22 }} className="block">
                   <Sun size={16} />
                 </motion.span>
               ) : (
-                <motion.span
-                  key="moon"
-                  initial={{ rotate: 90, opacity: 0, y: 8 }}
-                  animate={{ rotate: 0, opacity: 1, y: 0 }}
-                  exit={{ rotate: -90, opacity: 0, y: -8 }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  className="block"
-                >
+                <motion.span key="moon" initial={{ rotate: 90, opacity: 0, y: 8 }} animate={{ rotate: 0, opacity: 1, y: 0 }} exit={{ rotate: -90, opacity: 0, y: -8 }} transition={{ duration: 0.22 }} className="block">
                   <Moon size={16} />
                 </motion.span>
               )}
@@ -246,25 +288,11 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
           >
             <AnimatePresence mode="wait" initial={false}>
               {mobileOpen ? (
-                <motion.span
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.18 }}
-                  className="block"
-                >
+                <motion.span key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }} className="block">
                   <X size={18} />
                 </motion.span>
               ) : (
-                <motion.span
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.18 }}
-                  className="block"
-                >
+                <motion.span key="menu" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.18 }} className="block">
                   <Menu size={18} />
                 </motion.span>
               )}
@@ -284,8 +312,8 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
             className="md:hidden overflow-hidden bg-background/95 backdrop-blur-md border-b border-border"
           >
             <div className="px-6 py-4 flex flex-col gap-1">
-              {navLinks.map((link) => {
-                const isActive = activeSection === link.href.slice(1);
+              {allNavLinks.map((link) => {
+                const isActive = activeSection === link.id;
                 return (
                   <a
                     key={link.href}
@@ -297,11 +325,7 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
                         : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                     }`}
                   >
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                        isActive ? "bg-primary" : ""
-                      }`}
-                    />
+                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isActive ? "bg-primary" : ""}`} />
                     {link.label}
                   </a>
                 );
@@ -317,22 +341,12 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
                 </a>
               )}
               {config.resumeUrl ? (
-                <a
-                  href={config.resumeUrl}
-                  download={config.resumeFileName || "resume.pdf"}
-                  className="flex items-center gap-2 px-3 py-3 text-xs font-medium tracking-widest uppercase text-primary hover:bg-accent rounded-md transition-colors"
-                >
-                  <Download size={13} />
-                  Download Resume
+                <a href={config.resumeUrl} download={config.resumeFileName || "resume.pdf"} className="flex items-center gap-2 px-3 py-3 text-xs font-medium tracking-widest uppercase text-primary hover:bg-accent rounded-md transition-colors">
+                  <Download size={13} /> Download Resume
                 </a>
               ) : (
-                <a
-                  href="#/resume"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 px-3 py-3 text-xs font-medium tracking-widest uppercase text-primary hover:bg-accent rounded-md transition-colors"
-                >
-                  <Download size={13} />
-                  View Resume
+                <a href="#/resume" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 px-3 py-3 text-xs font-medium tracking-widest uppercase text-primary hover:bg-accent rounded-md transition-colors">
+                  <Download size={13} /> View Resume
                 </a>
               )}
             </div>
