@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
+import { readFileSync } from "fs";
 
 const rawPort = process.env.PORT;
 const rawBasePath = process.env.BASE_PATH;
@@ -22,11 +23,40 @@ if (rawPort && (Number.isNaN(port) || port <= 0)) {
 
 const basePath = rawBasePath ?? "/";
 
+const portfolioConfig = JSON.parse(
+  readFileSync(new URL("./portfolio.config.json", import.meta.url), "utf8")
+) as {
+  name?: string; title?: string; about?: string; email?: string;
+  location?: string; avatarUrl?: string; social?: Record<string, string>;
+};
+
+function schemaOrgPlugin() {
+  return {
+    name: "schema-org-person",
+    transformIndexHtml(html: string) {
+      const social = portfolioConfig.social ?? {};
+      const sameAs = Object.values(social).filter(Boolean);
+      const schema = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: portfolioConfig.name ?? "",
+        jobTitle: portfolioConfig.title ?? "",
+        description: portfolioConfig.about ?? "",
+        email: portfolioConfig.email ?? "",
+        ...(sameAs.length ? { sameAs } : {}),
+      };
+      const tag = `<script type="application/ld+json">${JSON.stringify(schema)}</script>`;
+      return html.replace("</head>", `  ${tag}\n  </head>`);
+    },
+  };
+}
+
 export default defineConfig({
   base: basePath,
   plugins: [
     react(),
     tailwindcss(),
+    schemaOrgPlugin(),
     ...(process.env.NODE_ENV !== "production" && rawPort
       ? [
           (await import("@replit/vite-plugin-runtime-error-modal")).default(),

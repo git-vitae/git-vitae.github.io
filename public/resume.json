@@ -1,0 +1,192 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Alex Rivera",
+    "label": "Full-Stack Engineer",
+    "image": "",
+    "email": "alex@example.com",
+    "summary": "I'm a full-stack engineer with 5+ years of experience building products that people love. I specialize in React, Node.js, and distributed systems. When I'm not coding, I'm hiking trails or experimenting with new coffee brewing methods.",
+    "location": {
+      "city": "San Francisco",
+      "region": "CA"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "url": "https://github.com/yourusername",
+        "username": "yourusername"
+      },
+      {
+        "network": "LinkedIn",
+        "url": "https://linkedin.com/in/yourusername",
+        "username": "yourusername"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Acme Corp",
+      "position": "Senior Full-Stack Engineer",
+      "startDate": "2022",
+      "endDate": "",
+      "summary": "Led migration of monolithic Rails app to microservices. Reduced p99 latency by 60%. Mentored a team of 4 engineers.",
+      "highlights": [
+        "Microservices migration",
+        "60% latency reduction",
+        "Team leadership"
+      ]
+    },
+    {
+      "name": "Startup XYZ",
+      "position": "Software Engineer",
+      "startDate": "2020",
+      "endDate": "2022",
+      "summary": "Built real-time collaboration features for a SaaS platform serving 50k users. Owned the entire frontend from scratch.",
+      "highlights": [
+        "Real-time collaboration",
+        "50k users",
+        "Frontend ownership"
+      ]
+    },
+    {
+      "name": "Freelance",
+      "position": "Web Developer",
+      "startDate": "2018",
+      "endDate": "2020",
+      "summary": "Delivered 20+ web projects for small businesses and agencies across e-commerce, marketing, and internal tools.",
+      "highlights": [
+        "20+ projects",
+        "E-commerce",
+        "Internal tools"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of California, Berkeley",
+      "area": "B.S. Computer Science",
+      "studyType": "",
+      "startDate": "2014",
+      "endDate": "2018"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Frontend",
+      "keywords": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "Tailwind CSS",
+        "Framer Motion"
+      ]
+    },
+    {
+      "name": "Backend",
+      "keywords": [
+        "Node.js",
+        "Express",
+        "PostgreSQL",
+        "Redis",
+        "GraphQL"
+      ]
+    },
+    {
+      "name": "DevOps",
+      "keywords": [
+        "Docker",
+        "AWS",
+        "CI/CD",
+        "Kubernetes",
+        "Terraform"
+      ]
+    },
+    {
+      "name": "Tools",
+      "keywords": [
+        "Git",
+        "Figma",
+        "Jest",
+        "Storybook",
+        "Datadog"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "OpenDesk",
+      "description": "An open-source project management tool built with React and Go. 2.3k GitHub stars. Real-time updates via WebSockets.",
+      "keywords": [
+        "React",
+        "Go",
+        "WebSockets",
+        "PostgreSQL"
+      ],
+      "url": "https://opendesk.example.com"
+    },
+    {
+      "name": "CodeLens",
+      "description": "VS Code extension that uses AI to generate inline documentation. 10k+ installs from the marketplace.",
+      "keywords": [
+        "TypeScript",
+        "OpenAI",
+        "VS Code API"
+      ],
+      "url": "https://github.com/yourusername/codelens"
+    },
+    {
+      "name": "PriceWatch",
+      "description": "Browser extension that tracks price history on e-commerce sites and alerts users to drops.",
+      "keywords": [
+        "JavaScript",
+        "Chrome API",
+        "Node.js"
+      ],
+      "url": "https://pricewatch.example.com"
+    },
+    {
+      "name": "Logbook",
+      "description": "A minimalist journaling app with end-to-end encryption. Built in a weekend. 500+ users.",
+      "keywords": [
+        "React Native",
+        "SQLite",
+        "Crypto"
+      ],
+      "url": "https://github.com/yourusername/logbook"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "AWS Certified Solutions Architect – Associate",
+      "issuer": "Amazon Web Services",
+      "date": "2023",
+      "url": "https://aws.amazon.com/verification"
+    },
+    {
+      "name": "Professional Scrum Master I",
+      "issuer": "Scrum.org",
+      "date": "2022",
+      "url": "https://www.scrum.org/certificates"
+    },
+    {
+      "name": "Google Professional Data Engineer",
+      "issuer": "Google Cloud",
+      "date": "2021",
+      "url": ""
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Conversational"
+    },
+    {
+      "language": "Mandarin",
+      "fluency": "Basic"
+    }
+  ]
+}
