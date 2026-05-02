@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Download, Share2, CheckCircle } from "lucide-react";
+import { Mail, Download, Share2 } from "lucide-react";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import { config } from "@/portfolio.config";
+import { ShareModal } from "@/components/ui/ShareModal";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -14,20 +15,7 @@ const fadeUp = {
 };
 
 export function Contact() {
-  const [copied, setCopied] = useState(false);
-
-  const handleShare = async () => {
-    const url = `${window.location.origin}${config.resumeUrl}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: `${config.name} - Resume`, url });
-      } catch {}
-    } else {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
+  const [shareOpen, setShareOpen] = useState(false);
 
   return (
     <footer id="contact" className="py-32 px-6 border-t border-border/60 bg-card/30">
@@ -132,23 +120,16 @@ export function Contact() {
               Download Resume
             </a>
             <button
-              onClick={handleShare}
+              onClick={() => setShareOpen(true)}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-border text-sm font-medium text-foreground hover:bg-secondary hover:border-primary/40 transition-all"
               data-testid="button-share-resume-footer"
             >
-              {copied ? (
-                <>
-                  <CheckCircle size={14} className="text-green-500" />
-                  Link Copied
-                </>
-              ) : (
-                <>
-                  <Share2 size={14} />
-                  Share Resume
-                </>
-              )}
+              <Share2 size={14} />
+              Share Portfolio
             </button>
           </motion.div>
+
+          <ShareModal open={shareOpen} onClose={() => setShareOpen(false)} />
 
           <motion.div
             variants={fadeUp}

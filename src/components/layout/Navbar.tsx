@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { Moon, Sun, Download, Menu, X } from "lucide-react";
+import { Moon, Sun, Download, Menu, X, Share2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { config } from "@/portfolio.config";
+import { ShareModal } from "@/components/ui/ShareModal";
 
 interface NavbarProps {
   theme: string;
@@ -34,6 +35,7 @@ export function Navbar({ theme, onToggleTheme, bannerVisible }: NavbarProps) {
   const [scrolled, setScrolled]           = useState(false);
   const [mobileOpen, setMobileOpen]       = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [shareOpen, setShareOpen]         = useState(false);
 
   // Scroll shadow
   useEffect(() => {
@@ -136,6 +138,16 @@ export function Navbar({ theme, onToggleTheme, bannerVisible }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Share button */}
+          <button
+            onClick={() => setShareOpen(true)}
+            className="relative p-2 rounded-full border border-border hover:border-primary/40 bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all"
+            aria-label="Share portfolio"
+            data-testid="button-share-nav"
+          >
+            <Share2 size={16} />
+          </button>
+
           {/* Theme toggle */}
           <button
             onClick={onToggleTheme}
@@ -260,6 +272,8 @@ export function Navbar({ theme, onToggleTheme, bannerVisible }: NavbarProps) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <ShareModal open={shareOpen} onClose={() => setShareOpen(false)} />
     </nav>
   );
 }
