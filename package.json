@@ -10,7 +10,8 @@
     "generate:resume": "node scripts/generate-resume.mjs",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "check-config": "node scripts/check-config.mjs"
+    "check-config": "node scripts/check-config.mjs",
+    "upgrade-template": "node scripts/upgrade-template.mjs"
   },
   "devDependencies": {
     "@radix-ui/react-dialog": "^1.1.7",

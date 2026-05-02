@@ -133,19 +133,15 @@ pnpm dev            # preview at http://localhost:3000
 
 **Stay notified:** click **Watch → Custom → Releases only** on the [GitVita repo](https://github.com/git-vita/git-vita.github.io) and GitHub will email you whenever a new version ships.
 
-When you're ready to pull an update into your portfolio:
+When you're ready to pull an update into your portfolio, run:
 
 ```bash
-# One-time setup — add GitVita as an upstream remote
-git remote add git-vita https://github.com/git-vita/git-vita.github.io
-
-# Pull updates (run this whenever you want to upgrade)
-git fetch git-vita
-git merge git-vita/main --allow-unrelated-histories
-git push
+pnpm upgrade-template
 ```
 
-Conflicts are extremely rare — they only occur if GitVita renames a field in `portfolio.config.yaml` that you've already filled in. In that case Git will mark the conflict in the file and you just keep your values.
+That's it. The script adds GitVita as an upstream remote (once), fetches the latest code, and merges it — without touching your `portfolio.config.yaml`. Follow it with `pnpm install && git push` to deploy the update.
+
+Conflicts are extremely rare. They only occur if GitVita renames a field in `portfolio.config.yaml` that you've already filled in. The script will tell you exactly what to do if that happens.
 
 ---
 
