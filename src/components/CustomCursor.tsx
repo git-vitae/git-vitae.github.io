@@ -9,6 +9,11 @@ export function CustomCursor() {
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
+    document.documentElement.classList.add("custom-cursor-active");
+    return () => document.documentElement.classList.remove("custom-cursor-active");
+  }, []);
+
+  useEffect(() => {
     const onMove = (e: MouseEvent) => {
       pos.current = { x: e.clientX, y: e.clientY };
     };

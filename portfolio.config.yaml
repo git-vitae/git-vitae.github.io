@@ -50,6 +50,10 @@ resumeTheme:
   twoColumn: "indigo"    # Accent color for the two-column resume layout
   classic: "emerald"     # Accent color for the classic resume layout
 
+contactFormEndpoint: ""  # Optional — paste a Formspree URL (https://formspree.io/f/xxxx)
+                           # or any POST endpoint that accepts {name, email, message}.
+                           # Leave empty to use a pre-filled mailto: link instead.
+
 # ── Section visibility ─────────────────────────────────────────────────
 # Set show: false to hide any section from your portfolio
 sections:

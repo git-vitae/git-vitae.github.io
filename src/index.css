@@ -198,7 +198,14 @@
 @layer base {
   * {
     @apply border-border;
+  }
+  /* Hide system cursor only when custom cursor is active */
+  .custom-cursor-active * {
     cursor: none !important;
+  }
+  /* Always restore on touch devices */
+  @media (pointer: coarse) {
+    .custom-cursor-active * { cursor: auto !important; }
   }
   body {
     @apply font-sans antialiased bg-background text-foreground;
@@ -206,10 +213,6 @@
   }
   html {
     scroll-behavior: auto;
-  }
-  /* Restore cursor on touch devices */
-  @media (pointer: coarse) {
-    * { cursor: auto !important; }
   }
 }
 

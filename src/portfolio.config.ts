@@ -36,7 +36,8 @@ const rawConfig = rawConfigYaml as unknown as {
   education:      { institution: string; degree: string; period: string }[];
   certifications: { title: string; issuer: string; date: string; credentialUrl: string; badgeUrl: string; tags: string[] }[];
   publications:   { title: string; authors: string; venue: string; year: string; url: string; type: string; tags: string[] }[];
-  testimonials:   { name: string; title: string; company: string; relationship: string; quote: string; photoUrl: string }[];
+  testimonials:         { name: string; title: string; company: string; relationship: string; quote: string; photoUrl: string }[];
+  contactFormEndpoint?: string;
 };
 
 export type SectionId =
@@ -113,6 +114,7 @@ export const config = {
   certifications: (rawConfig.certifications ?? []) as Certification[],
   publications:   (rawConfig.publications   ?? []) as Publication[],
   testimonials:   (rawConfig.testimonials   ?? []) as Testimonial[],
+  contactFormEndpoint: rawConfig.contactFormEndpoint ?? "",
   customColors:   rawConfig.customColors,
   resumeTheme: {
     twoColumn: (rawConfig.resumeTheme?.twoColumn ?? rawConfig.colorPreset) as ColorPreset,
