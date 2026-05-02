@@ -71,7 +71,7 @@ function App() {
               <PortfolioPage
                 theme={theme}
                 onToggleTheme={toggleTheme}
-                bannerVisible={openToWorkVisible}
+                topOffset={totalTopOffset}
               />
             </div>
           </SmoothScrollProvider>

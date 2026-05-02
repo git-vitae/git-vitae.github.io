@@ -10,7 +10,14 @@ title: "Full-Stack Engineer"
 tagline: "I build thoughtful software that scales."
 email: "alex@example.com"
 location: "San Francisco, CA"
-avatarUrl: ""            # URL to a photo — leave empty to show initials
+avatarUrl: ""
+# How to add a profile photo (free, no extra account needed):
+#   1. Go to your GitHub repo → click "Add file" → "Upload files"
+#   2. Upload your photo (e.g. avatar.jpg) into a folder called "public/"
+#   3. After committing, open the file on GitHub and copy the raw URL:
+#      https://raw.githubusercontent.com/YOU/your-repo/main/public/avatar.jpg
+#   4. Paste that URL here.
+# Leave empty to show your initials as a styled placeholder.
 
 # ── Resume download ────────────────────────────────────────────────────
 resumeUrl: "/resume.pdf"

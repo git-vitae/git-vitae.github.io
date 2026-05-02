@@ -7,7 +7,7 @@ import { ShareModal } from "@/components/ShareModal";
 interface NavbarProps {
   theme: string;
   onToggleTheme: () => void;
-  bannerVisible: boolean;
+  topOffset: number;
 }
 
 const SECTION_LABELS: Record<string, string> = {
@@ -31,7 +31,7 @@ const navLinks = config.sections
 
 const sectionIds = navLinks.map((l) => l.href.slice(1));
 
-export function Navbar({ theme, onToggleTheme, bannerVisible }: NavbarProps) {
+export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
   const [scrolled, setScrolled]           = useState(false);
   const [mobileOpen, setMobileOpen]       = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
@@ -81,7 +81,7 @@ export function Navbar({ theme, onToggleTheme, bannerVisible }: NavbarProps) {
   return (
     <nav
       data-testid="navbar"
-      style={{ top: bannerVisible ? "40px" : "0px" }}
+      style={{ top: `${topOffset}px` }}
       className={`fixed left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
           ? "bg-background/85 backdrop-blur-lg border-b border-border/60 shadow-sm"
