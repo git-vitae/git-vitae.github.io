@@ -60,12 +60,15 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
         return;
       }
 
-      // Pick the last section whose top edge has crossed 40% down the viewport
-      const trigger = scrollY + windowH * 0.4;
+      // Pick the last section whose absolute top has crossed 40% down the viewport.
+      // Use getBoundingClientRect() + scrollY instead of offsetTop — offsetTop is
+      // relative to the nearest positioned ancestor, which breaks when sections are
+      // wrapped in `position:relative` SectionWrapper divs (all would read as 0).
+      const trigger = windowH * 0.4;
       let current = "";
       for (const id of sectionIds) {
         const el = document.getElementById(id);
-        if (el && el.offsetTop <= trigger) current = id;
+        if (el && el.getBoundingClientRect().top <= trigger) current = id;
       }
       setActiveSection(current);
     };

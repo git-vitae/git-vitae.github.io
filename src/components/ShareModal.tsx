@@ -185,25 +185,6 @@ export function ShareModal({ open, onClose }: ShareModalProps) {
             </div>
           )}
 
-          {/* ── Print / Save as PDF ───────────────────── */}
-          <div>
-            <p className="text-xs font-mono tracking-widest uppercase text-muted-foreground mb-2 flex items-center gap-1.5">
-              <Printer size={11} /> Print / Save as PDF
-            </p>
-            <div className="flex items-start gap-3 px-3 py-2.5 rounded-xl bg-secondary border border-border">
-              <p className="flex-1 text-xs text-muted-foreground leading-relaxed">
-                Opens your browser's print dialog. Choose <strong className="text-foreground">"Save as PDF"</strong> to export a clean, recruiter-ready version of your portfolio — no extra tools needed.
-              </p>
-              <button
-                onClick={() => { onClose(); setTimeout(() => window.print(), 350); }}
-                className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-border hover:bg-background hover:border-primary/40 transition-all whitespace-nowrap"
-              >
-                <Printer size={12} />
-                Print
-              </button>
-            </div>
-          </div>
-
           {/* ── Social share ───────────────────────────── */}
           <div>
             <p className="text-xs font-mono tracking-widest uppercase text-muted-foreground mb-2">

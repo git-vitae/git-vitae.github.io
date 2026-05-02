@@ -408,49 +408,79 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
         </div>
       </section>
 
-      {/* ── Pain point ───────────────────────────────────────────────────── */}
-      <section className="py-20 px-6">
+      {/* ── Story / Pain point ───────────────────────────────────────────── */}
+      <section className="py-24 px-6">
         <div className="max-w-4xl mx-auto">
+
+          {/* Narrative */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.5 }}
+            className="text-center mb-16"
           >
-            <div className="text-center mb-12">
-              <p className="text-xs font-mono font-medium tracking-widest text-primary uppercase mb-4">
-                Sound familiar?
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-serif font-medium text-foreground">
-                Most portfolios never get built.
-              </h2>
-              <p className="mt-4 text-sm text-muted-foreground max-w-lg mx-auto leading-relaxed">
-                Not because people don't care — because it always feels too technical,
-                too time-consuming, or just never quite the right moment.
-              </p>
-            </div>
+            <p className="text-xs font-mono font-medium tracking-widest text-primary uppercase mb-5">
+              The problem
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-serif font-medium text-foreground mb-6 max-w-2xl mx-auto leading-snug">
+              You're good at your work. But when someone searches for you online — there's nothing there.
+            </h2>
+            <p className="text-base text-muted-foreground leading-relaxed max-w-xl mx-auto mb-4">
+              A hiring manager loved your application. They Googled you. They found a LinkedIn from 2019
+              and a half-finished portfolio you meant to complete "this weekend."
+            </p>
+            <p className="text-base text-muted-foreground leading-relaxed max-w-xl mx-auto">
+              Meanwhile, the candidate with the polished portfolio page — even if their skills are
+              comparable to yours — got the callback. Not because they were better.
+              Because they were <em className="text-foreground not-italic font-medium">visible.</em>
+            </p>
+          </motion.div>
 
-            <div className="grid sm:grid-cols-2 gap-4 mb-10">
+          {/* Divider quote */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="border-l-2 border-primary/30 pl-6 mb-16 max-w-xl mx-auto"
+          >
+            <p className="text-lg font-serif text-foreground/80 italic leading-relaxed">
+              "You have the skills. GitVita makes sure the world can see them."
+            </p>
+          </motion.div>
+
+          {/* Blockers → answers */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+          >
+            <p className="text-center text-xs font-mono font-medium tracking-widest text-primary uppercase mb-8">
+              Every excuse, answered
+            </p>
+            <div className="grid sm:grid-cols-2 gap-4 mb-12">
               {[
                 {
                   blocker: `"I'll build it properly when I have more time."`,
-                  answer:  "There's never more time. Five minutes is all this takes.",
+                  answer:  "There's never more time. Five minutes is all GitVita takes.",
                 },
                 {
                   blocker: `"I'd need to learn web design first."`,
-                  answer:  "You don't. Fill in a text file. GitVita handles all the design.",
+                  answer:  "You don't. Fill in a plain-text file. GitVita handles all the design.",
                 },
                 {
                   blocker: `"I don't know where to host it."`,
-                  answer:  "GitHub Pages. Already set up in the template. Free forever.",
+                  answer:  "GitHub Pages. Built into the template. Free forever — nothing to configure.",
                 },
                 {
-                  blocker: `"I started one once, but it got complicated."`,
-                  answer:  "One file. No frameworks, no deployments, no complications.",
+                  blocker: `"I started one once, but it got too complicated."`,
+                  answer:  "One file. No frameworks, no deployments, no rabbit holes.",
                 },
               ].map(({ blocker, answer }) => (
-                <div key={blocker} className="p-5 rounded-2xl border border-border bg-secondary/30 hover:border-primary/30 transition-colors">
-                  <p className="text-sm text-muted-foreground/60 line-through mb-2.5 leading-snug">{blocker}</p>
+                <div key={blocker} className="p-5 rounded-2xl border border-border bg-secondary/20 hover:border-primary/30 transition-colors group">
+                  <p className="text-sm text-muted-foreground/50 line-through mb-3 leading-snug">{blocker}</p>
                   <p className="text-sm font-medium text-foreground flex items-start gap-2 leading-snug">
                     <Check size={14} className="text-primary flex-shrink-0 mt-0.5" />
                     {answer}
@@ -464,12 +494,13 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
                 href={SETUP_URL}
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
               >
-                This time, actually do it
+                Stop being invisible — it's free
                 <ArrowRight size={15} />
               </a>
-              <p className="mt-3 text-xs text-muted-foreground">Free forever · No code · Takes 5 minutes</p>
+              <p className="mt-3 text-xs text-muted-foreground">No code · No cost · Live in 5 minutes</p>
             </div>
           </motion.div>
+
         </div>
       </section>
 
