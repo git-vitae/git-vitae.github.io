@@ -39,8 +39,9 @@ function App() {
   return (
     <Router hook={useHashLocation}>
       <Switch>
-        {/* Resume page — no banner, no smooth scroll, no custom cursor */}
+        {/* Resume page */}
         <Route path="/resume">
+          <CustomCursor />
           <ResumePage theme={theme} onToggleTheme={toggleTheme} />
         </Route>
 

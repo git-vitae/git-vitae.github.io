@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Download, Share2, MapPin, ArrowDown, CheckCircle } from "lucide-react";
+import { Download, MapPin, ArrowDown } from "lucide-react";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { config } from "@/portfolio.config";
@@ -63,7 +63,6 @@ function TypewriterText({ text }: { text: string }) {
 }
 
 export function Hero() {
-  const [copied, setCopied] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -76,19 +75,6 @@ export function Hero() {
   const gridY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
   const blobY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
   const arrowOpacity = useTransform(scrollYProgress, [0, 0.18], [1, 0]);
-
-  const handleShare = async () => {
-    const url = `${window.location.origin}${config.resumeUrl}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: `${config.name} - Resume`, url });
-      } catch {}
-    } else {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
-  };
 
   return (
     <section
@@ -228,31 +214,6 @@ export function Hero() {
             <Download size={14} />
             View Resume
           </a>
-          <a
-            href={config.resumeUrl}
-            download={config.resumeFileName}
-            className="flex items-center gap-2 px-7 py-3 rounded-xl border border-border text-foreground font-medium text-sm tracking-wide hover:bg-secondary hover:border-primary/40 transition-all"
-            data-testid="button-download-resume-hero"
-          >
-            Download PDF
-          </a>
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-2 px-7 py-3 rounded-xl border border-border text-foreground font-medium text-sm tracking-wide hover:bg-secondary hover:border-primary/40 transition-all"
-            data-testid="button-share-resume"
-          >
-            {copied ? (
-              <>
-                <CheckCircle size={14} className="text-green-500" />
-                Link Copied
-              </>
-            ) : (
-              <>
-                <Share2 size={14} />
-                Share Resume
-              </>
-            )}
-          </button>
         </motion.div>
       </motion.div>
 

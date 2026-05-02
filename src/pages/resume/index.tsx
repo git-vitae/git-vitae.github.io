@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Printer, ArrowLeft, Columns2, AlignJustify,
-  Mail, MapPin, Globe, ExternalLink, Moon, Sun,
+  Mail, MapPin, Globe, ExternalLink,
 } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa6";
 import { config } from "@/portfolio.config";
@@ -341,20 +341,14 @@ export function ResumePage({ theme, onToggleTheme }: ResumePageProps) {
 
         {/* Right controls */}
         <div className="flex items-center gap-2">
-          <button
-            onClick={onToggleTheme}
-            className="p-2 rounded-full border border-border hover:border-primary/40 bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all"
-            aria-label="Toggle theme"
-          >
-            {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
-          </button>
-          <button
-            onClick={() => window.print()}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-xs font-medium tracking-wide hover:opacity-90 transition-opacity"
+          <a
+            href={config.resumeUrl}
+            download={config.resumeFileName}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-border text-foreground text-xs font-medium tracking-wide hover:bg-secondary hover:border-primary/40 transition-all"
           >
             <Printer size={13} />
-            Save PDF
-          </button>
+            Download
+          </a>
         </div>
       </div>
 
