@@ -1,6 +1,6 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Mail } from "lucide-react";
+import { motion, useScroll } from "framer-motion";
+import { Mail, Globe } from "lucide-react";
 import { config } from "@/portfolio.config";
 
 const fadeUp = {
@@ -12,10 +12,28 @@ const fadeUp = {
   }),
 };
 
+// Map a proficiency level to a visual weight
+const LEVEL_STYLE: Record<string, string> = {
+  native:         "bg-primary text-primary-foreground border-primary",
+  fluent:         "bg-primary/15 text-primary border-primary/30",
+  conversational: "bg-secondary text-foreground border-border",
+  professional:   "bg-secondary text-foreground border-border",
+  basic:          "bg-secondary/60 text-muted-foreground border-border",
+  elementary:     "bg-secondary/60 text-muted-foreground border-border",
+};
+
+function levelStyle(level: string) {
+  return (
+    LEVEL_STYLE[level.toLowerCase()] ??
+    "bg-secondary text-foreground border-border"
+  );
+}
+
 export function About() {
   const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const bg = useTransform(scrollYProgress, [0, 1], ["hsl(var(--background))", "hsl(var(--background))"]);
+  useScroll({ target: ref, offset: ["start end", "end start"] });
+
+  const hasLanguages = config.languages && config.languages.length > 0;
 
   return (
     <section id="about" ref={ref} className="py-32 px-6 relative overflow-hidden">
@@ -24,20 +42,16 @@ export function About() {
           {/* Left col */}
           <div>
             <motion.p
-              variants={fadeUp}
-              custom={0}
-              initial="hidden"
-              whileInView="visible"
+              variants={fadeUp} custom={0}
+              initial="hidden" whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
               className="text-xs font-mono font-medium tracking-widest text-primary uppercase mb-4"
             >
               About Me
             </motion.p>
             <motion.h2
-              variants={fadeUp}
-              custom={1}
-              initial="hidden"
-              whileInView="visible"
+              variants={fadeUp} custom={1}
+              initial="hidden" whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
               className="section-heading text-4xl md:text-5xl text-foreground mb-6 leading-tight"
             >
@@ -46,32 +60,26 @@ export function About() {
               <em className="not-italic font-light">the keyboard.</em>
             </motion.h2>
             <motion.div
-              variants={fadeUp}
-              custom={2}
-              initial="hidden"
-              whileInView="visible"
+              variants={fadeUp} custom={2}
+              initial="hidden" whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
               className="w-12 h-px mb-8"
-              style={{
-                background: "linear-gradient(90deg, hsl(var(--primary)), transparent)",
-              }}
+              style={{ background: "linear-gradient(90deg, hsl(var(--primary)), transparent)" }}
             />
             <motion.p
-              variants={fadeUp}
-              custom={3}
-              initial="hidden"
-              whileInView="visible"
+              variants={fadeUp} custom={3}
+              initial="hidden" whileInView="visible"
               viewport={{ once: true, margin: "-80px" }}
               className="text-base text-muted-foreground leading-relaxed whitespace-pre-line font-light"
             >
               {config.about}
             </motion.p>
+
+            {/* Email */}
             {config.email && (
               <motion.a
-                variants={fadeUp}
-                custom={4}
-                initial="hidden"
-                whileInView="visible"
+                variants={fadeUp} custom={4}
+                initial="hidden" whileInView="visible"
                 viewport={{ once: true, margin: "-80px" }}
                 href={`mailto:${config.email}`}
                 className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
@@ -81,22 +89,47 @@ export function About() {
                 {config.email}
               </motion.a>
             )}
+
+            {/* Languages */}
+            {hasLanguages && (
+              <motion.div
+                variants={fadeUp} custom={5}
+                initial="hidden" whileInView="visible"
+                viewport={{ once: true, margin: "-80px" }}
+                className="mt-8 pt-6 border-t border-border"
+              >
+                <div className="flex items-center gap-1.5 text-xs font-mono font-medium tracking-widest text-muted-foreground uppercase mb-3">
+                  <Globe size={12} />
+                  Languages
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {config.languages.map((lang) => (
+                    <span
+                      key={lang.name}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium ${levelStyle(lang.level)}`}
+                    >
+                      {lang.name}
+                      <span className="opacity-60 font-normal">·</span>
+                      <span className="font-normal opacity-75">{lang.level}</span>
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </div>
 
-          {/* Right col — stat cards stagger in */}
+          {/* Right col — stat cards */}
           <div className="grid grid-cols-2 gap-4">
             {[
               { label: "Years Experience", value: "5+" },
               { label: "Projects Shipped", value: "20+" },
-              { label: "Technologies", value: `${config.skills.reduce((acc, s) => acc + s.items.length, 0)}+` },
-              { label: "Cups of Coffee", value: "∞" },
+              { label: "Technologies",     value: `${config.skills.reduce((acc, s) => acc + s.items.length, 0)}+` },
+              { label: "Cups of Coffee",   value: "∞" },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
-                variants={fadeUp}
-                custom={i + 1}
-                initial="hidden"
-                whileInView="visible"
+                variants={fadeUp} custom={i + 1}
+                initial="hidden" whileInView="visible"
                 viewport={{ once: true, margin: "-60px" }}
                 className="p-6 rounded-2xl border border-border bg-card card-hover"
                 data-testid={`stat-${stat.label.toLowerCase().replace(/\s+/g, "-")}`}

@@ -25,6 +25,11 @@ export interface SectionEntry {
   show: boolean;
 }
 
+export interface Language {
+  name:  string;
+  level: string;  // e.g. "Native", "Fluent", "Conversational", "Basic"
+}
+
 export interface Certification {
   title:         string;
   issuer:        string;
@@ -48,7 +53,8 @@ export const config = {
   colorPreset:    rawConfig.colorPreset  as ColorPreset,
   defaultTheme:   rawConfig.defaultTheme as "system" | "light" | "dark",
   sections:       rawConfig.sections     as SectionEntry[],
+  languages:      (rawConfig.languages      ?? []) as Language[],
   certifications: (rawConfig.certifications ?? []) as Certification[],
-  testimonials:   (rawConfig.testimonials ?? [])   as Testimonial[],
+  testimonials:   (rawConfig.testimonials   ?? []) as Testimonial[],
   customColors:   (rawConfig as unknown as { customColors?: PresetPalette }).customColors,
 };

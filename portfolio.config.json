@@ -38,6 +38,12 @@
 
   "about": "I'm a full-stack engineer with 5+ years of experience building products that people love. I specialize in React, Node.js, and distributed systems. When I'm not coding, I'm hiking trails or experimenting with new coffee brewing methods.",
 
+  "languages": [
+    { "name": "English",  "level": "Native"           },
+    { "name": "Spanish",  "level": "Conversational"   },
+    { "name": "Mandarin", "level": "Basic"             }
+  ],
+
   "skills": [
     { "category": "Frontend",  "items": ["React", "TypeScript", "Next.js", "Tailwind CSS", "Framer Motion"] },
     { "category": "Backend",   "items": ["Node.js", "Express", "PostgreSQL", "Redis", "GraphQL"] },
