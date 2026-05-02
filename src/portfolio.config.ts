@@ -40,6 +40,7 @@ const rawConfig = rawConfigYaml as unknown as {
 export type SectionId =
   | "about"
   | "skills"
+  | "languages"
   | "experience"
   | "projects"
   | "education"

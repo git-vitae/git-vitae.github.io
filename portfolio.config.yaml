@@ -40,6 +40,7 @@ resumeTheme:
 sections:
   - { id: about,          show: true  }
   - { id: skills,         show: true  }
+  - { id: languages,      show: true  }
   - { id: experience,     show: true  }
   - { id: projects,       show: true  }
   - { id: education,      show: true  }

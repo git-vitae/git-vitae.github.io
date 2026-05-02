@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Skills } from "@/components/sections/Skills";
+import { Languages } from "@/components/sections/Languages";
 import { Experience } from "@/components/sections/Experience";
 import { Projects } from "@/components/sections/Projects";
 import { Education } from "@/components/sections/Education";
@@ -20,6 +21,7 @@ interface PortfolioPageProps {
 const SECTION_COMPONENTS: Record<SectionId, React.ComponentType> = {
   about:          About,
   skills:         Skills,
+  languages:      Languages,
   experience:     Experience,
   projects:       Projects,
   education:      Education,
