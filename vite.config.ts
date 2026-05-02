@@ -1,14 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import yaml from "@rollup/plugin-yaml";
 import path from "path";
 import { readFileSync } from "fs";
+import jsYaml from "js-yaml";
 
 const rawPort = process.env.PORT;
 const rawBasePath = process.env.BASE_PATH;
 
-// In CI / production builds PORT and BASE_PATH may not be set.
-// Only enforce them when running the dev server.
 const isDev = process.env.NODE_ENV !== "production" && !!rawPort;
 
 if (isDev) {
@@ -23,8 +23,8 @@ if (rawPort && (Number.isNaN(port) || port <= 0)) {
 
 const basePath = rawBasePath ?? "/";
 
-const portfolioConfig = JSON.parse(
-  readFileSync(new URL("./portfolio.config.json", import.meta.url), "utf8")
+const portfolioConfig = jsYaml.load(
+  readFileSync(new URL("./portfolio.config.yaml", import.meta.url), "utf8")
 ) as {
   name?: string; title?: string; about?: string; email?: string;
   location?: string; avatarUrl?: string; openToWork?: boolean;
@@ -81,6 +81,7 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    yaml(),
     metaAndSchemaPlugin(),
     ...(process.env.NODE_ENV !== "production" && rawPort
       ? [

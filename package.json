@@ -8,7 +8,8 @@
     "build": "node scripts/generate-resume.mjs && vite build --config vite.config.ts",
     "generate:resume": "node scripts/generate-resume.mjs",
     "serve": "vite preview --config vite.config.ts --host 0.0.0.0",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check-config": "node scripts/check-config.mjs"
   },
   "devDependencies": {
     "@radix-ui/react-dialog": "^1.1.7",
@@ -21,8 +22,10 @@
     "@replit/vite-plugin-cartographer": "catalog:",
     "@replit/vite-plugin-dev-banner": "catalog:",
     "@replit/vite-plugin-runtime-error-modal": "catalog:",
+    "@rollup/plugin-yaml": "^4.1.2",
     "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/vite": "catalog:",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "catalog:",
     "@types/qrcode": "^1.5.6",
     "@types/react": "catalog:",
@@ -31,6 +34,7 @@
     "class-variance-authority": "catalog:",
     "clsx": "catalog:",
     "framer-motion": "catalog:",
+    "js-yaml": "^4.1.1",
     "lucide-react": "catalog:",
     "qrcode": "^1.5.4",
     "react": "catalog:",

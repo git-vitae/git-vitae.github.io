@@ -98,9 +98,9 @@ function ExperienceBlock() {
               </span>
             </div>
             <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{job.description}</p>
-            {job.highlights?.length > 0 && (
+            {(job.highlights ?? []).length > 0 && (
               <div className="flex flex-wrap gap-1.5 mt-1.5">
-                {job.highlights.map((h) => (
+                {(job.highlights ?? []).map((h) => (
                   <span key={h} className="text-[10px] px-1.5 py-0.5 rounded bg-primary/8 text-primary border border-primary/15">
                     {h}
                   </span>
