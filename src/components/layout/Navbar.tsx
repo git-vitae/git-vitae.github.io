@@ -52,14 +52,16 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
 
       setScrolled(scrollY > 20);
 
-      // Near page bottom → force contact active
-      if (scrollY + windowH >= docH - 80 && sectionIds.includes("contact")) {
+      // Near page bottom → force contact active.
+      // Guard with scrollY > 0 so this never fires on the initial layout pass
+      // before the DOM has fully rendered (docH may equal windowH at that point).
+      if (scrollY > 0 && scrollY + windowH >= docH - 60 && sectionIds.includes("contact")) {
         setActiveSection("contact");
         return;
       }
 
-      // Pick the last section whose top edge is above 30% of viewport
-      const trigger = scrollY + windowH * 0.3;
+      // Pick the last section whose top edge has crossed 40% down the viewport
+      const trigger = scrollY + windowH * 0.4;
       let current = "";
       for (const id of sectionIds) {
         const el = document.getElementById(id);
@@ -68,9 +70,15 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
       setActiveSection(current);
     };
 
+    // Defer the initial sync one frame so the browser has finished layout;
+    // without this, scrollHeight may equal windowHeight and Contact gets
+    // incorrectly flagged as "near bottom" on every cold load.
+    let raf = requestAnimationFrame(sync);
     window.addEventListener("scroll", sync, { passive: true });
-    sync();
-    return () => window.removeEventListener("scroll", sync);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", sync);
+    };
   }, []);
 
   // Close "More" dropdown on outside click
@@ -114,7 +122,7 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
         <a
           href="#hero"
           onClick={(e) => handleNavClick(e, "#hero")}
-          className="font-serif text-xl font-light tracking-wide text-foreground hover:text-primary transition-colors flex-shrink-0"
+          className="font-serif text-2xl font-light tracking-wide text-foreground hover:text-primary transition-colors flex-shrink-0"
           data-testid="nav-logo"
         >
           {(() => {

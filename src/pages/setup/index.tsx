@@ -437,12 +437,13 @@ function FileEditorMockup() {
 
 function StepEdit({ onNext }: { onNext: () => void }) {
   const fields = [
-    { field: "name",     desc: "Your full name",             example: '"Jane Doe"' },
-    { field: "title",    desc: "Your job title or role",     example: '"UX Designer"' },
-    { field: "email",    desc: "Your email address",         example: '"jane@example.com"' },
-    { field: "tagline",  desc: "One line about yourself",    example: '"I design things people love."' },
-    { field: "location", desc: "Where you're based",         example: '"London, UK"' },
-    { field: "siteMode", desc: "Change to show your portfolio", example: '"portfolio"' },
+    { field: "name",     desc: "Your full name",                   example: '"Jane Doe"' },
+    { field: "title",    desc: "Your job title or role",           example: '"UX Designer"' },
+    { field: "email",    desc: "Your email address",               example: '"jane@example.com"' },
+    { field: "tagline",  desc: "One line about yourself",          example: '"I design things people love."' },
+    { field: "location", desc: "Where you're based",               example: '"London, UK"' },
+    { field: "siteUrl",  desc: "Your GitHub Pages URL",            example: '"https://janedoe.github.io"' },
+    { field: "siteMode", desc: "Change to show your portfolio",    example: '"portfolio"' },
   ];
 
   return (
@@ -551,14 +552,24 @@ function StepEdit({ onNext }: { onNext: () => void }) {
             </div>
           </div>
 
-          <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
-            <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-1">⚠️ Important</p>
-            <p className="text-xs text-amber-700/80 dark:text-amber-400/80">
-              Don't forget to change <span className="font-mono">siteMode</span> from{" "}
-              <span className="font-mono">"landing"</span> to{" "}
-              <span className="font-mono">"portfolio"</span> — otherwise you'll still see the
-              GitVita introduction page instead of your portfolio.
-            </p>
+          <div className="space-y-3">
+            <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
+              <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-1">⚠️ Important — siteMode</p>
+              <p className="text-xs text-amber-700/80 dark:text-amber-400/80">
+                Change <span className="font-mono">siteMode</span> from{" "}
+                <span className="font-mono">"landing"</span> to{" "}
+                <span className="font-mono">"portfolio"</span> — otherwise you'll still see the
+                GitVita introduction page instead of your portfolio.
+              </p>
+            </div>
+            <div className="p-4 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20">
+              <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-1">⚠️ Important — siteUrl</p>
+              <p className="text-xs text-amber-700/80 dark:text-amber-400/80">
+                Set <span className="font-mono">siteUrl</span> to your real GitHub Pages address, e.g.{" "}
+                <span className="font-mono">https://janedoe.github.io</span>. If you leave it as the
+                placeholder, section share-links and your RSS feed will point to the wrong URL.
+              </p>
+            </div>
           </div>
         </div>
       </div>
