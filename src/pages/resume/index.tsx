@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Printer, ArrowLeft, Columns2, AlignJustify,
-  Mail, MapPin, Globe, ExternalLink,
+  Mail, MapPin, Globe, ExternalLink, Share2,
 } from "lucide-react";
 import { FaGithub, FaLinkedin } from "react-icons/fa6";
 import { config } from "@/portfolio.config";
 import { applyThemePalette } from "@/lib/themes";
+import { ShareModal } from "@/components/ShareModal";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -87,7 +88,7 @@ function ExperienceBlock() {
       <SectionLabel>Experience</SectionLabel>
       <div className="space-y-4">
         {config.experience.map((job, i) => (
-          <div key={i}>
+          <div key={i} className="break-inside-avoid">
             <div className="flex items-baseline justify-between gap-2 flex-wrap">
               <div>
                 <span className="font-semibold text-sm text-foreground">{job.role}</span>
@@ -125,7 +126,7 @@ function ProjectsBlock({ condensed = false }: { condensed?: boolean }) {
       <SectionLabel>Projects</SectionLabel>
       <div className="space-y-3">
         {shown.map((proj, i) => (
-          <div key={i}>
+          <div key={i} className="break-inside-avoid">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="font-semibold text-sm text-foreground">{proj.name}</span>
               {(proj.liveUrl || proj.repoUrl) && (
@@ -180,7 +181,7 @@ function EducationBlock() {
       <SectionLabel>Education</SectionLabel>
       <div className="space-y-2">
         {config.education.map((edu, i) => (
-          <div key={i}>
+          <div key={i} className="break-inside-avoid">
             <div className="flex items-baseline justify-between gap-2 flex-wrap">
               <span className="font-semibold text-xs text-foreground">{edu.degree}</span>
               <span className="font-mono text-[10px] text-muted-foreground">{edu.period}</span>
@@ -200,7 +201,7 @@ function CertificationsBlock() {
       <SectionLabel>Certifications</SectionLabel>
       <div className="space-y-1.5">
         {config.certifications.map((cert, i) => (
-          <div key={i} className="flex items-start gap-2">
+          <div key={i} className="flex items-start gap-2 break-inside-avoid">
             <div className="flex-1 min-w-0">
               <span className="text-xs font-medium text-foreground leading-tight block">{cert.title}</span>
               <span className="text-[10px] text-muted-foreground">{cert.issuer}</span>
@@ -223,6 +224,43 @@ function LanguagesBlock() {
           <div key={lang.name} className="flex items-center justify-between text-xs">
             <span className="font-medium text-foreground">{lang.name}</span>
             <span className="text-muted-foreground">{lang.level}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PublicationsBlock() {
+  const pubs = config.publications ?? [];
+  if (!isSectionVisible("publications") || !pubs.length) return null;
+  return (
+    <div className="mb-6">
+      <SectionLabel>Publications</SectionLabel>
+      <div className="space-y-3">
+        {pubs.map((pub, i) => (
+          <div key={i} className="break-inside-avoid">
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-foreground leading-snug">
+                  {pub.url ? (
+                    <a href={pub.url} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                      {pub.title}
+                    </a>
+                  ) : pub.title}
+                </p>
+                <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">
+                  {pub.authors && <span>{pub.authors} · </span>}
+                  <span className="italic">{pub.venue}</span>
+                  {pub.year && <span>, {pub.year}</span>}
+                </p>
+              </div>
+              {pub.url && (
+                <a href={pub.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 text-primary hover:opacity-70 mt-0.5">
+                  <ExternalLink size={10} />
+                </a>
+              )}
+            </div>
           </div>
         ))}
       </div>
@@ -259,6 +297,7 @@ function TwoColumnLayout() {
           {isSectionVisible("about") && <AboutBlock />}
           <ExperienceBlock />
           <ProjectsBlock />
+          <PublicationsBlock />
         </main>
       </div>
     </div>
@@ -274,6 +313,7 @@ function ClassicLayout() {
       {isSectionVisible("about") && <AboutBlock />}
       <ExperienceBlock />
       <ProjectsBlock condensed />
+      <PublicationsBlock />
       <div className="grid grid-cols-2 gap-6">
         <div>
           <SkillsBlock />
@@ -294,6 +334,7 @@ export function ResumePage({ theme, onToggleTheme }: ResumePageProps) {
   const [layout, setLayout] = useState<Layout>(() => {
     return (localStorage.getItem("resume-layout") as Layout) ?? "two-column";
   });
+  const [shareOpen, setShareOpen] = useState(false);
 
   const setAndStore = (l: Layout) => {
     setLayout(l);
@@ -354,6 +395,13 @@ export function ResumePage({ theme, onToggleTheme }: ResumePageProps) {
         {/* Right controls */}
         <div className="flex items-center gap-2">
           <button
+            onClick={() => setShareOpen(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all"
+          >
+            <Share2 size={13} />
+            <span className="hidden sm:inline">Share</span>
+          </button>
+          <button
             onClick={() => window.print()}
             className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-xs font-medium tracking-wide hover:opacity-90 transition-opacity"
           >
@@ -393,8 +441,16 @@ export function ResumePage({ theme, onToggleTheme }: ResumePageProps) {
           }
           /* Belt-and-suspenders: remove any leftover min-height on the paper */
           .resume-paper { min-height: 0 !important; }
+          /* Prevent individual entries from splitting mid-page */
+          .break-inside-avoid { break-inside: avoid; page-break-inside: avoid; }
+          /* Prevent orphan/widow lines at page breaks */
+          p, li { orphans: 2; widows: 2; }
+          /* Keep section labels with their first entry */
+          h1, h2, h3, h4 { break-after: avoid; page-break-after: avoid; }
         }
       `}</style>
+
+      <ShareModal open={shareOpen} onClose={() => setShareOpen(false)} />
     </div>
   );
 }

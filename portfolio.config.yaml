@@ -54,6 +54,7 @@ sections:
   - { id: projects,       show: true  }
   - { id: education,      show: true  }
   - { id: certifications, show: true  }
+  - { id: publications,   show: false }
   - { id: testimonials,   show: true  }
   - { id: contact,        show: true  }
 
@@ -184,6 +185,27 @@ certifications:
     credentialUrl: ""
     badgeUrl: ""
     tags: [Data, GCP, BigQuery]
+
+
+# ── Publications ───────────────────────────────────────────────────────
+# Optional — ideal for researchers, academics, and technical writers.
+# type options: conference | journal | preprint | book-chapter | workshop
+publications:
+  - title: "Scaling Real-Time Collaboration in Distributed Systems"
+    authors: "Rivera A, Chen L, Patel S"
+    venue: "USENIX ATC 2023"
+    year: "2023"
+    url: "https://arxiv.org/abs/example"
+    type: "conference"
+    tags: [distributed-systems, real-time, scalability]
+
+  - title: "Micro-Frontend Architecture Patterns for Large-Scale SPAs"
+    authors: "Rivera A"
+    venue: "IEEE Software"
+    year: "2022"
+    url: ""
+    type: "journal"
+    tags: [frontend, architecture, micro-frontends]
 
 # ── Testimonials ───────────────────────────────────────────────────────
 testimonials:

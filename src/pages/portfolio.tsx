@@ -7,6 +7,7 @@ import { Experience } from "@/components/sections/Experience";
 import { Projects } from "@/components/sections/Projects";
 import { Education } from "@/components/sections/Education";
 import { Certifications } from "@/components/sections/Certifications";
+import { Publications } from "@/components/sections/Publications";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Contact } from "@/components/sections/Contact";
 import { config } from "@/portfolio.config";
@@ -26,6 +27,7 @@ const SECTION_COMPONENTS: Record<SectionId, React.ComponentType> = {
   projects:       Projects,
   education:      Education,
   certifications: Certifications,
+  publications:   Publications,
   testimonials:   Testimonials,
   contact:        Contact,
 };
