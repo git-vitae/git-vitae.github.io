@@ -40,7 +40,7 @@ export function DemoBanner({ onDismiss }: DemoBannerProps) {
           <span className="opacity-80 sm:hidden font-semibold text-white">GitVitae demo</span>
 
           <a
-            href="https://github.com/git-vita/git-vita.github.io"
+            href="https://github.com/gitvitae/gitvitae.github.io"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 transition-colors font-semibold text-[11px] uppercase tracking-widest whitespace-nowrap"

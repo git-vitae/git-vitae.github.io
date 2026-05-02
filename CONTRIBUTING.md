@@ -21,8 +21,8 @@ especially welcome.
 ## Running locally
 
 ```bash
-git clone https://github.com/git-vita/git-vita.github.io
-cd git-vita.github.io
+git clone https://github.com/gitvitae/gitvitae.github.io
+cd gitvitae.github.io
 pnpm install
 pnpm dev          # http://localhost:3000
 ```

@@ -4,7 +4,7 @@ import { X, Sparkles, ExternalLink, RefreshCw } from "lucide-react";
 import bundledChangelog from "../../CHANGELOG.md?raw";
 
 const CHANGELOG_URL =
-  "https://raw.githubusercontent.com/git-vita/git-vita.github.io/main/CHANGELOG.md";
+  "https://raw.githubusercontent.com/gitvitae/gitvitae.github.io/main/CHANGELOG.md";
 const CACHE_KEY = "gitvitae-changelog-v1";
 
 interface Props {
@@ -156,7 +156,7 @@ export function ChangelogModal({ open, onClose }: Props) {
               </div>
               <div className="flex items-center gap-3">
                 <a
-                  href="https://github.com/git-vita/git-vita.github.io/blob/main/CHANGELOG.md"
+                  href="https://github.com/gitvitae/gitvitae.github.io/blob/main/CHANGELOG.md"
                   target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >

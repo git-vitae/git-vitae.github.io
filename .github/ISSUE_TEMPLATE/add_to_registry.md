@@ -1,6 +1,6 @@
 ---
 name: Add me to the registry
-about: List your GitVita portfolio on git-vita.github.io so recruiters can discover you
+about: List your GitVitae portfolio on gitvitae.github.io so recruiters can discover you
 labels: registry
 ---
 
@@ -31,4 +31,4 @@ labels: registry
 
 - [ ] I confirm this portfolio is mine
 - [ ] The portfolio URL is publicly accessible
-- [ ] I'm OK with my name and portfolio URL being listed publicly on git-vita.github.io
+- [ ] I'm OK with my name and portfolio URL being listed publicly on gitvitae.github.io

@@ -67,7 +67,7 @@ jobs:
         run: |
           REPO="${{ github.event.repository.name }}"
           OWNER="${{ github.repository_owner }}"
-          if [ "$OWNER" = "git-vita" ] && [ "$REPO" = "git-vita.github.io" ]; then
+          if [ "$OWNER" = "gitvitae" ] && [ "$REPO" = "gitvitae.github.io" ]; then
             echo "value=true" >> $GITHUB_OUTPUT
           else
             echo "value=false" >> $GITHUB_OUTPUT

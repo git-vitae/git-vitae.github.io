@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 import bundledChangelog from "../../../CHANGELOG.md?raw";
 
-const GITHUB_TEMPLATE_URL = "https://github.com/git-vita/git-vita.github.io/generate";
+const GITHUB_TEMPLATE_URL = "https://github.com/gitvitae/gitvitae.github.io/generate";
 const GITHUB_SIGNUP_URL   = "https://github.com/signup";
 const GITHUB_PAGES_DOCS   = "https://docs.github.com/en/pages";
 
@@ -215,7 +215,7 @@ function UseTemplateMockup() {
         </div>
         <div className="flex-1">
           <div className="bg-background border border-border rounded px-2 py-0.5 text-[10px] text-muted-foreground font-mono text-center truncate">
-            github.com/git-vita/git-vita.github.io
+            github.com/gitvitae/gitvitae.github.io
           </div>
         </div>
       </div>
@@ -762,7 +762,7 @@ function StepPages({ onNext }: { onNext: () => void }) {
 // ─── What's new panel (used in StepDone) ──────────────────────────────────────
 
 const CHANGELOG_REMOTE_URL =
-  "https://raw.githubusercontent.com/git-vita/git-vita.github.io/main/CHANGELOG.md";
+  "https://raw.githubusercontent.com/gitvitae/gitvitae.github.io/main/CHANGELOG.md";
 const CACHE_KEY = "gitvitae-changelog-v1";
 
 function WhatsNew() {
@@ -854,7 +854,7 @@ function WhatsNew() {
                 </div>
               ))}
               <a
-                href="https://github.com/git-vita/git-vita.github.io/blob/main/CHANGELOG.md"
+                href="https://github.com/gitvitae/gitvitae.github.io/blob/main/CHANGELOG.md"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline underline-offset-2 mt-1"
@@ -1054,7 +1054,7 @@ function StepDone() {
               <p className="text-xs font-semibold text-foreground mb-0.5">Know when to update</p>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
                 On the{" "}
-                <a href="https://github.com/git-vita/git-vita.github.io" target="_blank" rel="noopener noreferrer"
+                <a href="https://github.com/gitvitae/gitvitae.github.io" target="_blank" rel="noopener noreferrer"
                   className="text-primary hover:underline underline-offset-2">GitVitae repository</a>
                 , click <strong className="text-foreground">Watch → Custom → Releases</strong>. GitHub emails you when a new version ships.
               </p>
@@ -1071,7 +1071,7 @@ function StepDone() {
           See the live demo again
         </a>
         <a
-          href="https://github.com/git-vita/git-vita.github.io"
+          href="https://github.com/gitvitae/gitvitae.github.io"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"

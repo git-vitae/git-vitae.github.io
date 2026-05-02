@@ -127,7 +127,7 @@ export function PortfolioPage({ theme, onToggleTheme, topOffset }: PortfolioPage
       {config.showPoweredBy && (
         <footer className="py-5 px-6 border-t border-border text-center">
           <a
-            href="https://github.com/git-vita/git-vita.github.io"
+            href="https://github.com/gitvitae/gitvitae.github.io"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
