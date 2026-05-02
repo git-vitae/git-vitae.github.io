@@ -128,7 +128,7 @@ function StepAccount({ onNext }: { onNext: () => void }) {
   return (
     <div>
       <div className="text-center mb-8">
-        <p className="text-xs font-mono tracking-widest text-primary uppercase mb-2">Step 1 of 3</p>
+        <p className="text-xs font-mono tracking-widest text-primary uppercase mb-2">Step 1 of 4</p>
         <h2 className="text-2xl sm:text-3xl font-serif font-medium text-foreground mb-3">
           Create a free GitHub account
         </h2>
@@ -275,7 +275,7 @@ function StepTemplate({ onNext }: { onNext: () => void }) {
   return (
     <div>
       <div className="text-center mb-8">
-        <p className="text-xs font-mono tracking-widest text-primary uppercase mb-2">Step 2 of 3</p>
+        <p className="text-xs font-mono tracking-widest text-primary uppercase mb-2">Step 2 of 4</p>
         <h2 className="text-2xl sm:text-3xl font-serif font-medium text-foreground mb-3">
           Copy the portfolio template
         </h2>
@@ -321,6 +321,20 @@ function StepTemplate({ onNext }: { onNext: () => void }) {
                 <InlineCopy text="yourusername.github.io" />
               </div>
               <p className="text-[11px] text-muted-foreground mt-1">Replace "yourusername" with your actual GitHub username.</p>
+              {/* URL benefit callout */}
+              <div className="mt-2 p-2.5 rounded-lg bg-primary/5 border border-primary/15 space-y-1">
+                <p className="text-[10px] font-semibold text-primary">✨ Why this name matters</p>
+                <div className="flex items-center gap-1.5 text-[10px]">
+                  <span className="text-green-600 dark:text-green-400 font-bold">✓</span>
+                  <span className="font-mono text-foreground">yourusername.github.io</span>
+                  <span className="text-muted-foreground">— short, clean URL</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-[10px]">
+                  <span className="text-red-400 font-bold">✗</span>
+                  <span className="font-mono text-muted-foreground line-through">yourusername.github.io/my-portfolio</span>
+                </div>
+                <p className="text-[10px] text-muted-foreground">Naming it <span className="font-mono">username.github.io</span> is the only way to get the short address — any other name adds a long path at the end.</p>
+              </div>
             </div>
           </div>
           <div className="flex gap-3">
@@ -434,7 +448,7 @@ function StepEdit({ onNext }: { onNext: () => void }) {
   return (
     <div>
       <div className="text-center mb-8">
-        <p className="text-xs font-mono tracking-widest text-primary uppercase mb-2">Step 3 of 3</p>
+        <p className="text-xs font-mono tracking-widest text-primary uppercase mb-2">Step 4 of 4</p>
         <h2 className="text-2xl sm:text-3xl font-serif font-medium text-foreground mb-3">
           Fill in your details
         </h2>
@@ -518,6 +532,148 @@ function StepEdit({ onNext }: { onNext: () => void }) {
           className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
         >
           I've saved my changes — finish!
+          <ArrowRight size={14} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Step 3: Enable GitHub Pages ─────────────────────────────────────────────
+
+function GitHubPagesMockup() {
+  return (
+    <div className="rounded-2xl border border-border overflow-hidden shadow-lg bg-background max-w-sm mx-auto">
+      {/* Browser chrome */}
+      <div className="flex items-center gap-2 px-3 py-2.5 bg-secondary border-b border-border">
+        <div className="flex gap-1">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
+          <div className="w-2.5 h-2.5 rounded-full bg-green-400/60" />
+        </div>
+        <div className="flex-1">
+          <div className="bg-background border border-border rounded px-2 py-0.5 text-[10px] text-muted-foreground font-mono text-center truncate">
+            github.com/janedoe/janedoe.github.io/settings/pages
+          </div>
+        </div>
+      </div>
+      {/* Layout: sidebar + content */}
+      <div className="flex divide-x divide-border text-[10px]">
+        {/* Sidebar */}
+        <div className="w-28 shrink-0 p-3 bg-secondary/40 space-y-0.5">
+          <p className="text-muted-foreground font-medium mb-2">Settings</p>
+          {["General", "Access", "Code security", "Branches"].map((item) => (
+            <div key={item} className="px-2 py-1 rounded text-muted-foreground">{item}</div>
+          ))}
+          <div className="px-2 py-1 rounded bg-primary/10 text-primary font-semibold ring-1 ring-primary/20">
+            Pages
+          </div>
+          {["Integrations", "Environments"].map((item) => (
+            <div key={item} className="px-2 py-1 rounded text-muted-foreground">{item}</div>
+          ))}
+        </div>
+        {/* Main panel */}
+        <div className="flex-1 p-4 space-y-3">
+          <p className="font-semibold text-foreground text-[11px]">GitHub Pages</p>
+          {/* Live banner */}
+          <div className="p-2 rounded-lg bg-[#2ea44f]/10 border border-[#2ea44f]/30 text-[#2ea44f] font-medium space-y-0.5">
+            <div>✓ Your site will be live at</div>
+            <div className="font-mono">https://janedoe.github.io</div>
+          </div>
+          <div>
+            <p className="text-muted-foreground mb-1">Build and deployment · Source</p>
+            <div className="flex items-center justify-between px-2 py-1.5 rounded border border-primary bg-background ring-1 ring-primary/30">
+              <span className="text-foreground font-medium">GitHub Actions</span>
+              <span className="text-muted-foreground">▾</span>
+            </div>
+            <div className="mt-1 text-primary font-medium">👆 Select this option</div>
+          </div>
+          <div className="py-1.5 rounded bg-[#2ea44f] text-white font-semibold text-center">
+            Save
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StepPages({ onNext }: { onNext: () => void }) {
+  return (
+    <div>
+      <div className="text-center mb-8">
+        <p className="text-xs font-mono tracking-widest text-primary uppercase mb-2">Step 3 of 4</p>
+        <h2 className="text-2xl sm:text-3xl font-serif font-medium text-foreground mb-3">
+          Enable GitHub Pages
+        </h2>
+        <p className="text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
+          GitHub Pages is the free hosting service that makes your portfolio visible on the internet.
+          You need to switch it on once — it takes about 30 seconds.
+        </p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8 items-start mb-6">
+        <GitHubPagesMockup />
+
+        <div className="space-y-5">
+          <div className="flex gap-3">
+            <div className="w-6 h-6 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</div>
+            <div>
+              <p className="text-sm font-medium text-foreground mb-1">Open your repository settings</p>
+              <p className="text-xs text-muted-foreground">
+                Go to your new repository on GitHub. Click the <strong className="text-foreground">Settings</strong> tab
+                near the top of the page (it has a gear ⚙️ icon).
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="w-6 h-6 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</div>
+            <div>
+              <p className="text-sm font-medium text-foreground mb-1">Click "Pages" in the sidebar</p>
+              <p className="text-xs text-muted-foreground">
+                In the left-hand menu, scroll down until you see <strong className="text-foreground">Pages</strong>. Click it.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="w-6 h-6 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</div>
+            <div>
+              <p className="text-sm font-medium text-foreground mb-1">Set Source to "GitHub Actions"</p>
+              <p className="text-xs text-muted-foreground">
+                Under <strong className="text-foreground">Build and deployment</strong>, click the Source dropdown
+                and choose <strong className="text-foreground">GitHub Actions</strong>. Then click{" "}
+                <strong className="text-foreground">Save</strong>.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <div className="w-6 h-6 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">4</div>
+            <div>
+              <p className="text-sm font-medium text-foreground mb-1">Wait ~2 minutes</p>
+              <p className="text-xs text-muted-foreground">
+                GitHub will build and publish your site automatically.
+                You'll see a green banner saying your site is live at{" "}
+                <span className="font-mono bg-secondary px-1 rounded text-foreground">
+                  yourusername.github.io
+                </span> once it's done.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-xl bg-primary/5 border border-primary/15">
+            <p className="text-xs text-primary font-medium mb-1">💡 Don't see the Pages option?</p>
+            <p className="text-xs text-muted-foreground">
+              If your repository is private, Pages won't appear. Make sure you created a <strong className="text-foreground">Public</strong> repository when copying the template.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex justify-end">
+        <button
+          onClick={onNext}
+          className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:opacity-90 transition-opacity"
+        >
+          Pages is enabled — continue
           <ArrowRight size={14} />
         </button>
       </div>
@@ -612,7 +768,7 @@ function StepDone() {
 // ─── Progress bar ─────────────────────────────────────────────────────────────
 
 function ProgressBar({ current, total }: { current: number; total: number }) {
-  const labels = ["Welcome", "GitHub account", "Copy template", "Your details", "Done!"];
+  const labels = ["Welcome", "GitHub account", "Copy template", "Enable Pages", "Your details", "Done!"];
   return (
     <div className="mb-10">
       <div className="flex items-center gap-2 mb-3">
@@ -645,7 +801,7 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
 
 // ─── Main wizard ──────────────────────────────────────────────────────────────
 
-const STEP_COUNT = 5;
+const STEP_COUNT = 6;
 
 export function SetupPage() {
   const [step, setStep] = useState(0);
@@ -657,6 +813,7 @@ export function SetupPage() {
     <StepWelcome onNext={next} />,
     <StepAccount onNext={next} />,
     <StepTemplate onNext={next} />,
+    <StepPages onNext={next} />,
     <StepEdit onNext={next} />,
     <StepDone />,
   ];
