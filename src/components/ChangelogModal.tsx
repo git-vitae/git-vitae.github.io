@@ -14,22 +14,18 @@ interface Props {
 }
 
 function useChangelog(open: boolean) {
-  const [md, setMd]             = useState<string>(bundledChangelog);
+  const [md, setMd]               = useState<string>(bundledChangelog);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (!open) return;
-
     const cached = sessionStorage.getItem(CACHE_KEY);
     if (cached) { setMd(cached); return; }
 
     setRefreshing(true);
     fetch(CHANGELOG_URL)
       .then((r) => (r.ok ? r.text() : Promise.reject()))
-      .then((text) => {
-        sessionStorage.setItem(CACHE_KEY, text);
-        setMd(text);
-      })
+      .then((text) => { sessionStorage.setItem(CACHE_KEY, text); setMd(text); })
       .catch(() => {})
       .finally(() => setRefreshing(false));
   }, [open]);
@@ -76,9 +72,7 @@ export function ChangelogModal({ open, onClose }: Props) {
               <div className="flex items-center gap-2.5">
                 <Sparkles size={16} className="text-primary" />
                 <span className="text-sm font-semibold text-foreground">What's new in GitVita</span>
-                {refreshing && (
-                  <RefreshCw size={11} className="text-muted-foreground animate-spin" />
-                )}
+                {refreshing && <RefreshCw size={11} className="text-muted-foreground animate-spin" />}
               </div>
               <div className="flex items-center gap-3">
                 <a
@@ -102,17 +96,7 @@ export function ChangelogModal({ open, onClose }: Props) {
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto px-6 py-5">
-              <div className="prose prose-sm dark:prose-invert max-w-none
-                prose-headings:font-serif prose-headings:font-medium
-                prose-h1:text-xl prose-h1:mb-4
-                prose-h2:text-base prose-h2:mt-6 prose-h2:mb-3 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border
-                prose-h3:text-sm prose-h3:font-semibold prose-h3:mt-4 prose-h3:mb-2
-                prose-p:text-sm prose-p:leading-relaxed prose-p:text-muted-foreground
-                prose-li:text-sm prose-li:text-muted-foreground prose-li:leading-relaxed
-                prose-strong:text-foreground prose-strong:font-semibold
-                prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:rounded prose-code:text-xs prose-code:font-mono
-                prose-pre:bg-secondary prose-pre:border prose-pre:border-border prose-pre:rounded-xl prose-pre:text-xs
-                prose-hr:border-border prose-a:text-primary">
+              <div className="prose-blog">
                 <ReactMarkdown>{md}</ReactMarkdown>
               </div>
             </div>

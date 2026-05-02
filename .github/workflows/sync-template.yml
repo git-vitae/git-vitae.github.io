@@ -1,0 +1,64 @@
+name: Sync GitVita Template
+
+# Manually triggered from your repository's Actions tab.
+# Run this when you want to pull in the latest GitVita features.
+# Your portfolio.config.yaml is ALWAYS preserved — it is never overwritten.
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type YES to merge the latest GitVita template into your portfolio"
+        required: true
+        default: ""
+
+jobs:
+  sync:
+    if: ${{ github.event.inputs.confirm == 'YES' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout your portfolio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Save your personal config
+        run: cp portfolio.config.yaml /tmp/my-portfolio-config.yaml
+
+      - name: Add GitVita upstream remote
+        run: git remote add git-vita https://github.com/git-vita/git-vita.github.io || true
+
+      - name: Fetch latest template
+        run: git fetch git-vita main
+
+      - name: Merge template updates
+        run: |
+          git merge git-vita/main \
+            --allow-unrelated-histories \
+            --no-edit \
+            -m "chore: sync GitVita template updates" \
+          || (echo "Merge conflict — restoring config and aborting" && git merge --abort && exit 1)
+
+      - name: Restore your personal config (never overwritten)
+        run: |
+          cp /tmp/my-portfolio-config.yaml portfolio.config.yaml
+          git add portfolio.config.yaml
+          git diff --staged --quiet || git commit --amend --no-edit
+
+      - name: Push to your repository
+        run: git push origin ${{ github.ref_name }}
+
+      - name: Done
+        run: |
+          echo ""
+          echo "✓ GitVita template synced successfully."
+          echo "  Your portfolio.config.yaml has been preserved."
+          echo "  GitHub Pages will redeploy in 1–2 minutes."

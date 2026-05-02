@@ -281,9 +281,27 @@ function StepTemplate({ onNext }: { onNext: () => void }) {
           Copy the portfolio template
         </h2>
         <p className="text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
-          You're going to make your own personal copy of the GitVita template. Think of it
-          like duplicating a document — your copy is completely yours to edit.
+          You're going to make your own personal copy of the GitVita template. There are two ways — pick whichever feels simpler.
         </p>
+      </div>
+
+      {/* Two-path explanation */}
+      <div className="w-full max-w-xl mx-auto mb-8 grid sm:grid-cols-2 gap-3 text-left">
+        <div className="p-3.5 rounded-xl border-2 border-primary/30 bg-primary/5">
+          <p className="text-xs font-semibold text-foreground mb-1 flex items-center gap-1.5">
+            <span className="px-1.5 py-0.5 rounded text-[10px] bg-primary text-primary-foreground font-bold">Recommended</span>
+            "Use this template"
+          </p>
+          <p className="text-[11px] text-muted-foreground leading-relaxed">
+            Creates a fresh copy with no git history. Cleaner and simpler for most people. Future updates via the Actions tab or <code className="text-primary bg-secondary px-1 rounded font-mono">pnpm upgrade-template</code>.
+          </p>
+        </div>
+        <div className="p-3.5 rounded-xl border border-border">
+          <p className="text-xs font-semibold text-foreground mb-1">Fork</p>
+          <p className="text-[11px] text-muted-foreground leading-relaxed">
+            Links your copy back to GitVita. You get GitHub's built-in <strong className="text-foreground">"Sync fork"</strong> button for one-click updates — handy if you're already comfortable with git.
+          </p>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-8 items-start mb-6">
@@ -305,8 +323,8 @@ function StepTemplate({ onNext }: { onNext: () => void }) {
           <div className="flex gap-3">
             <div className="w-6 h-6 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</div>
             <div>
-              <p className="text-sm font-medium text-foreground mb-1">Click "Use this template"</p>
-              <p className="text-xs text-muted-foreground">You'll see a green button near the top. Click it and choose "Create a new repository."</p>
+              <p className="text-sm font-medium text-foreground mb-1">Click "Use this template" <span className="text-muted-foreground font-normal">or</span> "Fork"</p>
+              <p className="text-xs text-muted-foreground">Green "Use this template" button → "Create a new repository" is the quickest path. Or click "Fork" in the top-right if you want the sync button later.</p>
             </div>
           </div>
           <div className="flex gap-3">
@@ -985,55 +1003,61 @@ function StepDone() {
           </p>
         </div>
         <div className="divide-y divide-border">
-          {/* Path 1 — GitHub Sync fork */}
+          {/* Path 1 — GitHub Actions (works for both "Use template" and Fork) */}
           <div className="p-4 flex items-start gap-3">
             <span className="mt-0.5 w-6 h-6 rounded-full bg-[#2ea44f]/10 border border-[#2ea44f]/20 text-[#2ea44f] font-bold text-[10px] flex items-center justify-center shrink-0">1</span>
             <div>
               <p className="text-xs font-semibold text-foreground mb-0.5">
-                Recommended — GitHub "Sync fork" button
+                Recommended — one-click from the Actions tab
+                <span className="ml-1.5 text-[10px] font-normal text-muted-foreground">(works for both "Use template" and Fork)</span>
               </p>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
-                Go to your repository on GitHub. If the template has new commits you'll see a <strong className="text-foreground">"Sync fork"</strong> banner near the top.
-                Click it, then click <strong className="text-foreground">"Update branch"</strong>. GitHub re-deploys automatically.
-                Because you only ever edit <code className="text-primary text-[10px] bg-secondary px-1 rounded font-mono">portfolio.config.yaml</code>, there are no conflicts.
+                Your repository ships with a <strong className="text-foreground">Sync GitVita Template</strong> workflow.
+                Go to your repo → <strong className="text-foreground">Actions</strong> → <strong className="text-foreground">Sync GitVita Template</strong> → <strong className="text-foreground">Run workflow</strong> → type <code className="text-primary text-[10px] bg-secondary px-1 rounded font-mono">YES</code> → click the green button.
+                Your <code className="text-primary text-[10px] bg-secondary px-1 rounded font-mono">portfolio.config.yaml</code> is always preserved automatically.
               </p>
             </div>
           </div>
-          {/* Path 2 — CLI */}
+          {/* Path 2 — Sync fork (only for forks) */}
           <div className="p-4 flex items-start gap-3">
             <span className="mt-0.5 w-6 h-6 rounded-full bg-primary/10 border border-primary/20 text-primary font-bold text-[10px] flex items-center justify-center shrink-0">2</span>
             <div>
               <p className="text-xs font-semibold text-foreground mb-0.5">
-                Terminal — one command
+                GitHub "Sync fork" button
+                <span className="ml-1.5 text-[10px] font-normal text-muted-foreground">(only if you used Fork, not "Use template")</span>
+              </p>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">
+                If you forked the repo, GitHub shows a <strong className="text-foreground">"Sync fork"</strong> banner on your repo page when there are new template commits. Click it, then <strong className="text-foreground">"Update branch"</strong>. Fastest option if you have it — but it won't appear for "Use this template" repos.
+              </p>
+            </div>
+          </div>
+          {/* Path 3 — CLI */}
+          <div className="p-4 flex items-start gap-3">
+            <span className="mt-0.5 w-6 h-6 rounded-full bg-secondary border border-border text-muted-foreground font-bold text-[10px] flex items-center justify-center shrink-0">3</span>
+            <div>
+              <p className="text-xs font-semibold text-foreground mb-0.5">
+                Terminal
+                <span className="ml-1.5 text-[10px] font-normal text-muted-foreground">(works for both)</span>
               </p>
               <p className="text-[11px] text-muted-foreground leading-relaxed mb-2">
-                If you prefer working locally, clone your repo, then run:
+                Clone your repo locally and run:
               </p>
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-secondary border border-border font-mono text-[11px] text-foreground">
                 pnpm upgrade-template
                 <InlineCopy text="pnpm upgrade-template" />
               </div>
-              <p className="text-[10px] text-muted-foreground mt-1.5 leading-relaxed">
-                The script adds the GitVita upstream remote, fetches the latest code, and merges it — skipping your config file.
-              </p>
             </div>
           </div>
           {/* Watch releases */}
           <div className="p-4 flex items-start gap-3">
             <span className="mt-0.5 w-6 h-6 rounded-full bg-secondary border border-border text-muted-foreground font-bold text-[10px] flex items-center justify-center shrink-0">★</span>
             <div>
-              <p className="text-xs font-semibold text-foreground mb-0.5">Get notified automatically</p>
+              <p className="text-xs font-semibold text-foreground mb-0.5">Know when to update</p>
               <p className="text-[11px] text-muted-foreground leading-relaxed">
                 On the{" "}
-                <a
-                  href="https://github.com/git-vita/git-vita.github.io"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline underline-offset-2"
-                >
-                  GitVita repository
-                </a>
-                , click <strong className="text-foreground">Watch → Custom → Releases</strong>. GitHub emails you whenever a new version ships.
+                <a href="https://github.com/git-vita/git-vita.github.io" target="_blank" rel="noopener noreferrer"
+                  className="text-primary hover:underline underline-offset-2">GitVita repository</a>
+                , click <strong className="text-foreground">Watch → Custom → Releases</strong>. GitHub emails you when a new version ships.
               </p>
             </div>
           </div>
