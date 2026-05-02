@@ -273,6 +273,20 @@ testimonials:
       genuinely invested in our success.
     photoUrl: ""
 
+# ── Analytics (optional, always free) ──────────────────────────────────────
+# Two ways to track who visits your portfolio — both free, no credit card:
+#
+# 1. GitHub built-in traffic (zero setup — already there!)
+#    Go to your repository → Insights → Traffic.
+#    Shows unique visitors, page views, and top referrers for the last 14 days.
+#
+# 2. GoatCounter (more detail, privacy-friendly, free forever for personal use)
+#    Sign up at https://www.goatcounter.com — you'll get a short code, e.g. "janedoe"
+#    Uncomment the two lines below and replace "yourcode" with your GoatCounter code:
+#
+# analytics:
+#   goatcounterCode: "yourcode"
+
 # ── Blog ─────────────────────────────────────────────────────────────────────
 # Drop any .md file into the blog/ folder — it becomes a post automatically.
 # Each post starts with a small block called "frontmatter" (between --- lines):

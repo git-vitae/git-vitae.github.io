@@ -764,6 +764,11 @@ function StepDone() {
       title: "Add your own domain",
       desc: 'In your repository settings, find "Pages" and add your custom domain (e.g. janedoe.com).',
     },
+    {
+      emoji: "📊",
+      title: "See who's visiting (free)",
+      desc: "GitHub already tracks your visitors — go to your repository → Insights → Traffic. For more detail, add a free GoatCounter code to your settings file.",
+    },
   ];
 
   return (
