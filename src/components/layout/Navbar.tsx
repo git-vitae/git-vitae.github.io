@@ -95,9 +95,11 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    // Lenis intercepts this click at document level and handles smooth scrolling.
+    // Calling scrollIntoView here would conflict with Lenis and cause jerky scroll
+    // on production builds (GitHub Pages). Lenis owns all anchor scrolling.
     setMobileOpen(false);
     setMoreOpen(false);
   };
@@ -124,7 +126,7 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
         {/* Wordmark */}
         <a
           href="#hero"
-          onClick={(e) => handleNavClick(e, "#hero")}
+          onClick={(e) => handleNavClick(e)}
           className="font-serif text-2xl font-light tracking-wide text-foreground hover:text-primary transition-colors flex-shrink-0"
           data-testid="nav-logo"
         >
@@ -145,7 +147,7 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
               <a
                 key={link.href}
                 href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
+                onClick={(e) => handleNavClick(e)}
                 className={linkClass(isActive)}
                 data-testid={`nav-link-${link.label.toLowerCase()}`}
               >
@@ -201,7 +203,7 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
                         <a
                           key={link.href}
                           href={link.href}
-                          onClick={(e) => handleNavClick(e, link.href)}
+                          onClick={(e) => handleNavClick(e)}
                           className={`flex items-center gap-2.5 px-4 py-2.5 text-xs font-medium tracking-widest uppercase transition-colors ${
                             isActive
                               ? "text-foreground bg-secondary"
@@ -329,7 +331,7 @@ export function Navbar({ theme, onToggleTheme, topOffset }: NavbarProps) {
                   <a
                     key={link.href}
                     href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
+                    onClick={(e) => handleNavClick(e)}
                     className={`flex items-center gap-2.5 px-3 py-3 text-xs font-medium tracking-widest uppercase rounded-md transition-colors ${
                       isActive
                         ? "text-foreground bg-secondary"

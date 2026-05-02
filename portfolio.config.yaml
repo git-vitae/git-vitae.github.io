@@ -23,7 +23,7 @@ tagline: "I build thoughtful software that scales."
 email: "alex@example.com"
 phone: ""                    # Optional — e.g. "+1 (555) 000-1234". Shown in contact section and resume.
 location: "San Francisco, CA"
-avatarUrl: "https://api.dicebear.com/9.x/fun-emoji/svg?seed=puppy&radius=12"  # Demo avatar — replace with your own photo URL (see instructions below)
+avatarUrl: "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Alex&mouth[]=wideSmile&radius=12"  # Demo avatar — replace with your own photo URL (see instructions below)
 # How to add a profile photo (free, no extra account needed):
 #   1. Go to your GitHub repo → click "Add file" → "Upload files"
 #   2. Upload your photo (e.g. avatar.jpg) into a folder called "public/"
