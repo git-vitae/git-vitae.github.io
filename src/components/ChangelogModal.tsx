@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Sparkles, ExternalLink, RefreshCw } from "lucide-react";
-import ReactMarkdown from "react-markdown";
 import bundledChangelog from "../../CHANGELOG.md?raw";
 
 const CHANGELOG_URL =
@@ -13,6 +12,87 @@ interface Props {
   onClose: () => void;
 }
 
+// ── Inline bold/code parser ────────────────────────────────────────────────────
+function Inline({ text }: { text: string }) {
+  const parts = text.split(/(\*\*[^*]+\*\*|`[^`\n]+`)/g);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (part.startsWith("**") && part.endsWith("**"))
+          return <strong key={i} className="text-foreground font-semibold">{part.slice(2, -2)}</strong>;
+        if (part.startsWith("`") && part.endsWith("`"))
+          return <code key={i} className="text-primary bg-secondary px-1 rounded text-[11px] font-mono">{part.slice(1, -1)}</code>;
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
+// ── Changelog renderer ─────────────────────────────────────────────────────────
+function ChangelogBody({ text }: { text: string }) {
+  const lines = text.split("\n");
+  const nodes: React.ReactNode[] = [];
+  let listBuf: string[] = [];
+  let nodeKey = 0;
+
+  function flushList() {
+    if (!listBuf.length) return;
+    nodes.push(
+      <ul key={nodeKey++} className="space-y-1.5 mb-4 pl-0 list-none">
+        {listBuf.map((b, i) => (
+          <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed">
+            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0" />
+            <span><Inline text={b} /></span>
+          </li>
+        ))}
+      </ul>
+    );
+    listBuf = [];
+  }
+
+  for (const raw of lines) {
+    const line = raw.trimEnd();
+
+    if (line.startsWith("# ")) {
+      flushList();
+      nodes.push(
+        <h1 key={nodeKey++} className="text-xl font-serif font-medium text-foreground mb-1">
+          <Inline text={line.slice(2)} />
+        </h1>
+      );
+    } else if (line.startsWith("## ")) {
+      flushList();
+      nodes.push(
+        <h2 key={nodeKey++} className="text-base font-semibold text-foreground mt-7 mb-3 pb-2 border-b border-border">
+          <Inline text={line.slice(3)} />
+        </h2>
+      );
+    } else if (line.startsWith("### ")) {
+      flushList();
+      nodes.push(
+        <h3 key={nodeKey++} className="text-[11px] font-mono font-semibold text-primary uppercase tracking-widest mt-4 mb-2">
+          {line.slice(4)}
+        </h3>
+      );
+    } else if (line.startsWith("- ")) {
+      listBuf.push(line.slice(2));
+    } else if (line.trim() === "---") {
+      flushList();
+      nodes.push(<hr key={nodeKey++} className="border-border my-5" />);
+    } else if (line.trim()) {
+      flushList();
+      nodes.push(
+        <p key={nodeKey++} className="text-sm text-muted-foreground leading-relaxed mb-3">
+          <Inline text={line} />
+        </p>
+      );
+    }
+  }
+  flushList();
+  return <>{nodes}</>;
+}
+
+// ── Hook ───────────────────────────────────────────────────────────────────────
 function useChangelog(open: boolean) {
   const [md, setMd]               = useState<string>(bundledChangelog);
   const [refreshing, setRefreshing] = useState(false);
@@ -33,6 +113,7 @@ function useChangelog(open: boolean) {
   return { md, refreshing };
 }
 
+// ── Modal ──────────────────────────────────────────────────────────────────────
 export function ChangelogModal({ open, onClose }: Props) {
   const { md, refreshing } = useChangelog(open);
 
@@ -47,18 +128,13 @@ export function ChangelogModal({ open, onClose }: Props) {
     <AnimatePresence>
       {open && (
         <>
-          {/* Backdrop */}
           <motion.div
             key="backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={onClose}
             className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm no-print"
           />
-
-          {/* Panel */}
           <motion.div
             key="panel"
             initial={{ opacity: 0, y: 32, scale: 0.97 }}
@@ -77,15 +153,12 @@ export function ChangelogModal({ open, onClose }: Props) {
               <div className="flex items-center gap-3">
                 <a
                   href="https://github.com/git-vita/git-vita.github.io/blob/main/CHANGELOG.md"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target="_blank" rel="noopener noreferrer"
                   className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Full changelog
-                  <ExternalLink size={11} />
+                  View on GitHub <ExternalLink size={11} />
                 </a>
-                <button
-                  onClick={onClose}
+                <button onClick={onClose}
                   className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
                   aria-label="Close"
                 >
@@ -96,9 +169,7 @@ export function ChangelogModal({ open, onClose }: Props) {
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto px-6 py-5">
-              <div className="prose-blog">
-                <ReactMarkdown>{md}</ReactMarkdown>
-              </div>
+              <ChangelogBody text={md} />
             </div>
           </motion.div>
         </>

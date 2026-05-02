@@ -781,13 +781,12 @@ function WhatsNew() {
       .finally(() => setRefreshing(false));
   }, []);
 
-  // Parse just the latest version block (first ## [...] section)
-  const latest = text
-    ? (() => {
-        const blocks = text.split(/^## /m).filter(Boolean);
-        return blocks[0] ? `## ${blocks[0]}` : null;
-      })()
-    : null;
+  // Parse just the latest version block — skip the preamble, find first ## [x.y.z] block
+  const latest = (() => {
+    const blocks = text.split(/^## /m).filter(Boolean);
+    const versionBlock = blocks.find((b) => /^\[/.test(b.trim()));
+    return versionBlock ? `## ${versionBlock}` : null;
+  })();
 
   // Convert the markdown block to simple JSX — no need for full react-markdown here
   const lines = (latest ?? "").split("\n").filter((l) => l.trim());
