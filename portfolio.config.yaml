@@ -4,6 +4,12 @@
 # ║  Run  pnpm check-config  to catch mistakes before deploying.        ║
 # ╚══════════════════════════════════════════════════════════════════════╝
 
+# ── Site mode ──────────────────────────────────────────────────────────
+# "landing" shows the GitVita product page at the root (default for the template).
+# Change to "portfolio" once you have filled in your details — your portfolio
+# will then appear directly at your-name.github.io.
+siteMode: "landing"
+
 # ── Identity ───────────────────────────────────────────── (required) ──
 name: "Alex Rivera"
 title: "Full-Stack Engineer"

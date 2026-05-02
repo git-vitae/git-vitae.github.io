@@ -3,6 +3,7 @@ import { Router, Route, Switch } from "wouter";
 import { useHashLocation } from "wouter/use-hash-location";
 import { PortfolioPage } from "@/pages/portfolio";
 import { ResumePage } from "@/pages/resume";
+import { LandingPage } from "@/pages/landing";
 import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScrollProvider } from "@/components/SmoothScroll";
 import { OpenToWorkBanner } from "@/components/OpenToWorkBanner";
@@ -11,6 +12,45 @@ import { applyThemePalette } from "@/lib/themes";
 import { config } from "@/portfolio.config";
 
 const IS_DEMO = import.meta.env.VITE_DEMO_MODE === "true";
+
+function PortfolioWithChrome({
+  theme,
+  toggleTheme,
+  showDemoBanner,
+}: {
+  theme: string;
+  toggleTheme: () => void;
+  showDemoBanner: boolean;
+}) {
+  const [demoBannerVisible, setDemoBannerVisible] = useState(
+    showDemoBanner && localStorage.getItem("git-vita-demo-dismissed") !== "1"
+  );
+  const [openToWorkVisible, setOpenToWorkVisible] = useState(config.openToWork);
+
+  const demoBannerHeight = demoBannerVisible ? 40 : 0;
+  const totalTopOffset = demoBannerHeight + (openToWorkVisible ? 40 : 0);
+
+  return (
+    <SmoothScrollProvider>
+      <CustomCursor />
+      <DemoBanner onDismiss={() => setDemoBannerVisible(false)} />
+      <OpenToWorkBanner
+        onDismiss={() => setOpenToWorkVisible(false)}
+        topOffset={demoBannerHeight}
+      />
+      <div
+        className="transition-[padding] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{ paddingTop: `${totalTopOffset}px` }}
+      >
+        <PortfolioPage
+          theme={theme}
+          onToggleTheme={toggleTheme}
+          topOffset={totalTopOffset}
+        />
+      </div>
+    </SmoothScrollProvider>
+  );
+}
 
 function App() {
   const [theme, setTheme] = useState<string>(() => {
@@ -21,11 +61,6 @@ function App() {
     }
     return config.defaultTheme;
   });
-
-  const [demoBannerVisible, setDemoBannerVisible] = useState(
-    IS_DEMO && localStorage.getItem("git-vita-demo-dismissed") !== "1"
-  );
-  const [openToWorkVisible, setOpenToWorkVisible] = useState(config.openToWork);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -42,40 +77,38 @@ function App() {
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
 
-  // Each visible banner adds 40px to the top offset
-  const demoBannerHeight = demoBannerVisible ? 40 : 0;
-  const totalTopOffset = demoBannerHeight + (openToWorkVisible ? 40 : 0);
-
   return (
     <Router hook={useHashLocation}>
       <Switch>
-        {/* Resume page */}
+
+        {/* Resume page — always accessible */}
         <Route path="/resume">
           <CustomCursor />
           <ResumePage theme={theme} onToggleTheme={toggleTheme} />
         </Route>
 
-        {/* Portfolio page */}
-        <Route>
-          <SmoothScrollProvider>
-            <CustomCursor />
-            <DemoBanner onDismiss={() => setDemoBannerVisible(false)} />
-            <OpenToWorkBanner
-              onDismiss={() => setOpenToWorkVisible(false)}
-              topOffset={demoBannerHeight}
-            />
-            <div
-              className="transition-[padding] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-              style={{ paddingTop: `${totalTopOffset}px` }}
-            >
-              <PortfolioPage
-                theme={theme}
-                onToggleTheme={toggleTheme}
-                topOffset={totalTopOffset}
-              />
-            </div>
-          </SmoothScrollProvider>
+        {/* Demo portfolio — always accessible at #/demo */}
+        <Route path="/demo">
+          <PortfolioWithChrome
+            theme={theme}
+            toggleTheme={toggleTheme}
+            showDemoBanner={IS_DEMO}
+          />
         </Route>
+
+        {/* Root — landing page or portfolio depending on siteMode */}
+        <Route>
+          {config.siteMode === "landing" ? (
+            <LandingPage theme={theme} onToggleTheme={toggleTheme} />
+          ) : (
+            <PortfolioWithChrome
+              theme={theme}
+              toggleTheme={toggleTheme}
+              showDemoBanner={IS_DEMO}
+            />
+          )}
+        </Route>
+
       </Switch>
     </Router>
   );

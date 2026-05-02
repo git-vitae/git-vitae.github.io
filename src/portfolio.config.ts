@@ -97,6 +97,7 @@ export const config = {
   ...rawConfig,
   colorPreset:    rawConfig.colorPreset  as ColorPreset,
   defaultTheme:   rawConfig.defaultTheme as "system" | "light" | "dark",
+  siteMode:       (rawConfig.siteMode ?? "portfolio") as "landing" | "portfolio",
   sections:       rawConfig.sections     as SectionEntry[],
   languages:      (rawConfig.languages      ?? []) as Language[],
   certifications: (rawConfig.certifications ?? []) as Certification[],
