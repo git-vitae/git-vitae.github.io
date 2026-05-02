@@ -38,6 +38,7 @@ const rawConfig = rawConfigYaml as unknown as {
   certifications: { title: string; issuer: string; date: string; credentialUrl: string; badgeUrl: string; tags: string[] }[];
   publications:   { title: string; authors: string; venue: string; year: string; url: string; type: string; tags: string[] }[];
   testimonials:         { name: string; title: string; company: string; relationship: string; quote: string; photoUrl: string }[];
+  primaryColor?:        string;
   siteUrl?:             string;
   showPoweredBy?:       boolean;
   contactFormEndpoint?: string;
@@ -136,6 +137,7 @@ export const config = {
     title:       rawConfig.blog?.title       ?? "Blog",
     description: rawConfig.blog?.description ?? "",
   },
+  primaryColor:        rawConfig.primaryColor ?? "",
   customColors:   rawConfig.customColors,
   resumeTheme: {
     twoColumn: (rawConfig.resumeTheme?.twoColumn ?? rawConfig.colorPreset) as ColorPreset,

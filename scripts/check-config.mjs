@@ -175,6 +175,14 @@ console.log(D("\n── Theme ────────────────�
 checkEnum("defaultTheme", cfg.defaultTheme, ["light", "dark", "system"]);
 checkEnum("colorPreset",  cfg.colorPreset,  ["indigo", "emerald", "rose", "amber", "ocean", "slate", "custom"]);
 
+if (cfg.primaryColor) {
+  if (!/^#[0-9a-fA-F]{6}$/.test(String(cfg.primaryColor))) {
+    fail("primaryColor", `"${cfg.primaryColor}" isn't a valid hex colour — use the format #rrggbb, e.g. #e11d48`);
+  } else {
+    pass("primaryColor", cfg.primaryColor, "overrides colorPreset");
+  }
+}
+
 // Social
 console.log(D("\n── Social links ─────────────────────────────────────────────────────"));
 const s = cfg.social || {};

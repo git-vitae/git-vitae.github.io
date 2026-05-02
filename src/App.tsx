@@ -11,7 +11,7 @@ import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScrollProvider } from "@/components/SmoothScroll";
 import { OpenToWorkBanner } from "@/components/OpenToWorkBanner";
 import { DemoBanner } from "@/components/DemoBanner";
-import { applyThemePalette } from "@/lib/themes";
+import { applyThemePalette, hexToPresetPalette } from "@/lib/themes";
 import { config } from "@/portfolio.config";
 
 const IS_DEMO = import.meta.env.VITE_DEMO_MODE === "true";
@@ -71,11 +71,13 @@ function App() {
     if (isDark) root.classList.add("dark");
     else root.classList.remove("dark");
     localStorage.setItem("portfolio-theme", theme);
-    applyThemePalette(config.colorPreset, isDark, config.customColors);
+    const palette = config.primaryColor ? hexToPresetPalette(config.primaryColor) : config.customColors;
+    applyThemePalette(config.primaryColor ? "custom" : config.colorPreset, isDark, palette);
   }, [theme]);
 
   useEffect(() => {
-    applyThemePalette(config.colorPreset, theme === "dark", config.customColors);
+    const palette = config.primaryColor ? hexToPresetPalette(config.primaryColor) : config.customColors;
+    applyThemePalette(config.primaryColor ? "custom" : config.colorPreset, theme === "dark", palette);
   }, []);
 
   const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));

@@ -51,6 +51,10 @@ openToWork: true         # Shows "Open to Opportunities" banner when true
 # ── Theme ──────────────────────────────────────────────────────────────
 defaultTheme: "system"   # Options: light | dark | system
 colorPreset: "indigo"    # Options: indigo | emerald | rose | amber | ocean | slate | custom
+# primaryColor: "#6366f1" # Optional — pick any colour you like and paste its hex code here.
+                           # Overrides colorPreset above. To find a hex code:
+                           #   → Google "colour picker", pick a colour, copy the 6-digit code (e.g. #e11d48)
+                           #   → or grab one from coolors.co / your favourite site's colour
 
 resumeTheme:
   twoColumn: "indigo"    # Accent color for the two-column resume layout

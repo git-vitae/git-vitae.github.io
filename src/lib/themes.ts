@@ -151,6 +151,68 @@ export const presets: Record<Exclude<ColorPreset, "custom">, PresetPalette> = {
   },
 };
 
+// ── Hex → palette helper ──────────────────────────────────────────────────────
+
+/**
+ * Convert a 6-digit hex color to [hue, saturation, lightness].
+ */
+export function hexToHsl(hex: string): [number, number, number] {
+  const c = hex.replace("#", "");
+  const r = parseInt(c.slice(0, 2), 16) / 255;
+  const g = parseInt(c.slice(2, 4), 16) / 255;
+  const b = parseInt(c.slice(4, 6), 16) / 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const l   = (max + min) / 2;
+  let h = 0, s = 0;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return [Math.round(h * 360), Math.round(s * 100), Math.round(l * 100)];
+}
+
+/**
+ * Build a full light/dark palette from any hex color.
+ * Used when the user sets `primaryColor` in their config.
+ */
+export function hexToPresetPalette(hex: string): PresetPalette {
+  const [h, s, l] = hexToHsl(hex);
+
+  // Keep lightness in a readable range for both modes
+  const lightL = Math.max(Math.min(l, 60), 40);
+  const darkL  = Math.min(lightL + 10, 72);
+
+  // On very bright colors use dark text; otherwise white
+  const fg = lightL > 55 ? `${h} ${Math.round(s * 0.4)}% 12%` : "0 0% 100%";
+
+  return {
+    light: {
+      primary:     `${h} ${s}% ${lightL}%`,
+      primaryFg:   fg,
+      accent:      `${h} ${Math.max(s - 20, 20)}% 94%`,
+      accentFg:    `${h} ${s}% ${Math.round(lightL * 0.65)}%`,
+      ring:        `${h} ${s}% ${lightL}%`,
+      gradientEnd: `${(h + 15) % 360} ${Math.min(s + 5, 100)}% ${Math.min(lightL + 18, 84)}%`,
+    },
+    dark: {
+      primary:     `${h} ${s}% ${darkL}%`,
+      primaryFg:   fg,
+      accent:      `${h} ${Math.max(s - 30, 15)}% 18%`,
+      accentFg:    `${h} ${Math.min(s + 10, 90)}% ${Math.min(darkL + 15, 84)}%`,
+      ring:        `${h} ${s}% ${darkL}%`,
+      gradientEnd: `${(h + 15) % 360} ${Math.min(s + 10, 100)}% ${Math.min(darkL + 20, 88)}%`,
+    },
+  };
+}
+
+// ── Apply palette ─────────────────────────────────────────────────────────────
+
 /**
  * Apply a preset palette to the document root.
  * Called once on mount from App.tsx.

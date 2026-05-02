@@ -4,6 +4,20 @@ All notable changes are listed here. Each version brings new features you can op
 
 ---
 
+## [1.4.0] — 2026-05-02
+
+### New
+- **Pick any colour** — Add `primaryColor: "#e11d48"` to your config to use any hex colour you like. Just Google "colour picker", choose your favourite, and paste the code. No colour theory needed — the palette for light and dark mode is generated automatically.
+- **Dynamic favicon** — Your browser tab now shows your initials in your chosen colour, automatically generated from your name. No image files to create or upload.
+- **Auto-sync GitHub Action** — Your repo ships with a "Sync GitVita Template" workflow. Go to Actions → Sync GitVita Template → Run workflow → type YES. Pulls in the latest template updates while always preserving your `portfolio.config.yaml`.
+- **Changelog modal** — Click "What's new" at the bottom of your portfolio to see what features have been added since you set up your portfolio.
+
+### Improved
+- **Setup wizard** — Now explains both ways to copy the template ("Use this template" vs Fork) and which update method works with each.
+- **Staying up to date** — The Done step now shows all three upgrade paths in order of simplicity.
+
+---
+
 ## [1.3.0] — 2026-05-02
 
 ### New
