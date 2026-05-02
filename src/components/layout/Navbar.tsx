@@ -8,19 +8,28 @@ interface NavbarProps {
   onToggleTheme: () => void;
 }
 
-const navLinks = [
-  { label: "About",      href: "#about" },
-  { label: "Skills",     href: "#skills" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects",   href: "#projects" },
-  { label: "Contact",    href: "#contact" },
-];
+// All possible nav links in display order — only shown if their section is enabled
+const ALL_NAV_LINKS = [
+  { label: "About",          href: "#about",          section: "about"          },
+  { label: "Skills",         href: "#skills",         section: "skills"         },
+  { label: "Experience",     href: "#experience",     section: "experience"     },
+  { label: "Projects",       href: "#projects",       section: "projects"       },
+  { label: "Education",      href: "#education",      section: "education"      },
+  { label: "Certifications", href: "#certifications", section: "certifications" },
+  { label: "Contact",        href: "#contact",        section: "contact"        },
+] as const;
 
-const sectionIds = navLinks.map((l) => l.href.slice(1)); // ["about", "skills", ...]
+// Derive visible nav links from section toggles at module level (static, no re-renders needed)
+const s = config.sections;
+const navLinks = ALL_NAV_LINKS.filter(
+  (l) => s[l.section as keyof typeof s] !== false,
+);
+
+const sectionIds = navLinks.map((l) => l.href.slice(1));
 
 export function Navbar({ theme, onToggleTheme }: NavbarProps) {
-  const [scrolled, setScrolled]         = useState(false);
-  const [mobileOpen, setMobileOpen]     = useState(false);
+  const [scrolled, setScrolled]           = useState(false);
+  const [mobileOpen, setMobileOpen]       = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
 
   // Scroll shadow
@@ -32,49 +41,35 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
 
   // Active section via IntersectionObserver
   useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-
-    // Track which sections are currently intersecting and pick the topmost one
     const visible = new Set<string>();
 
     const updateActive = () => {
-      // Priority: first section in DOM order that is visible
       const ordered = sectionIds.filter((id) => visible.has(id));
       if (ordered.length > 0) setActiveSection(ordered[0]);
     };
 
-    sectionIds.forEach((id) => {
+    const observers = sectionIds.map((id) => {
       const el = document.getElementById(id);
-      if (!el) return;
+      if (!el) return null;
 
       const obs = new IntersectionObserver(
         ([entry]) => {
-          if (entry.isIntersecting) {
-            visible.add(id);
-          } else {
-            visible.delete(id);
-          }
+          if (entry.isIntersecting) visible.add(id);
+          else visible.delete(id);
           updateActive();
         },
-        {
-          // Trigger when section covers at least 20% of the viewport
-          // and the top 20% of the viewport is the "active" zone
-          rootMargin: "-10% 0px -70% 0px",
-          threshold: 0,
-        },
+        { rootMargin: "-10% 0px -70% 0px", threshold: 0 },
       );
-
       obs.observe(el);
-      observers.push(obs);
+      return obs;
     });
 
-    return () => observers.forEach((o) => o.disconnect());
+    return () => observers.forEach((o) => o?.disconnect());
   }, []);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
     setMobileOpen(false);
   };
 
@@ -88,7 +83,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
       }`}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo — elegant serif wordmark */}
+        {/* Wordmark */}
         <a
           href="#hero"
           onClick={(e) => handleNavClick(e, "#hero")}
@@ -99,7 +94,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
           <span className="text-primary font-normal">.</span>
         </a>
 
-        {/* Desktop nav links */}
+        {/* Desktop links */}
         <div className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => {
             const isActive = activeSection === link.href.slice(1);
@@ -115,7 +110,6 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
                 }`}
                 data-testid={`nav-link-${link.label.toLowerCase()}`}
               >
-                {/* Active underline pill */}
                 {isActive && (
                   <motion.span
                     layoutId="nav-active-pill"
@@ -124,7 +118,6 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
-                {/* Active accent dot */}
                 {isActive && (
                   <motion.span
                     layoutId="nav-active-dot"
@@ -139,7 +132,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
         </div>
 
         <div className="flex items-center gap-2">
-          {/* Animated theme toggle */}
+          {/* Theme toggle */}
           <button
             onClick={onToggleTheme}
             className="relative p-2 rounded-full border border-border hover:border-primary/40 bg-secondary/50 hover:bg-secondary text-muted-foreground hover:text-foreground transition-all overflow-hidden"
@@ -218,7 +211,7 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile drawer */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -242,10 +235,11 @@ export function Navbar({ theme, onToggleTheme }: NavbarProps) {
                         : "text-muted-foreground hover:text-foreground hover:bg-secondary"
                     }`}
                   >
-                    {isActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                    )}
-                    {!isActive && <span className="w-1.5 h-1.5 flex-shrink-0" />}
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                        isActive ? "bg-primary" : ""
+                      }`}
+                    />
                     {link.label}
                   </a>
                 );

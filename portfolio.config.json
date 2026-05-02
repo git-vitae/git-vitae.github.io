@@ -16,11 +16,23 @@
 
   "colorPreset": "indigo",
 
+  "_colorPreset_options": "indigo | emerald | rose | amber | ocean | slate | custom",
+
   "social": {
     "github": "https://github.com/yourusername",
     "linkedin": "https://linkedin.com/in/yourusername",
     "twitter": "",
     "website": ""
+  },
+
+  "sections": {
+    "about":          true,
+    "skills":         true,
+    "experience":     true,
+    "projects":       true,
+    "education":      true,
+    "certifications": true,
+    "contact":        true
   },
 
   "about": "I'm a full-stack engineer with 5+ years of experience building products that people love. I specialize in React, Node.js, and distributed systems. When I'm not coding, I'm hiking trails or experimenting with new coffee brewing methods.",
@@ -96,6 +108,33 @@
       "institution": "University of California, Berkeley",
       "degree": "B.S. Computer Science",
       "period": "2014 – 2018"
+    }
+  ],
+
+  "certifications": [
+    {
+      "title": "AWS Certified Solutions Architect – Associate",
+      "issuer": "Amazon Web Services",
+      "date": "2023",
+      "credentialUrl": "https://aws.amazon.com/verification",
+      "badgeUrl": "https://images.credly.com/size/340x340/images/0e284c3f-5164-4b21-8660-0d84737941bc/image.png",
+      "tags": ["Cloud", "Architecture", "AWS"]
+    },
+    {
+      "title": "Professional Scrum Master I",
+      "issuer": "Scrum.org",
+      "date": "2022",
+      "credentialUrl": "https://www.scrum.org/certificates",
+      "badgeUrl": "https://images.credly.com/size/340x340/images/a2790314-008a-4c3d-9e11-2a8f48155adc/image.png",
+      "tags": ["Agile", "Scrum", "Leadership"]
+    },
+    {
+      "title": "Google Professional Data Engineer",
+      "issuer": "Google Cloud",
+      "date": "2021",
+      "credentialUrl": "",
+      "badgeUrl": "",
+      "tags": ["Data", "GCP", "BigQuery"]
     }
   ]
 }
