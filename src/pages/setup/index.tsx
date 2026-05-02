@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, ArrowLeft, ExternalLink, Check,
-  Copy, CheckCircle, ChevronRight,
+  Copy, CheckCircle, ChevronRight, Sparkles, ChevronDown,
 } from "lucide-react";
 
 const GITHUB_TEMPLATE_URL = "https://github.com/git-vita/git-vita.github.io/generate";
@@ -740,6 +740,116 @@ function StepPages({ onNext }: { onNext: () => void }) {
   );
 }
 
+// ─── What's new panel (used in StepDone) ──────────────────────────────────────
+
+const CHANGELOG_URL =
+  "https://raw.githubusercontent.com/git-vita/git-vita.github.io/main/CHANGELOG.md";
+const CACHE_KEY = "gitvita-changelog-v1";
+
+function WhatsNew() {
+  const [open, setOpen]       = useState(false);
+  const [text, setText]       = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const cached = sessionStorage.getItem(CACHE_KEY);
+    if (cached) { setText(cached); return; }
+    setLoading(true);
+    fetch(CHANGELOG_URL)
+      .then((r) => (r.ok ? r.text() : Promise.reject()))
+      .then((t) => { sessionStorage.setItem(CACHE_KEY, t); setText(t); })
+      .catch(() => setText(null))
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Parse just the latest version block (first ## [...] section)
+  const latest = text
+    ? (() => {
+        const blocks = text.split(/^## /m).filter(Boolean);
+        return blocks[0] ? `## ${blocks[0]}` : null;
+      })()
+    : null;
+
+  // Convert the markdown block to simple JSX — no need for full react-markdown here
+  const lines = (latest ?? "").split("\n").filter((l) => l.trim());
+  const versionLine = lines.find((l) => l.startsWith("## "))?.replace("## ", "") ?? "";
+  const items: { heading: string; bullets: string[] }[] = [];
+  let cur: { heading: string; bullets: string[] } | null = null;
+  for (const line of lines) {
+    if (line.startsWith("### ")) {
+      if (cur) items.push(cur);
+      cur = { heading: line.replace("### ", ""), bullets: [] };
+    } else if (line.startsWith("- ") && cur) {
+      cur.bullets.push(line.replace(/^- /, ""));
+    }
+  }
+  if (cur) items.push(cur);
+
+  return (
+    <div className="w-full max-w-lg mx-auto mb-8 rounded-2xl border border-primary/20 bg-primary/5 overflow-hidden text-left">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-center justify-between px-4 py-3 hover:bg-primary/5 transition-colors"
+      >
+        <span className="flex items-center gap-2 text-sm font-medium text-foreground">
+          <Sparkles size={14} className="text-primary" />
+          {loading ? "Loading…" : versionLine ? `What's new — ${versionLine}` : "What's new in GitVita"}
+        </span>
+        <ChevronDown
+          size={14}
+          className={`text-muted-foreground transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && items.length > 0 && (
+          <motion.div
+            initial={{ height: 0 }}
+            animate={{ height: "auto" }}
+            exit={{ height: 0 }}
+            transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="px-4 pb-4 space-y-3 border-t border-primary/10 pt-3">
+              {items.map((item) => (
+                <div key={item.heading}>
+                  <p className="text-[10px] font-mono font-semibold text-primary uppercase tracking-widest mb-1.5">
+                    {item.heading}
+                  </p>
+                  <ul className="space-y-1">
+                    {item.bullets.map((b, i) => {
+                      const [bold, ...rest] = b.split(" — ");
+                      return (
+                        <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground leading-snug">
+                          <span className="mt-1 w-1 h-1 rounded-full bg-primary/50 shrink-0" />
+                          <span>
+                            <strong className="text-foreground font-medium">
+                              {bold.replace(/\*\*/g, "")}
+                            </strong>
+                            {rest.length > 0 ? ` — ${rest.join(" — ")}` : ""}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ))}
+              <a
+                href="https://github.com/git-vita/git-vita.github.io/blob/main/CHANGELOG.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline underline-offset-2 mt-1"
+              >
+                Full changelog <ExternalLink size={10} />
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ─── Step 4: All done ─────────────────────────────────────────────────────────
 
 function StepDone() {
@@ -842,6 +952,8 @@ function StepDone() {
           </div>
         </div>
       </div>
+
+      <WhatsNew />
 
       <p className="text-sm font-medium text-foreground mb-6">What to do next</p>
       <div className="grid sm:grid-cols-2 gap-4 text-left mb-10 max-w-xl mx-auto">

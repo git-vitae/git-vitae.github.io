@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Phone, Send, Download, Share2, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail, Phone, Send, Download, Share2, CheckCircle, AlertCircle, Sparkles } from "lucide-react";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import { config } from "@/portfolio.config";
 import { ShareModal } from "@/components/ShareModal";
+import { ChangelogModal } from "@/components/ChangelogModal";
 import { fadeUpVariants } from "@/lib/animation";
 
 const fadeUp = fadeUpVariants(40, 0.75, 0.12);
@@ -11,7 +12,8 @@ const fadeUp = fadeUpVariants(40, 0.75, 0.12);
 type FormStatus = "idle" | "sending" | "success" | "error";
 
 export function Contact() {
-  const [shareOpen, setShareOpen] = useState(false);
+  const [shareOpen, setShareOpen]       = useState(false);
+  const [changelogOpen, setChangelogOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -273,7 +275,16 @@ export function Contact() {
               </a>{" "}
               &mdash; fork and make it yours.
             </p>
+            <button
+              onClick={() => setChangelogOpen(true)}
+              className="mt-2 inline-flex items-center gap-1.5 text-[11px] text-muted-foreground/60 hover:text-primary transition-colors no-print"
+            >
+              <Sparkles size={10} />
+              What's new in v1.3
+            </button>
           </motion.div>
+
+          <ChangelogModal open={changelogOpen} onClose={() => setChangelogOpen(false)} />
 
         </div>
       </div>

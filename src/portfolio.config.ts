@@ -23,6 +23,7 @@ const rawConfig = rawConfigYaml as unknown as {
   openToWork:     boolean;
   defaultTheme:   string;
   colorPreset:    string;
+  siteMode?:      string;
   resumeTheme?:   { twoColumn?: string; classic?: string };
   customColors?:  PresetPalette;
   social:         Record<string, string>;
