@@ -8,14 +8,11 @@ import { readFileSync, readdirSync, statSync } from "fs";
 import jsYaml from "js-yaml";
 
 const rawPort = process.env.PORT;
-const rawBasePath = process.env.BASE_PATH;
 
 const port = rawPort ? Number(rawPort) : 3000;
 if (rawPort && (Number.isNaN(port) || port <= 0)) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
-
-const basePath = rawBasePath ?? "./";
 
 const portfolioConfig = jsYaml.load(
   readFileSync(new URL("./portfolio.config.yaml", import.meta.url), "utf8")
@@ -26,6 +23,7 @@ const portfolioConfig = jsYaml.load(
   siteUrl?: string;
   blog?: { enabled?: boolean; title?: string; description?: string };
 };
+const assetBase = "./";
 
 // ── RSS feed helpers (Node.js / build context) ────────────────────────────────
 
@@ -214,7 +212,7 @@ function preloadCriticalFontsPlugin(): Plugin {
       handler() {
         return queue.map(file => ({
           tag:      "link" as const,
-          attrs:    { rel: "preload", href: `${basePath}${file}`, as: "font", type: "font/woff2", crossorigin: "" },
+          attrs:    { rel: "preload", href: `${assetBase}${file}`, as: "font", type: "font/woff2", crossorigin: "" },
           injectTo: "head" as const,
         }));
       },
@@ -225,7 +223,7 @@ function preloadCriticalFontsPlugin(): Plugin {
 const isReplit = !!process.env.REPL_ID;
 
 export default defineConfig({
-  base: basePath,
+  base: "./",
   plugins: [
     react(),
     tailwindcss(),
