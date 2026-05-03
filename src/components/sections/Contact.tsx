@@ -20,6 +20,11 @@ export function Contact() {
   const [status, setStatus] = useState<FormStatus>("idle");
 
   const hasEndpoint = !!config.contactFormEndpoint;
+  const contactHeading = config.contactHeading ?? "Get In Touch";
+  const contactTitle = config.contactTitle ?? "Let’s work\ntogether.";
+  const contactDescription =
+    config.contactDescription ??
+    "Open to new opportunities. Whether you have a role in mind or just want to connect — my inbox is always open.";
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -64,16 +69,24 @@ export function Contact() {
             viewport={{ once: true, margin: "-80px" }}
           >
             <p className="text-xs font-mono font-medium tracking-widest text-primary uppercase mb-4">
-              Get In Touch
+              {contactHeading}
             </p>
             <h2 className="section-heading text-4xl md:text-6xl text-foreground mb-5 leading-tight">
-              Let&rsquo;s work
-              <br />
-              <em className="not-italic font-light italic">together.</em>
+              {contactTitle.split("\n").map((line, index) =>
+                index === 1 ? (
+                  <em key={index} className="not-italic font-light italic">
+                    {line}
+                  </em>
+                ) : (
+                  <span key={index}>
+                    {line}
+                    {index === 0 && contactTitle.includes("\n") ? <br /> : null}
+                  </span>
+                )
+              )}
             </h2>
             <p className="text-muted-foreground max-w-md mx-auto font-light leading-relaxed">
-              Open to new opportunities. Whether you have a role in mind or just
-              want to connect — my inbox is always open.
+              {contactDescription}
             </p>
           </motion.div>
 

@@ -42,6 +42,9 @@ const rawConfig = rawConfigYaml as unknown as {
   siteUrl?:             string;
   showPoweredBy?:       boolean;
   contactFormEndpoint?: string;
+  contactHeading?: string;
+  contactTitle?: string;
+  contactDescription?: string;
   analytics?: {
     goatcounterCode?: string;
   };
@@ -129,6 +132,9 @@ export const config = {
   siteUrl:             rawConfig.siteUrl             ?? "",
   showPoweredBy:       rawConfig.showPoweredBy       ?? false,
   contactFormEndpoint: rawConfig.contactFormEndpoint ?? "",
+  contactHeading: rawConfig.contactHeading ?? "",
+  contactTitle: rawConfig.contactTitle ?? "",
+  contactDescription: rawConfig.contactDescription ?? "",
   analytics: {
     goatcounterCode: rawConfig.analytics?.goatcounterCode ?? "",
   },
