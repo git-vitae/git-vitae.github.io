@@ -15,7 +15,7 @@ if (rawPort && (Number.isNaN(port) || port <= 0)) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
-const basePath = rawBasePath ?? "/";
+const basePath = rawBasePath ?? "./";
 
 const portfolioConfig = jsYaml.load(
   readFileSync(new URL("./portfolio.config.yaml", import.meta.url), "utf8")
