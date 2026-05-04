@@ -1,7 +1,7 @@
-# Alex Rivera
+# Git Vitae
 **Full-Stack Engineer**
 
-San Francisco, CA · alex@example.com · [Github](https://github.com/yourusername) · [Linkedin](https://linkedin.com/in/yourusername)
+San Francisco, CA · gitvitae@proton.me · [Github](https://github.com/yourusername) · [Linkedin](https://linkedin.com/in/yourusername)
 
 > **Open to new opportunities**
 

@@ -422,7 +422,7 @@ function FileEditorMockup() {
         <div className="text-primary/50"># Fill in your details below</div>
         <div className="mt-1">
           <span className="text-blue-500 dark:text-blue-400">name</span>:{" "}
-          <span className="bg-yellow-200/60 dark:bg-yellow-500/20 text-yellow-800 dark:text-yellow-300 px-1 rounded">"Alex Rivera"</span>
+          <span className="bg-yellow-200/60 dark:bg-yellow-500/20 text-yellow-800 dark:text-yellow-300 px-1 rounded">"Git Vitae"</span>
           <span className="text-primary/40 text-[10px] ml-1">← change this</span>
         </div>
         <div>
@@ -431,7 +431,7 @@ function FileEditorMockup() {
         </div>
         <div>
           <span className="text-blue-500 dark:text-blue-400">email</span>:{" "}
-          <span className="bg-yellow-200/60 dark:bg-yellow-500/20 text-yellow-800 dark:text-yellow-300 px-1 rounded">"alex@example.com"</span>
+          <span className="bg-yellow-200/60 dark:bg-yellow-500/20 text-yellow-800 dark:text-yellow-300 px-1 rounded">"git-vitae@proton.me"</span>
         </div>
         <div>
           <span className="text-blue-500 dark:text-blue-400">location</span>:{" "}

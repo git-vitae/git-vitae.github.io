@@ -17,10 +17,10 @@ siteUrl:  "https://yourusername.github.io"  # ← Your GitHub Pages URL (used fo
 showPoweredBy: false  # Set to true to show a small "Made with GitVitae" badge in your footer (helps others discover GitVitae)
 
 # ── Identity ───────────────────────────────────────────── (required) ──
-name: "Alex Rivera"
+name: "Git Vitae"              # Your name — shown in the header and used as a fallback in the avatar
 title: "Full-Stack Engineer"
 tagline: "I build thoughtful software that scales."
-email: "alex@example.com"
+email: "git-vitae@proton.me"
 phone: ""                    # Optional — e.g. "+1 (555) 000-1234". Shown in contact section and resume.
 location: "San Francisco, CA"
 avatarUrl: "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Alex&mouth[]=wideSmile&radius=12"  # Demo avatar — replace with your own photo URL (see instructions below)
@@ -43,7 +43,7 @@ avatarUrl: "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Alex&mouth[]=wideSmi
 #   3. Paste the link below and update resumeFileName accordingly
 #
 # resumeUrl: "https://drive.google.com/uc?export=download&id=YOUR_FILE_ID"
-# resumeFileName: "Alex_Rivera_Resume.pdf"
+# resumeFileName: "Git_Vitae_Resume.pdf"
 
 # ── Status ─────────────────────────────────────────────────────────────
 openToWork: true         # Shows "Open to Opportunities" banner when true
