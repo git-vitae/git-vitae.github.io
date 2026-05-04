@@ -18,8 +18,8 @@ showPoweredBy: false  # Set to true to show a small "Made with GitVitae" badge i
 
 # ── Identity ───────────────────────────────────────────── (required) ──
 name: "Git Vitae"              # Your name — shown in the header and used as a fallback in the avatar
-title: "Full-Stack Engineer"
-tagline: "I build thoughtful software that scales."
+title: "Portfolio-Resume Engineer"
+tagline: "I build free portfolios and resumes for everyone."
 email: "git-vitae@proton.me"
 phone: ""                    # Optional — e.g. "+1 (555) 000-1234". Shown in contact section and resume.
 location: "San Francisco, CA"
