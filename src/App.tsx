@@ -5,6 +5,7 @@ import { MotionConfig } from "framer-motion";
 import { PortfolioPage } from "@/pages/portfolio";
 import { CustomCursor } from "@/components/CustomCursor";
 import { SmoothScrollProvider } from "@/components/SmoothScroll";
+import { SimpleChat } from "./components/SimpleChat";
 import { OpenToWorkBanner } from "@/components/OpenToWorkBanner";
 import { DemoBanner } from "@/components/DemoBanner";
 import { applyThemePalette, hexToPresetPalette } from "@/lib/themes";
@@ -134,6 +135,11 @@ function App() {
           </Switch>
         </Suspense>
       </Router>
+
+      {/* Global Chat Widget - Fixed to bottom right */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <SimpleChat />
+      </div>
     </MotionConfig>
   );
 }
