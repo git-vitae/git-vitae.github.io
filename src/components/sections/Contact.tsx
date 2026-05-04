@@ -111,7 +111,7 @@ export function Contact() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder={config.name}
+                  placeholder="Your Name"
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary/40 transition-colors"
                 />
               </div>
@@ -125,7 +125,7 @@ export function Contact() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder={config.email}
+                  placeholder="Your email"
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/40 focus:border-primary/40 transition-colors"
                 />
               </div>
