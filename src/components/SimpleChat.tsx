@@ -141,7 +141,7 @@ export function SimpleChat() {
         className="rounded-full h-14 w-14 shadow-lg hover:scale-105 transition-transform"
         size="icon"
       >
-        <Bot size={24} />
+        <Bot className="!size-7"/>
       </Button>
     );
   }
