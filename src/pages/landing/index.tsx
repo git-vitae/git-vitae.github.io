@@ -6,6 +6,7 @@ import {
   Github, Check, Rss, PenLine, BookOpen, Sparkles,
   Link2, LayoutTemplate,
 } from "lucide-react";
+import { FaGithub } from "react-icons/fa6";
 
 const GITHUB_TEMPLATE_URL = "https://github.com/git-vitae/git-vitae.github.io/generate";
 const GITHUB_REPO_URL = "https://github.com/git-vitae/git-vitae.github.io";
@@ -297,7 +298,7 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
       {/* ── Navbar ───────────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <span className="text-base font-semibold tracking-tight">
+          <span className="text-3xl font-semibold tracking-tight">
             Git<span className="text-primary">Vitae</span>
           </span>
           <div className="flex items-center gap-3">
@@ -305,9 +306,9 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
               href={GITHUB_REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-[11px] text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-colors font-mono"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border text-sm text-muted-foreground hover:text-foreground hover:border-primary transition-colors font-mono"
             >
-              <Github size={12} />
+              <FaGithub size={24} className="text-primary" />
               Star on GitHub
             </a>
             <button
@@ -453,7 +454,7 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
             transition={{ duration: 0.5 }}
             className="text-center mb-16"
           >
-            <p className="text-xs font-mono font-medium tracking-widest text-primary uppercase mb-5">
+            <p className="text-xl font-mono font-medium tracking-widest text-primary uppercase mb-5">
               The problem
             </p>
             <h2 className="text-3xl sm:text-4xl font-serif font-medium text-foreground mb-6 max-w-2xl mx-auto leading-snug">
@@ -490,7 +491,7 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <p className="text-center text-xs font-mono font-medium tracking-widest text-primary uppercase mb-8">
+            <p className="text-center text-lg font-mono font-medium tracking-widest text-primary uppercase mb-8">
               Every excuse, answered
             </p>
             <div className="grid sm:grid-cols-2 gap-4 mb-12">
@@ -569,7 +570,7 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
                   <div className="hidden md:block absolute top-8 left-[calc(50%+2.5rem)] right-[-calc(50%-2.5rem)] h-px bg-border" />
                 )}
                 <div className="text-4xl mb-4">{step.emoji}</div>
-                <div className="text-xs font-mono text-primary/60 font-semibold tracking-widest mb-2">
+                <div className="text-sm font-mono text-primary/60 font-semibold tracking-widest mb-2">
                   STEP {step.num}
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">{step.title}</h3>
@@ -592,7 +593,7 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
             className="grid md:grid-cols-2 gap-12 items-center"
           >
             <div>
-              <p className="text-xs font-mono font-medium tracking-widest text-primary uppercase mb-4">
+              <p className="text-base font-mono font-medium tracking-widest text-primary uppercase mb-4">
                 One file. Everything.
               </p>
               <h2 className="text-3xl font-serif font-medium text-foreground mb-4">
@@ -890,7 +891,7 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
       <footer className="border-t border-border py-8 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <span>
-            <span className="font-semibold text-foreground">Git<span className="text-primary">Vita</span></span>
+            <span className="text-base font-semibold text-foreground">Git<span className="text-primary">Vita</span></span>
             {" "}· Free and open source
           </span>
           <div className="flex items-center gap-6">
