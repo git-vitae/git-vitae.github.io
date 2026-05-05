@@ -1,7 +1,7 @@
 # Git Vitae
-**Full-Stack Engineer**
+**Portfolio-Resume Engineer**
 
-San Francisco, CA · gitvitae@proton.me · [Github](https://github.com/yourusername) · [Linkedin](https://linkedin.com/in/yourusername)
+San Francisco, CA · git-vitae@proton.me · [Github](https://github.com/yourusername) · [Linkedin](https://linkedin.com/in/yourusername)
 
 > **Open to new opportunities**
 

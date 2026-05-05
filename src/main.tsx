@@ -58,7 +58,7 @@ function setInitialsFavicon(name: string, color: string) {
 
 const faviconColor =
   (config.primaryColor && config.primaryColor.trim()) ||
-  config.customColors?.[config.colorPreset]?.primary ||
+  config.customColors?.[config.colorPreset as keyof typeof config.customColors]?.primary ||
   "#374151";
 
 setInitialsFavicon(config.name, faviconColor);

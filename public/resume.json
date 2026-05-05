@@ -2,7 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
   "basics": {
     "name": "Git Vitae",
-    "label": "Full-Stack Engineer",
+    "label": "Portfolio-Resume Engineer",
     "image": "https://api.dicebear.com/9.x/fun-emoji/svg?seed=Alex&mouth[]=wideSmile&radius=12",
     "email": "git-vitae@proton.me",
     "phone": "",
