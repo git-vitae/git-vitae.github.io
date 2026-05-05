@@ -891,7 +891,7 @@ export function LandingPage({ theme, onToggleTheme }: LandingPageProps) {
       <footer className="border-t border-border py-8 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
           <span>
-            <span className="text-base font-semibold text-foreground">Git<span className="text-primary">Vita</span></span>
+            <span className="text-base font-semibold text-foreground">Git<span className="text-primary">Vitae</span></span>
             {" "}· Free and open source
           </span>
           <div className="flex items-center gap-6">

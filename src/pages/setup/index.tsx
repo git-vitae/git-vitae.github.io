@@ -1528,7 +1528,7 @@ export function SetupPage() {
             href="#/"
             className="text-3xl font-semibold tracking-tight hover:opacity-80 transition-opacity"
           >
-            Git<span className="text-primary">Vita</span>
+            Git<span className="text-primary">Vitae</span>
           </a>
           <div className="flex items-center gap-3">
             <a

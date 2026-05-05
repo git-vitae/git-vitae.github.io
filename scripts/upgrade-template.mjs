@@ -2,12 +2,14 @@
 /**
  * upgrade-template.mjs
  *
- * Pulls the latest GitVita template improvements into your portfolio
+ * Pulls the latest GitVitae template improvements into your portfolio
  * without touching your portfolio.config.yaml.
  *
  * Usage:
  *   pnpm upgrade-template
  */
+
+/* global process, console */
 
 import { execSync, spawnSync } from "child_process";
 
@@ -38,7 +40,7 @@ function remoteExists(name) {
 }
 
 // ── Preflight ───────────────────────────────────────────────────────────────
-console.log("\nGitVita — upgrade template");
+console.log("\nGitVitae — upgrade template");
 console.log("──────────────────────────────────────────\n");
 
 if (hasUncommittedChanges()) {
@@ -71,7 +73,7 @@ console.log("  ✓ Fetched.\n");
 // ── Merge ───────────────────────────────────────────────────────────────────
 console.log(`③ Merging ${UPSTREAM_REMOTE}/${UPSTREAM_BRANCH}...`);
 const merge = run(
-  `git merge ${UPSTREAM_REMOTE}/${UPSTREAM_BRANCH} --allow-unrelated-histories -m "chore: upgrade GitVita template"`
+  `git merge ${UPSTREAM_REMOTE}/${UPSTREAM_BRANCH} --allow-unrelated-histories -m "chore: upgrade GitVitae template"`
 );
 
 if (merge.status !== 0) {

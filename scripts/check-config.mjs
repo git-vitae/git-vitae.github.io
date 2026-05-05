@@ -8,6 +8,8 @@
  *       pnpm check-config --fix    — validate + auto-apply safe structural defaults
  */
 
+/* global process, console */
+
 import { readFileSync, writeFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
@@ -116,8 +118,8 @@ function checkBoolean(field, value) {
 }
 
 // ── Checks ────────────────────────────────────────────────────────────────────
-gha.group("GitVita config validation");
-console.log(`\n${B("GitVita Config Checker")}  ${D("portfolio.config.yaml")}\n`);
+gha.group("GitVitae config validation");
+console.log(`\n${B("GitVitae Config Checker")}  ${D("portfolio.config.yaml")}\n`);
 
 // Site mode
 console.log(D("── Site mode ────────────────────────────────────────────────────────"));
@@ -299,7 +301,7 @@ if (!FIX_MODE) {
   gha.endgroup();
   gha.error(
     `${errors} config error${errors !== 1 ? "s" : ""} found in portfolio.config.yaml — ` +
-    `fix them and push again. See the "GitVita config validation" log group above for details.`,
+    `fix them and push again. See the "GitVitae config validation" log group above for details.`,
     "Config validation failed"
   );
   process.exit(1);
