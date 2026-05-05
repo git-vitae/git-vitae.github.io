@@ -1,8 +1,8 @@
-import { motion } from "framer-motion";
-import { Quote } from "lucide-react";
-import { config } from "@/portfolio.config";
-import type { Testimonial } from "@/portfolio.config";
-import { fadeUpVariants } from "@/lib/animation";
+import { motion } from 'framer-motion';
+import { Quote } from 'lucide-react';
+import { config } from '@/portfolio.config';
+import type { Testimonial } from '@/portfolio.config';
+import { fadeUpVariants } from '@/lib/animation';
 
 const fadeUp = fadeUpVariants(36, 0.7, 0.1);
 
@@ -13,59 +13,62 @@ function TestimonialCard({ t, index }: { t: Testimonial; index: number }) {
       custom={index + 2}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-60px" }}
+      viewport={{ once: true, margin: '-60px' }}
       data-testid={`testimonial-${index}`}
-      className="flex flex-col gap-5 p-7 rounded-2xl border border-border bg-card card-hover"
+      className="border-border bg-card card-hover flex flex-col gap-5 rounded-2xl border p-7"
     >
       {/* Quote mark */}
-      <div className="w-9 h-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+      <div className="bg-primary/10 text-primary flex h-9 w-9 shrink-0 items-center justify-center rounded-lg">
         <Quote size={16} />
       </div>
 
       {/* Quote text */}
-      <blockquote className="font-serif font-light text-lg leading-relaxed text-foreground flex-1">
+      <blockquote className="text-foreground flex-1 font-serif text-lg leading-relaxed font-light">
         &ldquo;{t.quote}&rdquo;
       </blockquote>
 
       {/* Attribution */}
-      <div className="flex items-center gap-3 pt-2 border-t border-border">
+      <div className="border-border flex items-center gap-3 border-t pt-2">
         {t.photoUrl ? (
           <img
             src={t.photoUrl}
             alt={t.name}
-            className="w-10 h-10 rounded-full object-cover shrink-0 bg-secondary"
+            className="bg-secondary h-10 w-10 shrink-0 rounded-full object-cover"
             onError={(e) => {
-              (e.currentTarget as HTMLImageElement).style.display = "none";
-              const fallback = e.currentTarget.nextElementSibling as HTMLElement;
-              if (fallback) fallback.style.display = "flex";
+              (e.currentTarget as HTMLImageElement).style.display = 'none';
+              const fallback = e.currentTarget
+                .nextElementSibling as HTMLElement;
+              if (fallback) fallback.style.display = 'flex';
             }}
           />
         ) : null}
 
         {/* Initials fallback */}
         <div
-          className={`w-10 h-10 rounded-full bg-primary/15 text-primary text-xs font-semibold items-center justify-center shrink-0 ${
-            t.photoUrl ? "hidden" : "flex"
+          className={`bg-primary/15 text-primary h-10 w-10 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
+            t.photoUrl ? 'hidden' : 'flex'
           }`}
         >
           {t.name
-            .split(" ")
+            .split(' ')
             .map((n) => n[0])
-            .join("")
+            .join('')
             .slice(0, 2)
             .toUpperCase()}
         </div>
 
         <div className="min-w-0">
-          <p className="text-sm font-medium text-foreground truncate">{t.name}</p>
-          <p className="text-xs text-muted-foreground truncate">
+          <p className="text-foreground truncate text-sm font-medium">
+            {t.name}
+          </p>
+          <p className="text-muted-foreground truncate text-xs">
             {t.title}
-            {t.company ? ` · ${t.company}` : ""}
+            {t.company ? ` · ${t.company}` : ''}
           </p>
         </div>
 
         {t.relationship && (
-          <span className="ml-auto font-mono text-xs text-muted-foreground bg-secondary px-2.5 py-1 rounded-full border border-border whitespace-nowrap shrink-0">
+          <span className="text-muted-foreground bg-secondary border-border ml-auto shrink-0 rounded-full border px-2.5 py-1 font-mono text-xs whitespace-nowrap">
             {t.relationship}
           </span>
         )}
@@ -78,15 +81,15 @@ export function Testimonials() {
   if (!config.testimonials || config.testimonials.length === 0) return null;
 
   return (
-    <section id="testimonials" className="py-24 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="testimonials" className="px-6 py-24">
+      <div className="mx-auto max-w-6xl">
         <motion.p
           variants={fadeUp}
           custom={0}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="text-xs font-mono font-medium tracking-widest text-primary uppercase mb-4"
+          viewport={{ once: true, margin: '-80px' }}
+          className="text-primary mb-4 font-mono text-xs font-medium tracking-widest uppercase"
         >
           Testimonials
         </motion.p>
@@ -95,13 +98,13 @@ export function Testimonials() {
           custom={1}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="section-heading text-4xl md:text-5xl text-foreground mb-10"
+          viewport={{ once: true, margin: '-80px' }}
+          className="section-heading text-foreground mb-10 text-4xl md:text-5xl"
         >
           What People Say
         </motion.h2>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {config.testimonials.map((t, i) => (
             <TestimonialCard key={`${t.name}-${i}`} t={t} index={i} />
           ))}

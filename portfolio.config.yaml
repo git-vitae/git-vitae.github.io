@@ -1,16 +1,16 @@
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║              GitVitae — Portfolio Configuration                       ║
-# ║  This is the only file you need to edit.                            ║
-# ║  Run  pnpm check-config  to catch mistakes before deploying.        ║
+# ║              GitVitae — Portfolio Configuration                      ║
+# ║  This is the only file you need to edit.                             ║
+# ║  Run  pnpm check-config  to catch mistakes before deploying.         ║
 # ╚══════════════════════════════════════════════════════════════════════╝
 
 # ╔══════════════════════════════════════════════════════════════════════╗
-# ║  ⚠️  FIRST THING TO CHANGE                                          ║
+# ║  ** FIRST THING TO CHANGE **                                         ║
 # ║                                                                      ║
 # ║  siteMode: "landing"  → shows the GitVitae intro page (default)      ║
 # ║  siteMode: "portfolio" → shows YOUR portfolio                        ║
 # ║                                                                      ║
-# ║  Change it to "portfolio" once you have filled in your details.     ║
+# ║  Change it to "portfolio" once you have filled in your details.      ║
 # ╚══════════════════════════════════════════════════════════════════════╝
 siteMode: "landing"   # ← CHANGE THIS to "portfolio"
 siteUrl:  "https://yourusername.github.io"  # ← Your GitHub Pages URL (used for RSS & canonical links)
@@ -89,7 +89,7 @@ social:
 # ── About ──────────────────────────────────────────────────────────────
 # Use | for multi-line text. Indent each line by 2 spaces.
 about: |
-  I'm a full-stack engineer with 5+ years of experience building products
+  I'm a portfolio-resume engineer with 5+ years of experience building products
   that people love. I specialize in React, Node.js, and distributed systems.
   When I'm not coding, I'm hiking trails or experimenting with new coffee
   brewing methods.

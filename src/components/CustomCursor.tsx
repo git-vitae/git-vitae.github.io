@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null);
@@ -9,8 +9,9 @@ export function CustomCursor() {
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    document.documentElement.classList.add("custom-cursor-active");
-    return () => document.documentElement.classList.remove("custom-cursor-active");
+    document.documentElement.classList.add('custom-cursor-active');
+    return () =>
+      document.documentElement.classList.remove('custom-cursor-active');
   }, []);
 
   useEffect(() => {
@@ -40,25 +41,30 @@ export function CustomCursor() {
     };
 
     rafRef.current = requestAnimationFrame(animate);
-    window.addEventListener("mousemove", onMove);
+    window.addEventListener('mousemove', onMove);
 
-    const interactables = document.querySelectorAll("a, button, [role='button']");
+    const interactables = document.querySelectorAll(
+      "a, button, [role='button']"
+    );
     interactables.forEach((el) => {
-      el.addEventListener("mouseenter", onEnter);
-      el.addEventListener("mouseleave", onLeave);
+      el.addEventListener('mouseenter', onEnter);
+      el.addEventListener('mouseleave', onLeave);
     });
 
     return () => {
       cancelAnimationFrame(rafRef.current);
-      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener('mousemove', onMove);
       interactables.forEach((el) => {
-        el.removeEventListener("mouseenter", onEnter);
-        el.removeEventListener("mouseleave", onLeave);
+        el.removeEventListener('mouseenter', onEnter);
+        el.removeEventListener('mouseleave', onLeave);
       });
     };
   }, [isHovering]);
 
-  if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) {
+  if (
+    typeof window !== 'undefined' &&
+    window.matchMedia('(pointer: coarse)').matches
+  ) {
     return null;
   }
 
@@ -66,15 +72,20 @@ export function CustomCursor() {
     <>
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 z-[9999] w-2 h-2 rounded-full bg-primary pointer-events-none"
-        style={{ willChange: "transform" }}
+        className="bg-primary pointer-events-none fixed top-0 left-0 z-[9999] h-2 w-2 rounded-full"
+        style={{ willChange: 'transform' }}
       />
       <div
         ref={ringRef}
-        className={`fixed top-0 left-0 z-[9998] rounded-full border pointer-events-none transition-[opacity,border-color] duration-200 ${
-          isHovering ? "border-primary opacity-80" : "border-primary/50 opacity-60"
+        className={`pointer-events-none fixed top-0 left-0 z-[9998] rounded-full border transition-[opacity,border-color] duration-200 ${
+          isHovering
+            ? 'border-primary opacity-80'
+            : 'border-primary/50 opacity-60'
         }`}
-        style={{ willChange: "transform, width, height", transition: "width 0.2s ease, height 0.2s ease" }}
+        style={{
+          willChange: 'transform, width, height',
+          transition: 'width 0.2s ease, height 0.2s ease',
+        }}
       />
     </>
   );

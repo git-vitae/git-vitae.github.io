@@ -1,9 +1,9 @@
-declare module "*.yaml" {
+declare module '*.yaml' {
   const data: Record<string, unknown>;
   export default data;
 }
 
-declare module "*.md?raw" {
+declare module '*.md?raw' {
   const content: string;
   export default content;
 }

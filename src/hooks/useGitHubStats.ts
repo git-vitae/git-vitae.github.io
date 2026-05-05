@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
 export interface GitHubStats {
-  followers:    number;
-  publicRepos:  number;
-  totalStars:   number;
+  followers: number;
+  publicRepos: number;
+  totalStars: number;
   topLanguages: { name: string; count: number; percentage: number }[];
-  profileUrl:   string;
+  profileUrl: string;
 }
 
 function extractUsername(url: string): string | null {
@@ -19,36 +19,42 @@ export function extractGithubUsername(githubUrl: string): string | null {
 }
 
 export function useGitHubStats(githubUrl: string) {
-  const [data,    setData]    = useState<GitHubStats | null>(null);
+  const [data, setData] = useState<GitHubStats | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error,   setError]   = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const username = extractUsername(githubUrl);
-    if (!username || username === "yourusername") return;
+    if (!username || username === 'yourusername') return;
 
     let cancelled = false;
     setLoading(true);
     setError(null);
 
     async function load() {
-      const headers: HeadersInit = { Accept: "application/vnd.github+json" };
+      const headers: HeadersInit = { Accept: 'application/vnd.github+json' };
 
       const [userRes, reposRes] = await Promise.all([
         fetch(`https://api.github.com/users/${username}`, { headers }),
-        fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=pushed`, { headers }),
+        fetch(
+          `https://api.github.com/users/${username}/repos?per_page=100&sort=pushed`,
+          { headers }
+        ),
       ]);
 
       if (userRes.status === 403 || reposRes.status === 403) {
-        throw new Error("rate-limited");
+        throw new Error('rate-limited');
       }
       if (!userRes.ok) {
-        throw new Error(userRes.status === 404 ? "not-found" : "fetch-error");
+        throw new Error(userRes.status === 404 ? 'not-found' : 'fetch-error');
       }
 
-      const user  = await userRes.json();
-      const repos: { stargazers_count: number; language: string | null; fork: boolean }[] =
-        reposRes.ok ? await reposRes.json() : [];
+      const user = await userRes.json();
+      const repos: {
+        stargazers_count: number;
+        language: string | null;
+        fork: boolean;
+      }[] = reposRes.ok ? await reposRes.json() : [];
 
       const ownRepos = repos.filter((r) => !r.fork);
       const totalStars = ownRepos.reduce((n, r) => n + r.stargazers_count, 0);
@@ -69,24 +75,26 @@ export function useGitHubStats(githubUrl: string) {
 
       if (!cancelled) {
         setData({
-          followers:   user.followers,
+          followers: user.followers,
           publicRepos: user.public_repos,
           totalStars,
           topLanguages,
-          profileUrl:  `https://github.com/${username}`,
+          profileUrl: `https://github.com/${username}`,
         });
       }
     }
 
     load()
       .catch((err: Error) => {
-        if (!cancelled) setError(err.message ?? "fetch-error");
+        if (!cancelled) setError(err.message ?? 'fetch-error');
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [githubUrl]);
 
   return { data, loading, error };

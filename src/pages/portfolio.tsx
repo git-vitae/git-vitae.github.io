@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Link2, Check } from "lucide-react";
-import { Navbar } from "@/components/layout/Navbar";
-import { Hero } from "@/components/sections/Hero";
-import { About } from "@/components/sections/About";
-import { Stats } from "@/components/sections/Stats";
-import { GitHubStats } from "@/components/sections/GitHubStats";
-import { Skills } from "@/components/sections/Skills";
-import { Languages } from "@/components/sections/Languages";
-import { Experience } from "@/components/sections/Experience";
-import { Projects } from "@/components/sections/Projects";
-import { Education } from "@/components/sections/Education";
-import { Certifications } from "@/components/sections/Certifications";
-import { Publications } from "@/components/sections/Publications";
-import { Testimonials } from "@/components/sections/Testimonials";
-import { Contact } from "@/components/sections/Contact";
-import { config } from "@/portfolio.config";
-import type { SectionId } from "@/portfolio.config";
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link2, Check } from 'lucide-react';
+import { Navbar } from '@/components/layout/Navbar';
+import { Hero } from '@/components/sections/Hero';
+import { About } from '@/components/sections/About';
+import { Stats } from '@/components/sections/Stats';
+import { GitHubStats } from '@/components/sections/GitHubStats';
+import { Skills } from '@/components/sections/Skills';
+import { Languages } from '@/components/sections/Languages';
+import { Experience } from '@/components/sections/Experience';
+import { Projects } from '@/components/sections/Projects';
+import { Education } from '@/components/sections/Education';
+import { Certifications } from '@/components/sections/Certifications';
+import { Publications } from '@/components/sections/Publications';
+import { Testimonials } from '@/components/sections/Testimonials';
+import { Contact } from '@/components/sections/Contact';
+import { config } from '@/portfolio.config';
+import type { SectionId } from '@/portfolio.config';
 
 interface PortfolioPageProps {
   theme: string;
@@ -25,22 +25,28 @@ interface PortfolioPageProps {
 }
 
 const SECTION_COMPONENTS: Record<SectionId, React.ComponentType> = {
-  about:          About,
-  stats:          Stats,
-  skills:         Skills,
-  languages:      Languages,
-  experience:     Experience,
-  projects:       Projects,
-  education:      Education,
+  about: About,
+  stats: Stats,
+  skills: Skills,
+  languages: Languages,
+  experience: Experience,
+  projects: Projects,
+  education: Education,
   certifications: Certifications,
-  publications:   Publications,
-  testimonials:   Testimonials,
-  contact:        Contact,
+  publications: Publications,
+  testimonials: Testimonials,
+  contact: Contact,
 };
 
 // ── Section wrapper with hover copy-link button ─────────────────────────────
 
-function SectionWrapper({ id, children }: { id: string; children: React.ReactNode }) {
+function SectionWrapper({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -48,14 +54,14 @@ function SectionWrapper({ id, children }: { id: string; children: React.ReactNod
     // to current origin. In either case append the section anchor directly —
     // in a real deployed portfolio siteMode="portfolio" there is no #/demo prefix.
     const base =
-      config.siteUrl && !config.siteUrl.includes("yourusername")
-        ? config.siteUrl.replace(/\/$/, "")
-        : `${window.location.origin}${window.location.pathname.replace(/\/$/, "")}`;
+      config.siteUrl && !config.siteUrl.includes('yourusername')
+        ? config.siteUrl.replace(/\/$/, '')
+        : `${window.location.origin}${window.location.pathname.replace(/\/$/, '')}`;
 
     // Preserve the #/demo prefix when we are currently on the demo route
-    const currentHash   = window.location.hash;
-    const demoPrefix    = currentHash.startsWith("#/demo") ? "#/demo" : "";
-    const url           = `${base}${demoPrefix}#${id}`;
+    const currentHash = window.location.hash;
+    const demoPrefix = currentHash.startsWith('#/demo') ? '#/demo' : '';
+    const url = `${base}${demoPrefix}#${id}`;
 
     await navigator.clipboard.writeText(url);
     setCopied(true);
@@ -63,13 +69,13 @@ function SectionWrapper({ id, children }: { id: string; children: React.ReactNod
   };
 
   return (
-    <div className="relative group/sec">
+    <div className="group/sec relative">
       {children}
       {/* Hover copy-link button — hidden on touch screens */}
-      <div className="no-print absolute top-10 right-6 z-10 hidden sm:block opacity-0 group-hover/sec:opacity-100 transition-opacity duration-200 pointer-events-none group-hover/sec:pointer-events-auto">
+      <div className="no-print pointer-events-none absolute top-10 right-6 z-10 hidden opacity-0 transition-opacity duration-200 group-hover/sec:pointer-events-auto group-hover/sec:opacity-100 sm:block">
         <button
           onClick={handleCopy}
-          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-background/90 backdrop-blur border border-border text-[11px] font-medium text-muted-foreground hover:text-foreground hover:border-primary/40 shadow-sm transition-colors"
+          className="bg-background/90 border-border text-muted-foreground hover:text-foreground hover:border-primary/40 flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[11px] font-medium shadow-sm backdrop-blur transition-colors"
           aria-label={`Copy link to ${id} section`}
         >
           <AnimatePresence mode="wait" initial={false}>
@@ -107,10 +113,18 @@ function SectionWrapper({ id, children }: { id: string; children: React.ReactNod
 
 // ── Page ────────────────────────────────────────────────────────────────────
 
-export function PortfolioPage({ theme, onToggleTheme, topOffset }: PortfolioPageProps) {
+export function PortfolioPage({
+  theme,
+  onToggleTheme,
+  topOffset,
+}: PortfolioPageProps) {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar theme={theme} onToggleTheme={onToggleTheme} topOffset={topOffset} />
+    <div className="bg-background text-foreground min-h-screen">
+      <Navbar
+        theme={theme}
+        onToggleTheme={onToggleTheme}
+        topOffset={topOffset}
+      />
       <Hero />
       <GitHubStats />
       {config.sections
@@ -125,12 +139,12 @@ export function PortfolioPage({ theme, onToggleTheme, topOffset }: PortfolioPage
           );
         })}
       {config.showPoweredBy && (
-        <footer className="py-5 px-6 border-t border-border text-center">
+        <footer className="border-border border-t px-6 py-5 text-center">
           <a
             href="https://github.com/git-vitae/git-vitae.github.io"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            className="text-muted-foreground/60 hover:text-muted-foreground inline-flex items-center gap-1.5 text-[11px] transition-colors"
           >
             <Link2 size={10} />
             Made with GitVitae

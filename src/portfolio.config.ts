@@ -7,40 +7,75 @@
  * ============================================================
  */
 
-import type { ColorPreset, PresetPalette } from "@/lib/themes";
-import rawConfigYaml from "../portfolio.config.yaml";
+import type { ColorPreset, PresetPalette } from '@/lib/themes';
+import rawConfigYaml from '../portfolio.config.yaml';
 
 const rawConfig = rawConfigYaml as unknown as {
-  name:           string;
-  title:          string;
-  tagline:        string;
-  email:          string;
-  phone?:         string;
-  location:       string;
-  avatarUrl:      string;
-  resumeUrl:      string;
+  name: string;
+  title: string;
+  tagline: string;
+  email: string;
+  phone?: string;
+  location: string;
+  avatarUrl: string;
+  resumeUrl: string;
   resumeFileName: string;
-  openToWork:     boolean;
-  defaultTheme:   string;
-  colorPreset:    string;
-  siteMode?:      string;
-  resumeTheme?:   { twoColumn?: string; classic?: string };
-  customColors?:  PresetPalette;
-  social:         Record<string, string>;
-  sections:       { id: string; show: boolean }[];
-  about:          string;
-  stats:          { label: string; value: number; prefix?: string; suffix?: string }[];
-  languages:      { name: string; level: string }[];
-  skills:         { category: string; items: string[] }[];
-  experience:     { company: string; role: string; period: string; description: string; highlights?: string[] }[];
-  projects:       { name: string; description: string; tags: string[]; liveUrl: string; repoUrl: string; featured: boolean }[];
-  education:      { institution: string; degree: string; period: string }[];
-  certifications: { title: string; issuer: string; date: string; credentialUrl: string; badgeUrl: string; tags: string[] }[];
-  publications:   { title: string; authors: string; venue: string; year: string; url: string; type: string; tags: string[] }[];
-  testimonials:         { name: string; title: string; company: string; relationship: string; quote: string; photoUrl: string }[];
-  primaryColor?:        string;
-  siteUrl?:             string;
-  showPoweredBy?:       boolean;
+  openToWork: boolean;
+  defaultTheme: string;
+  colorPreset: string;
+  siteMode?: string;
+  resumeTheme?: { twoColumn?: string; classic?: string };
+  customColors?: PresetPalette;
+  social: Record<string, string>;
+  sections: { id: string; show: boolean }[];
+  about: string;
+  stats: { label: string; value: number; prefix?: string; suffix?: string }[];
+  languages: { name: string; level: string }[];
+  skills: { category: string; items: string[] }[];
+  experience: {
+    company: string;
+    role: string;
+    period: string;
+    description: string;
+    highlights?: string[];
+  }[];
+  projects: {
+    name: string;
+    description: string;
+    tags: string[];
+    liveUrl: string;
+    repoUrl: string;
+    featured: boolean;
+  }[];
+  education: { institution: string; degree: string; period: string }[];
+  certifications: {
+    title: string;
+    issuer: string;
+    date: string;
+    credentialUrl: string;
+    badgeUrl: string;
+    tags: string[];
+  }[];
+  publications: {
+    title: string;
+    authors: string;
+    venue: string;
+    year: string;
+    url: string;
+    type: string;
+    tags: string[];
+  }[];
+  testimonials: {
+    name: string;
+    title: string;
+    company: string;
+    relationship: string;
+    quote: string;
+    photoUrl: string;
+  }[];
+  primaryColor?: string;
+  siteUrl?: string;
+  showPoweredBy?: boolean;
   contactFormEndpoint?: string;
   contactHeading?: string;
   contactTitle?: string;
@@ -49,104 +84,106 @@ const rawConfig = rawConfigYaml as unknown as {
     goatcounterCode?: string;
   };
   blog?: {
-    enabled?:     boolean;
-    title?:       string;
+    enabled?: boolean;
+    title?: string;
     description?: string;
   };
 };
 
 export type SectionId =
-  | "about"
-  | "stats"
-  | "skills"
-  | "languages"
-  | "experience"
-  | "projects"
-  | "education"
-  | "certifications"
-  | "publications"
-  | "testimonials"
-  | "contact";
+  | 'about'
+  | 'stats'
+  | 'skills'
+  | 'languages'
+  | 'experience'
+  | 'projects'
+  | 'education'
+  | 'certifications'
+  | 'publications'
+  | 'testimonials'
+  | 'contact';
 
 export interface SectionEntry {
-  id:   SectionId;
+  id: SectionId;
   show: boolean;
 }
 
 export interface Language {
-  name:  string;
+  name: string;
   level: string;
 }
 
 export interface Certification {
-  title:         string;
-  issuer:        string;
-  date:          string;
+  title: string;
+  issuer: string;
+  date: string;
   credentialUrl: string;
-  badgeUrl:      string;
-  tags:          string[];
+  badgeUrl: string;
+  tags: string[];
 }
 
 export interface Stat {
-  label:   string;
-  value:   number;
+  label: string;
+  value: number;
   prefix?: string;
   suffix?: string;
 }
 
 export interface Publication {
-  title:   string;
+  title: string;
   authors: string;
-  venue:   string;
-  year:    string;
-  url:     string;
-  type:    string;
-  tags:    string[];
+  venue: string;
+  year: string;
+  url: string;
+  type: string;
+  tags: string[];
 }
 
 export interface Testimonial {
-  name:         string;
-  title:        string;
-  company:      string;
+  name: string;
+  title: string;
+  company: string;
   relationship: string;
-  quote:        string;
-  photoUrl:     string;
+  quote: string;
+  photoUrl: string;
 }
 
 export interface ResumeTheme {
   twoColumn: ColorPreset;
-  classic:   ColorPreset;
+  classic: ColorPreset;
 }
 
 export const config = {
   ...rawConfig,
-  colorPreset:    rawConfig.colorPreset  as ColorPreset,
-  defaultTheme:   rawConfig.defaultTheme as "system" | "light" | "dark",
-  siteMode:       (rawConfig.siteMode ?? "portfolio") as "landing" | "portfolio",
-  sections:       rawConfig.sections     as SectionEntry[],
-  stats:          (rawConfig.stats          ?? []) as Stat[],
-  languages:      (rawConfig.languages      ?? []) as Language[],
+  colorPreset: rawConfig.colorPreset as ColorPreset,
+  defaultTheme: rawConfig.defaultTheme as 'system' | 'light' | 'dark',
+  siteMode: (rawConfig.siteMode ?? 'portfolio') as 'landing' | 'portfolio',
+  sections: rawConfig.sections as SectionEntry[],
+  stats: (rawConfig.stats ?? []) as Stat[],
+  languages: (rawConfig.languages ?? []) as Language[],
   certifications: (rawConfig.certifications ?? []) as Certification[],
-  publications:   (rawConfig.publications   ?? []) as Publication[],
-  testimonials:   (rawConfig.testimonials   ?? []) as Testimonial[],
-  siteUrl:             rawConfig.siteUrl             ?? "",
-  showPoweredBy:       rawConfig.showPoweredBy       ?? false,
-  contactFormEndpoint: rawConfig.contactFormEndpoint ?? "",
-  contactHeading: rawConfig.contactHeading ?? "",
-  contactTitle: rawConfig.contactTitle ?? "",
-  contactDescription: rawConfig.contactDescription ?? "",
+  publications: (rawConfig.publications ?? []) as Publication[],
+  testimonials: (rawConfig.testimonials ?? []) as Testimonial[],
+  siteUrl: rawConfig.siteUrl ?? '',
+  showPoweredBy: rawConfig.showPoweredBy ?? false,
+  contactFormEndpoint: rawConfig.contactFormEndpoint ?? '',
+  contactHeading: rawConfig.contactHeading ?? '',
+  contactTitle: rawConfig.contactTitle ?? '',
+  contactDescription: rawConfig.contactDescription ?? '',
   analytics: {
-    goatcounterCode: rawConfig.analytics?.goatcounterCode ?? "",
+    goatcounterCode: rawConfig.analytics?.goatcounterCode ?? '',
   },
   blog: {
-    enabled:     rawConfig.blog?.enabled     ?? false,
-    title:       rawConfig.blog?.title       ?? "Blog",
-    description: rawConfig.blog?.description ?? "",
+    enabled: rawConfig.blog?.enabled ?? false,
+    title: rawConfig.blog?.title ?? 'Blog',
+    description: rawConfig.blog?.description ?? '',
   },
-  primaryColor:        rawConfig.primaryColor ?? "",
-  customColors:   rawConfig.customColors,
+  primaryColor: rawConfig.primaryColor ?? '',
+  customColors: rawConfig.customColors,
   resumeTheme: {
-    twoColumn: (rawConfig.resumeTheme?.twoColumn ?? rawConfig.colorPreset) as ColorPreset,
-    classic:   (rawConfig.resumeTheme?.classic   ?? rawConfig.colorPreset) as ColorPreset,
+    twoColumn: (rawConfig.resumeTheme?.twoColumn ??
+      rawConfig.colorPreset) as ColorPreset,
+    classic: (rawConfig.resumeTheme?.classic ??
+      rawConfig.colorPreset) as ColorPreset,
   } as ResumeTheme,
 };

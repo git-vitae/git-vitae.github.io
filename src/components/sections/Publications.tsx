@@ -1,16 +1,16 @@
-import { motion } from "framer-motion";
-import { BookOpen, ExternalLink } from "lucide-react";
-import { config } from "@/portfolio.config";
-import { fadeUpVariants } from "@/lib/animation";
+import { motion } from 'framer-motion';
+import { BookOpen, ExternalLink } from 'lucide-react';
+import { config } from '@/portfolio.config';
+import { fadeUpVariants } from '@/lib/animation';
 
 const fadeUp = fadeUpVariants(44, 0.75, 0.12);
 
 const TYPE_LABELS: Record<string, string> = {
-  journal:        "Journal",
-  conference:     "Conference",
-  preprint:       "Preprint",
-  "book-chapter": "Book Chapter",
-  workshop:       "Workshop",
+  journal: 'Journal',
+  conference: 'Conference',
+  preprint: 'Preprint',
+  'book-chapter': 'Book Chapter',
+  workshop: 'Workshop',
 };
 
 export function Publications() {
@@ -18,15 +18,15 @@ export function Publications() {
   if (!pubs.length) return null;
 
   return (
-    <section id="publications" className="py-32 px-6">
-      <div className="max-w-6xl mx-auto">
+    <section id="publications" className="px-6 py-32">
+      <div className="mx-auto max-w-6xl">
         <motion.p
           variants={fadeUp}
           custom={0}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="text-xs font-mono font-medium tracking-widest text-primary uppercase mb-4"
+          viewport={{ once: true, margin: '-80px' }}
+          className="text-primary mb-4 font-mono text-xs font-medium tracking-widest uppercase"
         >
           Research
         </motion.p>
@@ -35,8 +35,8 @@ export function Publications() {
           custom={1}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          className="section-heading text-4xl md:text-5xl text-foreground mb-14"
+          viewport={{ once: true, margin: '-80px' }}
+          className="section-heading text-foreground mb-14 text-4xl md:text-5xl"
         >
           Publications
         </motion.h2>
@@ -49,28 +49,28 @@ export function Publications() {
               custom={i + 2}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              className="group relative p-6 rounded-2xl border border-border bg-background hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+              viewport={{ once: true, margin: '-60px' }}
+              className="group border-border bg-background hover:border-primary/30 hover:shadow-primary/5 relative rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg"
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-
+                <div className="min-w-0 flex-1">
                   {/* Type badge + venue row */}
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <div className="mb-2 flex flex-wrap items-center gap-2">
                     {pub.type && (
-                      <span className="text-[10px] font-mono font-semibold tracking-widest uppercase px-2 py-0.5 rounded-full border border-primary/20 text-primary bg-primary/5">
+                      <span className="border-primary/20 text-primary bg-primary/5 rounded-full border px-2 py-0.5 font-mono text-[10px] font-semibold tracking-widest uppercase">
                         {TYPE_LABELS[pub.type] ?? pub.type}
                       </span>
                     )}
                     {(pub.venue || pub.year) && (
-                      <span className="text-xs text-muted-foreground font-medium">
-                        {pub.venue}{pub.year ? ` · ${pub.year}` : ""}
+                      <span className="text-muted-foreground text-xs font-medium">
+                        {pub.venue}
+                        {pub.year ? ` · ${pub.year}` : ''}
                       </span>
                     )}
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-base font-semibold text-foreground leading-snug mb-1.5 group-hover:text-primary transition-colors">
+                  <h3 className="text-foreground group-hover:text-primary mb-1.5 text-base leading-snug font-semibold transition-colors">
                     {pub.url ? (
                       <a
                         href={pub.url}
@@ -79,13 +79,18 @@ export function Publications() {
                       >
                         {pub.title}
                       </a>
-                    ) : pub.title}
+                    ) : (
+                      pub.title
+                    )}
                   </h3>
 
                   {/* Authors */}
                   {pub.authors && (
-                    <p className="text-xs text-muted-foreground mb-3 flex items-center gap-1 leading-relaxed">
-                      <BookOpen size={11} className="flex-shrink-0 opacity-60" />
+                    <p className="text-muted-foreground mb-3 flex items-center gap-1 text-xs leading-relaxed">
+                      <BookOpen
+                        size={11}
+                        className="flex-shrink-0 opacity-60"
+                      />
                       {pub.authors}
                     </p>
                   )}
@@ -96,7 +101,7 @@ export function Publications() {
                       {pub.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-[10px] px-2 py-0.5 rounded-full bg-secondary border border-border text-muted-foreground"
+                          className="bg-secondary border-border text-muted-foreground rounded-full border px-2 py-0.5 text-[10px]"
                         >
                           {tag}
                         </span>
@@ -111,7 +116,7 @@ export function Publications() {
                     href={pub.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 mt-0.5 p-2 rounded-lg border border-border text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition-all opacity-0 group-hover:opacity-100"
+                    className="border-border text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-primary/5 mt-0.5 flex-shrink-0 rounded-lg border p-2 opacity-0 transition-all group-hover:opacity-100"
                     aria-label="Open publication"
                   >
                     <ExternalLink size={14} />

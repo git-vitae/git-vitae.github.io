@@ -1,17 +1,24 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Printer, ArrowLeft, Columns2, AlignJustify,
-  Mail, MapPin, Globe, ExternalLink, Share2,
-} from "lucide-react";
-import { FaGithub, FaLinkedin } from "react-icons/fa6";
-import { config } from "@/portfolio.config";
-import { applyThemePalette } from "@/lib/themes";
-import { ShareModal } from "@/components/ShareModal";
+  Printer,
+  ArrowLeft,
+  Columns2,
+  AlignJustify,
+  Mail,
+  MapPin,
+  Globe,
+  ExternalLink,
+  Share2,
+} from 'lucide-react';
+import { FaGithub, FaLinkedin } from 'react-icons/fa6';
+import { config } from '@/portfolio.config';
+import { applyThemePalette } from '@/lib/themes';
+import { ShareModal } from '@/components/ShareModal';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type Layout = "two-column" | "classic";
+type Layout = 'two-column' | 'classic';
 
 interface ResumePageProps {
   theme: string;
@@ -27,21 +34,24 @@ const isSectionVisible = (id: string) =>
 
 function ResumeHeader({ compact = false }: { compact?: boolean }) {
   return (
-    <div className={`${compact ? "mb-4" : "mb-8"}`}>
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
+    <div className={`${compact ? 'mb-4' : 'mb-8'}`}>
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-serif font-light tracking-tight text-foreground leading-none">
+          <h1 className="text-foreground font-serif text-3xl leading-none font-light tracking-tight">
             {config.name}
           </h1>
-          <p className="text-sm font-medium tracking-[0.18em] text-primary uppercase mt-1">
+          <p className="text-primary mt-1 text-sm font-medium tracking-[0.18em] uppercase">
             {config.title}
           </p>
         </div>
 
         {/* Contact line */}
-        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+        <div className="text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-xs">
           {config.email && (
-            <a href={`mailto:${config.email}`} className="flex items-center gap-1 hover:text-primary transition-colors">
+            <a
+              href={`mailto:${config.email}`}
+              className="hover:text-primary flex items-center gap-1 transition-colors"
+            >
               <Mail size={11} /> {config.email}
             </a>
           )}
@@ -51,58 +61,87 @@ function ResumeHeader({ compact = false }: { compact?: boolean }) {
             </span>
           )}
           {config.social.github && (
-            <a href={config.social.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-primary transition-colors">
-              <FaGithub size={11} /> {config.social.github.replace("https://github.com/", "")}
+            <a
+              href={config.social.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary flex items-center gap-1 transition-colors"
+            >
+              <FaGithub size={11} />{' '}
+              {config.social.github.replace('https://github.com/', '')}
             </a>
           )}
           {config.social.linkedin && (
-            <a href={config.social.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-primary transition-colors">
-              <FaLinkedin size={11} /> {config.social.linkedin.replace("https://linkedin.com/in/", "")}
+            <a
+              href={config.social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary flex items-center gap-1 transition-colors"
+            >
+              <FaLinkedin size={11} />{' '}
+              {config.social.linkedin.replace('https://linkedin.com/in/', '')}
             </a>
           )}
           {config.social.website && (
-            <a href={config.social.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-primary transition-colors">
-              <Globe size={11} /> {config.social.website.replace(/https?:\/\//, "")}
+            <a
+              href={config.social.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-primary flex items-center gap-1 transition-colors"
+            >
+              <Globe size={11} />{' '}
+              {config.social.website.replace(/https?:\/\//, '')}
             </a>
           )}
         </div>
       </div>
-      <div className="mt-4 h-px bg-gradient-to-r from-primary via-primary/30 to-transparent" />
+      <div className="from-primary via-primary/30 mt-4 h-px bg-gradient-to-r to-transparent" />
     </div>
   );
 }
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[10px] font-mono font-semibold tracking-[0.2em] text-primary uppercase mb-2.5 flex items-center gap-2">
+    <p className="text-primary mb-2.5 flex items-center gap-2 font-mono text-[10px] font-semibold tracking-[0.2em] uppercase">
       {children}
-      <span className="flex-1 h-px bg-border" />
+      <span className="bg-border h-px flex-1" />
     </p>
   );
 }
 
 function ExperienceBlock() {
-  if (!isSectionVisible("experience") || !config.experience?.length) return null;
+  if (!isSectionVisible('experience') || !config.experience?.length)
+    return null;
   return (
     <div className="mb-6">
       <SectionLabel>Experience</SectionLabel>
       <div className="space-y-4">
         {config.experience.map((job, i) => (
           <div key={i} className="break-inside-avoid">
-            <div className="flex items-baseline justify-between gap-2 flex-wrap">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
               <div>
-                <span className="font-semibold text-sm text-foreground">{job.role}</span>
-                <span className="text-muted-foreground text-xs"> · {job.company}</span>
+                <span className="text-foreground text-sm font-semibold">
+                  {job.role}
+                </span>
+                <span className="text-muted-foreground text-xs">
+                  {' '}
+                  · {job.company}
+                </span>
               </div>
-              <span className="font-mono text-[10px] text-muted-foreground whitespace-nowrap shrink-0">
+              <span className="text-muted-foreground shrink-0 font-mono text-[10px] whitespace-nowrap">
                 {job.period}
               </span>
             </div>
-            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{job.description}</p>
+            <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+              {job.description}
+            </p>
             {(job.highlights ?? []).length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mt-1.5">
+              <div className="mt-1.5 flex flex-wrap gap-1.5">
                 {(job.highlights ?? []).map((h) => (
-                  <span key={h} className="text-[10px] px-1.5 py-0.5 rounded bg-primary/8 text-primary border border-primary/15">
+                  <span
+                    key={h}
+                    className="bg-primary/8 text-primary border-primary/15 rounded border px-1.5 py-0.5 text-[10px]"
+                  >
                     {h}
                   </span>
                 ))}
@@ -116,7 +155,7 @@ function ExperienceBlock() {
 }
 
 function ProjectsBlock({ condensed = false }: { condensed?: boolean }) {
-  if (!isSectionVisible("projects") || !config.projects?.length) return null;
+  if (!isSectionVisible('projects') || !config.projects?.length) return null;
   const shown = condensed
     ? config.projects.filter((p) => p.featured)
     : config.projects;
@@ -127,8 +166,10 @@ function ProjectsBlock({ condensed = false }: { condensed?: boolean }) {
       <div className="space-y-3">
         {shown.map((proj, i) => (
           <div key={i} className="break-inside-avoid">
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="font-semibold text-sm text-foreground">{proj.name}</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-foreground text-sm font-semibold">
+                {proj.name}
+              </span>
               {(proj.liveUrl || proj.repoUrl) && (
                 <a
                   href={proj.liveUrl || proj.repoUrl}
@@ -141,13 +182,18 @@ function ProjectsBlock({ condensed = false }: { condensed?: boolean }) {
               )}
               <div className="flex flex-wrap gap-1">
                 {proj.tags?.slice(0, 4).map((t) => (
-                  <span key={t} className="text-[10px] px-1.5 py-0.5 rounded bg-secondary text-muted-foreground border border-border">
+                  <span
+                    key={t}
+                    className="bg-secondary text-muted-foreground border-border rounded border px-1.5 py-0.5 text-[10px]"
+                  >
                     {t}
                   </span>
                 ))}
               </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{proj.description}</p>
+            <p className="text-muted-foreground mt-0.5 text-xs leading-relaxed">
+              {proj.description}
+            </p>
           </div>
         ))}
       </div>
@@ -156,17 +202,22 @@ function ProjectsBlock({ condensed = false }: { condensed?: boolean }) {
 }
 
 function SkillsBlock() {
-  if (!isSectionVisible("skills") || !config.skills?.length) return null;
+  if (!isSectionVisible('skills') || !config.skills?.length) return null;
   return (
     <div className="mb-5">
       <SectionLabel>Skills</SectionLabel>
       <div className="space-y-1.5">
         {config.skills.map((cat) => (
-          <div key={cat.category} className="flex gap-1.5 text-xs leading-relaxed">
-            <span className="font-medium text-foreground whitespace-nowrap shrink-0 min-w-[72px]">
+          <div
+            key={cat.category}
+            className="flex gap-1.5 text-xs leading-relaxed"
+          >
+            <span className="text-foreground min-w-[72px] shrink-0 font-medium whitespace-nowrap">
               {cat.category}
             </span>
-            <span className="text-muted-foreground">{cat.items.join(", ")}</span>
+            <span className="text-muted-foreground">
+              {cat.items.join(', ')}
+            </span>
           </div>
         ))}
       </div>
@@ -175,18 +226,24 @@ function SkillsBlock() {
 }
 
 function EducationBlock() {
-  if (!isSectionVisible("education") || !config.education?.length) return null;
+  if (!isSectionVisible('education') || !config.education?.length) return null;
   return (
     <div className="mb-5">
       <SectionLabel>Education</SectionLabel>
       <div className="space-y-2">
         {config.education.map((edu, i) => (
           <div key={i} className="break-inside-avoid">
-            <div className="flex items-baseline justify-between gap-2 flex-wrap">
-              <span className="font-semibold text-xs text-foreground">{edu.degree}</span>
-              <span className="font-mono text-[10px] text-muted-foreground">{edu.period}</span>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <span className="text-foreground text-xs font-semibold">
+                {edu.degree}
+              </span>
+              <span className="text-muted-foreground font-mono text-[10px]">
+                {edu.period}
+              </span>
             </div>
-            <p className="text-[11px] text-muted-foreground">{edu.institution}</p>
+            <p className="text-muted-foreground text-[11px]">
+              {edu.institution}
+            </p>
           </div>
         ))}
       </div>
@@ -195,18 +252,25 @@ function EducationBlock() {
 }
 
 function CertificationsBlock() {
-  if (!isSectionVisible("certifications") || !config.certifications?.length) return null;
+  if (!isSectionVisible('certifications') || !config.certifications?.length)
+    return null;
   return (
     <div className="mb-5">
       <SectionLabel>Certifications</SectionLabel>
       <div className="space-y-1.5">
         {config.certifications.map((cert, i) => (
-          <div key={i} className="flex items-start gap-2 break-inside-avoid">
-            <div className="flex-1 min-w-0">
-              <span className="text-xs font-medium text-foreground leading-tight block">{cert.title}</span>
-              <span className="text-[10px] text-muted-foreground">{cert.issuer}</span>
+          <div key={i} className="flex break-inside-avoid items-start gap-2">
+            <div className="min-w-0 flex-1">
+              <span className="text-foreground block text-xs leading-tight font-medium">
+                {cert.title}
+              </span>
+              <span className="text-muted-foreground text-[10px]">
+                {cert.issuer}
+              </span>
             </div>
-            <span className="font-mono text-[10px] text-muted-foreground whitespace-nowrap shrink-0">{cert.date}</span>
+            <span className="text-muted-foreground shrink-0 font-mono text-[10px] whitespace-nowrap">
+              {cert.date}
+            </span>
           </div>
         ))}
       </div>
@@ -221,8 +285,11 @@ function LanguagesBlock() {
       <SectionLabel>Languages</SectionLabel>
       <div className="space-y-1">
         {config.languages.map((lang) => (
-          <div key={lang.name} className="flex items-center justify-between text-xs">
-            <span className="font-medium text-foreground">{lang.name}</span>
+          <div
+            key={lang.name}
+            className="flex items-center justify-between text-xs"
+          >
+            <span className="text-foreground font-medium">{lang.name}</span>
             <span className="text-muted-foreground">{lang.level}</span>
           </div>
         ))}
@@ -233,7 +300,7 @@ function LanguagesBlock() {
 
 function PublicationsBlock() {
   const pubs = config.publications ?? [];
-  if (!isSectionVisible("publications") || !pubs.length) return null;
+  if (!isSectionVisible('publications') || !pubs.length) return null;
   return (
     <div className="mb-6">
       <SectionLabel>Publications</SectionLabel>
@@ -241,22 +308,34 @@ function PublicationsBlock() {
         {pubs.map((pub, i) => (
           <div key={i} className="break-inside-avoid">
             <div className="flex items-start justify-between gap-2">
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-foreground leading-snug">
+              <div className="min-w-0 flex-1">
+                <p className="text-foreground text-xs leading-snug font-semibold">
                   {pub.url ? (
-                    <a href={pub.url} target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+                    <a
+                      href={pub.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-primary"
+                    >
                       {pub.title}
                     </a>
-                  ) : pub.title}
+                  ) : (
+                    pub.title
+                  )}
                 </p>
-                <p className="text-[10px] text-muted-foreground mt-0.5 leading-relaxed">
+                <p className="text-muted-foreground mt-0.5 text-[10px] leading-relaxed">
                   {pub.authors && <span>{pub.authors} · </span>}
                   <span className="italic">{pub.venue}</span>
                   {pub.year && <span>, {pub.year}</span>}
                 </p>
               </div>
               {pub.url && (
-                <a href={pub.url} target="_blank" rel="noopener noreferrer" className="flex-shrink-0 text-primary hover:opacity-70 mt-0.5">
+                <a
+                  href={pub.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary mt-0.5 flex-shrink-0 hover:opacity-70"
+                >
                   <ExternalLink size={10} />
                 </a>
               )}
@@ -269,11 +348,13 @@ function PublicationsBlock() {
 }
 
 function AboutBlock() {
-  if (!isSectionVisible("about") || !config.about) return null;
+  if (!isSectionVisible('about') || !config.about) return null;
   return (
     <div className="mb-6">
       <SectionLabel>Summary</SectionLabel>
-      <p className="text-xs text-muted-foreground leading-relaxed">{config.about}</p>
+      <p className="text-muted-foreground text-xs leading-relaxed">
+        {config.about}
+      </p>
     </div>
   );
 }
@@ -286,15 +367,15 @@ function TwoColumnLayout() {
       <ResumeHeader />
       <div className="grid grid-cols-[200px_1fr] gap-8">
         {/* Sidebar */}
-        <aside className="border-r border-border pr-6 space-y-0">
+        <aside className="border-border space-y-0 border-r pr-6">
           <SkillsBlock />
           <LanguagesBlock />
           <EducationBlock />
           <CertificationsBlock />
         </aside>
         {/* Main */}
-        <main className="space-y-0 min-w-0">
-          {isSectionVisible("about") && <AboutBlock />}
+        <main className="min-w-0 space-y-0">
+          {isSectionVisible('about') && <AboutBlock />}
           <ExperienceBlock />
           <ProjectsBlock />
           <PublicationsBlock />
@@ -310,7 +391,7 @@ function ClassicLayout() {
   return (
     <div>
       <ResumeHeader compact />
-      {isSectionVisible("about") && <AboutBlock />}
+      {isSectionVisible('about') && <AboutBlock />}
       <ExperienceBlock />
       <ProjectsBlock condensed />
       <PublicationsBlock />
@@ -332,63 +413,67 @@ function ClassicLayout() {
 
 export function ResumePage({ theme, onToggleTheme }: ResumePageProps) {
   const [layout, setLayout] = useState<Layout>(() => {
-    return (localStorage.getItem("resume-layout") as Layout) ?? "two-column";
+    return (localStorage.getItem('resume-layout') as Layout) ?? 'two-column';
   });
   const [shareOpen, setShareOpen] = useState(false);
 
   const setAndStore = (l: Layout) => {
     setLayout(l);
-    localStorage.setItem("resume-layout", l);
+    localStorage.setItem('resume-layout', l);
   };
 
   // Swap accent color to match the selected layout
   useEffect(() => {
-    const preset = layout === "two-column"
-      ? config.resumeTheme.twoColumn
-      : config.resumeTheme.classic;
-    applyThemePalette(preset, theme === "dark", config.customColors);
+    const preset =
+      layout === 'two-column'
+        ? config.resumeTheme.twoColumn
+        : config.resumeTheme.classic;
+    applyThemePalette(preset, theme === 'dark', config.customColors);
     return () => {
-      applyThemePalette(config.colorPreset, theme === "dark", config.customColors);
+      applyThemePalette(
+        config.colorPreset,
+        theme === 'dark',
+        config.customColors
+      );
     };
   }, [layout, theme]);
 
   return (
-    <div className="min-h-screen print:min-h-0 bg-muted/40 print:bg-white">
-
+    <div className="bg-muted/40 min-h-screen print:min-h-0 print:bg-white">
       {/* ── Toolbar (hidden on print) ───────────────────────────────── */}
-      <div className="print:hidden sticky top-0 z-50 flex items-center justify-between gap-4 px-6 py-3 bg-background/90 backdrop-blur border-b border-border">
+      <div className="bg-background/90 border-border sticky top-0 z-50 flex items-center justify-between gap-4 border-b px-6 py-3 backdrop-blur print:hidden">
         {/* Back */}
         <a
           href="#/"
-          className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+          className="text-muted-foreground hover:text-foreground flex items-center gap-1.5 text-xs font-medium transition-colors"
         >
           <ArrowLeft size={13} />
           Portfolio
         </a>
 
         {/* Layout switcher */}
-        <div className="flex items-center gap-1 p-1 rounded-lg bg-secondary border border-border">
+        <div className="bg-secondary border-border flex items-center gap-1 rounded-lg border p-1">
           <button
-            onClick={() => setAndStore("two-column")}
+            onClick={() => setAndStore('two-column')}
             aria-label="Two-column layout"
-            aria-pressed={layout === "two-column"}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              layout === "two-column"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+            aria-pressed={layout === 'two-column'}
+            className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+              layout === 'two-column'
+                ? 'bg-background text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             <Columns2 size={13} />
             <span className="hidden sm:inline">Two Column</span>
           </button>
           <button
-            onClick={() => setAndStore("classic")}
+            onClick={() => setAndStore('classic')}
             aria-label="Classic layout"
-            aria-pressed={layout === "classic"}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-              layout === "classic"
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
+            aria-pressed={layout === 'classic'}
+            className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+              layout === 'classic'
+                ? 'bg-background text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
             }`}
           >
             <AlignJustify size={13} />
@@ -401,14 +486,14 @@ export function ResumePage({ theme, onToggleTheme }: ResumePageProps) {
           <button
             onClick={() => setShareOpen(true)}
             aria-label="Share resume"
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/40 transition-all"
+            className="border-border text-muted-foreground hover:text-foreground hover:border-primary/40 flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-xs font-medium transition-all"
           >
             <Share2 size={13} />
             <span className="hidden sm:inline">Share</span>
           </button>
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary text-primary-foreground text-xs font-medium tracking-wide hover:opacity-90 transition-opacity"
+            className="bg-primary text-primary-foreground flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-medium tracking-wide transition-opacity hover:opacity-90"
           >
             <Printer size={13} />
             Save PDF
@@ -417,7 +502,7 @@ export function ResumePage({ theme, onToggleTheme }: ResumePageProps) {
       </div>
 
       {/* ── Resume paper ───────────────────────────────────────────── */}
-      <div className="flex justify-center px-4 py-8 print:py-0 print:px-0">
+      <div className="flex justify-center px-4 py-8 print:px-0 print:py-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={layout}
@@ -425,9 +510,9 @@ export function ResumePage({ theme, onToggleTheme }: ResumePageProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="w-full max-w-[794px] bg-background print:bg-white shadow-xl print:shadow-none rounded-xl print:rounded-none p-10 print:p-8 min-h-[1123px] print:min-h-0"
+            className="bg-background min-h-[1123px] w-full max-w-[794px] rounded-xl p-10 shadow-xl print:min-h-0 print:rounded-none print:bg-white print:p-8 print:shadow-none"
           >
-            {layout === "two-column" ? <TwoColumnLayout /> : <ClassicLayout />}
+            {layout === 'two-column' ? <TwoColumnLayout /> : <ClassicLayout />}
           </motion.div>
         </AnimatePresence>
       </div>

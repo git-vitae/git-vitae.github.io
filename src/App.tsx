@@ -1,23 +1,33 @@
-import { useState, useEffect, lazy, Suspense } from "react";
-import { Router, Route, Switch } from "wouter";
-import { useHashLocation } from "wouter/use-hash-location";
-import { MotionConfig } from "framer-motion";
-import { PortfolioPage } from "@/pages/portfolio";
-import { CustomCursor } from "@/components/CustomCursor";
-import { SmoothScrollProvider } from "@/components/SmoothScroll";
-import { SimpleChat } from "./components/SimpleChat";
-import { OpenToWorkBanner } from "@/components/OpenToWorkBanner";
-import { DemoBanner } from "@/components/DemoBanner";
-import { applyThemePalette, hexToPresetPalette } from "@/lib/themes";
-import { config } from "@/portfolio.config";
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { Router, Route, Switch } from 'wouter';
+import { useHashLocation } from 'wouter/use-hash-location';
+import { MotionConfig } from 'framer-motion';
+import { PortfolioPage } from '@/pages/portfolio';
+import { CustomCursor } from '@/components/CustomCursor';
+import { SmoothScrollProvider } from '@/components/SmoothScroll';
+import { SimpleChat } from './components/SimpleChat';
+import { OpenToWorkBanner } from '@/components/OpenToWorkBanner';
+import { DemoBanner } from '@/components/DemoBanner';
+import { applyThemePalette, hexToPresetPalette } from '@/lib/themes';
+import { config } from '@/portfolio.config';
 
-const ResumePage   = lazy(() => import("@/pages/resume").then(m => ({ default: m.ResumePage })));
-const LandingPage  = lazy(() => import("@/pages/landing").then(m => ({ default: m.LandingPage })));
-const SetupPage    = lazy(() => import("@/pages/setup").then(m => ({ default: m.SetupPage })));
-const BlogListPage = lazy(() => import("@/pages/blog").then(m => ({ default: m.BlogListPage })));
-const BlogPostPage = lazy(() => import("@/pages/blog/post").then(m => ({ default: m.BlogPostPage })));
+const ResumePage = lazy(() =>
+  import('@/pages/resume').then((m) => ({ default: m.ResumePage }))
+);
+const LandingPage = lazy(() =>
+  import('@/pages/landing').then((m) => ({ default: m.LandingPage }))
+);
+const SetupPage = lazy(() =>
+  import('@/pages/setup').then((m) => ({ default: m.SetupPage }))
+);
+const BlogListPage = lazy(() =>
+  import('@/pages/blog').then((m) => ({ default: m.BlogListPage }))
+);
+const BlogPostPage = lazy(() =>
+  import('@/pages/blog/post').then((m) => ({ default: m.BlogPostPage }))
+);
 
-const IS_DEMO = import.meta.env.VITE_DEMO_MODE === "true";
+const IS_DEMO = import.meta.env.VITE_DEMO_MODE === 'true';
 
 function PortfolioWithChrome({
   theme,
@@ -29,7 +39,7 @@ function PortfolioWithChrome({
   showDemoBanner: boolean;
 }) {
   const [demoBannerVisible, setDemoBannerVisible] = useState(
-    showDemoBanner && localStorage.getItem("gitvitae-demo-dismissed") !== "1"
+    showDemoBanner && localStorage.getItem('gitvitae-demo-dismissed') !== '1'
   );
   const [openToWorkVisible, setOpenToWorkVisible] = useState(config.openToWork);
 
@@ -60,40 +70,55 @@ function PortfolioWithChrome({
 
 function App() {
   const [theme, setTheme] = useState<string>(() => {
-    const stored = localStorage.getItem("portfolio-theme");
+    const stored = localStorage.getItem('portfolio-theme');
     if (stored) return stored;
-    if (config.defaultTheme === "system") {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    if (config.defaultTheme === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
     }
     return config.defaultTheme;
   });
 
   useEffect(() => {
     const root = document.documentElement;
-    const isDark = theme === "dark";
-    if (isDark) root.classList.add("dark");
-    else root.classList.remove("dark");
-    localStorage.setItem("portfolio-theme", theme);
-    const palette = config.primaryColor ? hexToPresetPalette(config.primaryColor) : config.customColors;
-    applyThemePalette(config.primaryColor ? "custom" : config.colorPreset, isDark, palette);
+    const isDark = theme === 'dark';
+    if (isDark) root.classList.add('dark');
+    else root.classList.remove('dark');
+    localStorage.setItem('portfolio-theme', theme);
+    const palette = config.primaryColor
+      ? hexToPresetPalette(config.primaryColor)
+      : config.customColors;
+    applyThemePalette(
+      config.primaryColor ? 'custom' : config.colorPreset,
+      isDark,
+      palette
+    );
   }, [theme]);
 
   useEffect(() => {
-    const palette = config.primaryColor ? hexToPresetPalette(config.primaryColor) : config.customColors;
-    applyThemePalette(config.primaryColor ? "custom" : config.colorPreset, theme === "dark", palette);
+    const palette = config.primaryColor
+      ? hexToPresetPalette(config.primaryColor)
+      : config.customColors;
+    applyThemePalette(
+      config.primaryColor ? 'custom' : config.colorPreset,
+      theme === 'dark',
+      palette
+    );
   }, []);
 
-  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+  const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
 
   return (
     <MotionConfig reducedMotion="user">
       <Router hook={useHashLocation}>
         <Suspense fallback={null}>
           <Switch>
-
             {/* Blog routes — always accessible */}
             <Route path="/blog/:slug">
-              {(params) => <BlogPostPage slug={(params as { slug: string }).slug ?? ''} />}
+              {(params) => (
+                <BlogPostPage slug={(params as { slug: string }).slug ?? ''} />
+              )}
             </Route>
             <Route path="/blog">
               <BlogListPage />
@@ -121,7 +146,7 @@ function App() {
 
             {/* Root — landing page or portfolio depending on siteMode */}
             <Route>
-              {config.siteMode === "landing" ? (
+              {config.siteMode === 'landing' ? (
                 <LandingPage theme={theme} onToggleTheme={toggleTheme} />
               ) : (
                 <PortfolioWithChrome
@@ -131,13 +156,12 @@ function App() {
                 />
               )}
             </Route>
-
           </Switch>
         </Suspense>
       </Router>
 
       {/* Global Chat Widget - Fixed to bottom right */}
-      <div className="fixed bottom-4 right-4 z-50">
+      <div className="fixed right-4 bottom-4 z-50">
         <SimpleChat />
       </div>
     </MotionConfig>
