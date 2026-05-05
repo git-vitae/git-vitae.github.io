@@ -4,6 +4,25 @@ All notable changes are listed here. Each version brings new features you can op
 
 ---
 
+## [1.7.0] — 2026-05-05
+
+### New
+- **AI Chat Assistant** — Every portfolio now includes a global AI chat widget powered by WebLLM (Llama-3.2-1B-Instruct). The chat:
+  - Runs entirely in your browser with no backend or API calls
+  - Automatically learns about your portfolio from your config and README
+  - Includes context awareness so it knows which page the user is on
+  - Resets conversation every 8 exchanges to maintain token efficiency
+  - Displays a disclaimer that AI answers may contain errors
+  - Works offline after initial model download (~1.5GB)
+  - Accessible on all devices (web, iPad, mobile) with fixed positioning at bottom-right
+  - Collapsible interface that starts closed to avoid distraction
+- **Chat disclaimer** — A prominent warning appears in the chat header to inform visitors that AI-generated answers may contain errors and should be verified independently.
+
+### Improved
+- **Changelog modal scrollable** — Fixed scrolling in the "What's new" modal so longer changelogs are fully accessible.
+
+---
+
 ## [1.6.0] — 2026-05-02
 
 ### Performance

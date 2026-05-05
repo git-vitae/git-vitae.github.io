@@ -11,8 +11,9 @@ import { Progress } from "@/components/ui/progress";
 import { webLLMService, type ChatMessage, type WebLLMStatus } from "@/lib/webllm";
 
 export function SimpleChat() {
+  const MAX_CONVERSATION_PAIRS = 5; // Keep last 5 user/assistant exchanges
   const [messages, setMessages] = React.useState<ChatMessage[]>([
-    { role: "assistant", content: "Hi! How can I help you today?" },
+    { role: "assistant", content: "Hi! Ask me anything about GitVitae or this portfolio page." },
   ]);
   const [input, setInput] = React.useState("");
   const [isMinimized, setIsMinimized] = React.useState(true); // Start minimized
@@ -20,6 +21,13 @@ export function SimpleChat() {
   const [webLLMStatus, setWebLLMStatus] = React.useState<WebLLMStatus>({ status: "not_loaded" });
   const [pageContext, setPageContext] = React.useState<string>("");
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const messageCountRef = React.useRef(0);
+
+  const resetConversation = () => {
+    setMessages([{ role: "assistant", content: "Hi! Ask me anything about GitVitae or this portfolio page." }]);
+    messageCountRef.current = 0;
+  };
+
 
   // Subscribe to WebLLM status updates
   React.useEffect(() => {
@@ -72,6 +80,7 @@ export function SimpleChat() {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
+    messageCountRef.current += 1;
 
     try {
       // Initialize WebLLM if not ready
@@ -79,19 +88,18 @@ export function SimpleChat() {
         await webLLMService.initialize();
       }
 
-      // FILTER out the initial greeting if it's the first message
-      // This ensures the LLM receives: [System, User, Assistant, User...]
-      const conversationHistory = messages.filter((msg, idx) => {
-          if (idx === 0 && msg.role === "assistant") return false;
-          return true;
-      });
+      // Keep only the last MAX_CONVERSATION_PAIRS exchanges to save tokens
+      // Always include the initial greeting
+      const conversationForModel = messages.slice(
+        Math.max(0, messages.length - MAX_CONVERSATION_PAIRS * 2)
+      );
 
       // Add placeholder for AI response
       const aiMessageIndex = messages.length + 1;
       setMessages((prev) => [...prev, { role: "assistant", content: "" }]);
 
       // Generate streaming response
-      const allMessages = [...messages, userMessage];
+      const allMessages = [...conversationForModel, userMessage];
       let accumulatedResponse = "";
 
       for await (const chunk of webLLMService.chat(allMessages, pageContext)) {
@@ -103,6 +111,13 @@ export function SimpleChat() {
               : msg
           )
         );
+      }
+
+      // Reset conversation after 8 exchanges to prevent token buildup
+      if (messageCountRef.current >= 8) {
+        setTimeout(() => {
+          resetConversation();
+        }, 2000);
       }
     } catch (error) {
       console.error("Chat error:", error);
@@ -183,6 +198,13 @@ export function SimpleChat() {
           </div>
         </div>
       )}
+
+      {/* Disclaimer */}
+      <div className="px-4 py-2 bg-amber-50 dark:bg-amber-900/20 border-b border-amber-200 dark:border-amber-800/30">
+        <p className="text-xs text-amber-700 dark:text-amber-600">
+          ⚠️ <span className="font-medium">Disclaimer:</span> AI-generated answers may contain errors. Please verify important information independently.
+        </p>
+      </div>
 
       {/* Message List */}
       <ScrollArea className="flex-1 min-h-0 p-4" viewportRef={scrollRef}>
