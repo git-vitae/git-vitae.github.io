@@ -15,7 +15,11 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "check-config": "node scripts/check-config.mjs",
     "fix-config": "node scripts/check-config.mjs --fix",
-    "upgrade-template": "node scripts/upgrade-template.mjs"
+    "upgrade-template": "node scripts/upgrade-template.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@eslint/compat": "^2.0.5",
@@ -38,6 +42,7 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.0.4",
+    "@vitest/coverage-v8": "^4.1.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "eslint": "^10.3.0",
@@ -45,6 +50,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
     "framer-motion": "^12.23.24",
+    "happy-dom": "^20.9.0",
     "js-yaml": "^4.1.1",
     "lucide-react": "^0.545.0",
     "prettier": "^3.8.3",
@@ -58,6 +64,7 @@
     "tw-animate-css": "^1.4.0",
     "typescript": "^5.8.3",
     "vite": "^7.3.2",
+    "vitest": "^4.1.5",
     "wouter": "^3.3.5"
   },
   "dependencies": {
