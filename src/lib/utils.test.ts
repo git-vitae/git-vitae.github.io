@@ -11,8 +11,12 @@ describe('cn utility function', () => {
   });
 
   test('works with clsx conditional classes', () => {
-    expect(cn('btn', { 'btn-active': true, 'btn-disabled': false })).toBe('btn btn-active');
-    expect(cn('btn', { 'btn-active': false, 'btn-disabled': true })).toBe('btn btn-disabled');
+    expect(cn('btn', { 'btn-active': true, 'btn-disabled': false })).toBe(
+      'btn btn-active'
+    );
+    expect(cn('btn', { 'btn-active': false, 'btn-disabled': true })).toBe(
+      'btn btn-disabled'
+    );
   });
 
   test('merges with tailwind-merge deduplication', () => {
