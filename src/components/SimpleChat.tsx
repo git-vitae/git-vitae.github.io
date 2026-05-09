@@ -54,18 +54,21 @@ export function SimpleChat() {
       const title = document.title || '';
       const url = window.location.href;
       const route = window.location.hash || window.location.pathname;
-      const pageText = Array.from(
-        document.querySelectorAll(
-          'main, article, section, .page-content, .page'
-        )
-      )
-        .map((el) => el.textContent?.trim() ?? '')
-        .filter(Boolean)
-        .join('\n\n')
-        .slice(0, 8000);
+
+      // Extract more relevant content based on current view
+      let pageText = '';
+
+      // Focus on main content areas
+      const mainContent = document.querySelector('main, .page-content, section:not([hidden])');
+      if (mainContent) {
+        pageText = mainContent.textContent?.trim() ?? '';
+      }
+
+      // Limit to relevant portion
+      const trimmedText = pageText.slice(0, 1500);
 
       setPageContext(
-        `Title: ${title}\nURL: ${url}\nRoute: ${route}\n\nPage text:\n${pageText}`
+        `Current View: ${route}\n${trimmedText}`
       );
     };
 

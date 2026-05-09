@@ -108,18 +108,15 @@ class WebLLMService {
     }
 
     try {
-      const systemPrompt = `You are a helpful AI assistant for GitVitae, a free portfolio template for developers. Your role is to answer questions about:
-1. How to use GitVitae
-2. Setting up a portfolio
-3. Current page content
-4. GitVitae features
+      const systemPrompt = `You are a helpful AI assistant for GitVitae, a free portfolio template for developers. Your expertise includes:
+- Helping users configure their portfolio using portfolio.config.yaml
+- Explaining GitVitae features (theming, blog, resume generation, etc.)
+- Guiding users through setup and deployment steps
+- Answering questions about sections (About, Skills, Projects, etc.)
 
-If asked about unrelated topics, politely decline and redirect to GitVitae topics.
+If asked about unrelated topics, politely decline and redirect to GitVitae-related questions.
 
-README:
-${readmeText}
-
-PAGE:
+Current page context to help answer specific questions:
 ${pageContext}`;
 
       // Convert messages to OpenAI format
@@ -132,8 +129,9 @@ ${pageContext}`;
       const chunks = await this.engine.chat.completions.create({
         messages: openaiMessages,
         stream: true,
-        max_tokens: 500, // Limit for quick responses
-        temperature: 0.7,
+        max_tokens: 300, // Reduced for more focused responses
+        temperature: 0.3, // Lower for more consistent, factual responses
+        top_p: 0.9,
       });
 
       for await (const chunk of chunks) {
